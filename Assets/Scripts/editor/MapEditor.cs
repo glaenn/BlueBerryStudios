@@ -256,56 +256,13 @@ public class MapEditor : EditorWindow
         return inside;
     }
 
-   
-    bool CheckPointInLine(Vector2 point, Vector2 startPoint, Vector2 endPoint, float selectionHelper = 5.0f)
-    { 
-        Vector2 leftPoint;
-        Vector2 rightPoint;
-
-        // Normalize start/end to left right to make the offset calc simpler.
-        if (startPoint.x <= endPoint.x)
-        {
-            leftPoint = startPoint;
-            rightPoint = endPoint;
-        }
-        else
-        {
-            leftPoint = endPoint;
-            rightPoint = startPoint;
-        }
-
-        // If point is out of bounds, no need to do further checks.                  
-        if (point.x + selectionHelper < leftPoint.x || rightPoint.x < point.x - selectionHelper)
-            return false;
-        else if (point.y + selectionHelper < Math.Min(leftPoint.y, rightPoint.y) || Math.Max(leftPoint.y, rightPoint.y) < point.y - selectionHelper)
-            return false;
-
-        double deltaX = rightPoint.x - leftPoint.x;
-        double deltaY = rightPoint.y - leftPoint.y;
-
-        // If the line is straight, the earlier boundary check is enough to determine that the point is on the line.
-        // Also prevents division by zero exceptions.
-        if (deltaX == 0 || deltaY == 0)
-            return true;
-
-        double slope = deltaY / deltaX;
-        double offset = leftPoint.y - leftPoint.x * slope;
-        double calculatedY = point.x * slope + offset;
-
-        // Check calculated Y matches the points Y coord with some easing.
-        bool lineContains = point.y - selectionHelper <= calculatedY && calculatedY <= point.y + selectionHelper;
-
-        return lineContains;
-    }
-
+ 
     bool ClosestPointOnLine (Vector2 startPoint, Vector2 endPoint, Vector2 mousePoint, float maxDistance = 5.0f)
     {
         Vector2 sM = mousePoint - startPoint;
         Vector2 sE = endPoint - startPoint;
 
         Vector2 distance = Vector2.Dot(sM, sE) / Vector2.Dot(sE, sE) * sE;
-
-        //Handles.DrawLine(startPoint, startPoint + distance);
 
         if (Vector2.Dot(sE, distance) < 0 || sE.magnitude < distance.magnitude)
             return false;
