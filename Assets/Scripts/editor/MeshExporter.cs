@@ -5,6 +5,47 @@ using System.Text;
 
 public static class MeshExporter
 {
+    /// <summary>
+    /// Creates and returns a mesh
+    /// </summary>
+    /// <param name="verts"></param>
+    /// <param name="uv"></param>
+    /// <param name="triangles"></param>
+    /// <returns></returns>
+    public static Mesh CreateMesh(Vector3[] verts, Vector2[] uv, int[][] triangles)
+    {
+        Mesh mesh = new Mesh();
+        mesh.vertices = verts;
+        mesh.uv = uv;
+        mesh.subMeshCount = triangles.GetLength(0);
+
+        for (int i = 0; i < triangles.GetLength(0); i++)
+            mesh.SetTriangles(triangles[i], i, false);
+
+        mesh.RecalculateNormals();
+        mesh.RecalculateBounds();
+
+        return mesh;
+
+    }
+    /// <summary>
+    /// Returns a list of created Materials 
+    /// </summary>
+    /// <param name="numberOfMaterials"></param>
+    /// <param name="shaderType"></param>
+    /// <param name="materialName"></param>
+    /// <returns></returns>
+    public static Material[] CreateMaterial(int numberOfMaterials, string shaderType = "Diffuse", string materialName = "material_")
+    {
+        Material[] material = new Material[numberOfMaterials];
+        for (int i = 0; i<material.Length; i++)
+        {
+            material[i] = new Material(Shader.Find(shaderType));
+            material[i].name = materialName + i;
+        }
+
+        return material;
+    }
     public static void MeshToFile(Mesh mesh, Material[] material, string defaultName)
     {
        string path = PlayerPrefs.GetString("BB_MeshExport");

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System;
+using System.Collections.Generic;
 
 public class MapEditor : EditorWindow
 {
@@ -11,10 +12,7 @@ public class MapEditor : EditorWindow
     int editMode, selectedTools;
     Texture2D gridBG;
 
-    public string[] editModeName = new string[] { "Sector", " Vertices", "Lines" };
-    public string[] sectorToolName = new string[] { "Select", "Draw" };
-    public string[] verticesToolName = new string[] { "Select", "Insert"};
-    public string[] lineToolNames = new string[] { "Select" };
+    public string[] editModeName = new string[] { "Sector", " Vertices\\Lines"};
 
     GUIStyle blackBG = new GUIStyle();
 
@@ -50,7 +48,6 @@ public class MapEditor : EditorWindow
 
         Event e = Event.current;
 
-
         //Paint lines
         for (int i = 0; i < mapData.lines.Length; i++)
         {
@@ -71,7 +68,6 @@ public class MapEditor : EditorWindow
             }
             if(e.type == EventType.MouseUp)
                 verticeSelected = false;
-
         }
 
         Repaint();
@@ -123,8 +119,7 @@ public class MapEditor : EditorWindow
         Vector2[] ceilingUVS = new Vector2[mapData.lines.Length];
 
         int[] wallTriangles = new int[mapData.lines.Length * 6];
-        int[] floorTriangles;
-        int[] ceilingTriangles;
+        int[] floorTriangles, ceilingTriangles;
    
         int j = 0;
         for(int i = 0; i < mapData.lines.Length; i++)
@@ -167,37 +162,22 @@ public class MapEditor : EditorWindow
            floorTriangles[i] += wallVerts.Length;
            ceilingTriangles[i] += wallVerts.Length + floorVerts.Length;
         }
-  
-        Vector3[] combinedVerts = new Vector3[wallVerts.Length + floorVerts.Length + ceilingVerts.Length];
-        Array.Copy(wallVerts, combinedVerts, wallVerts.Length);
-        Array.Copy(floorVerts, 0, combinedVerts, wallVerts.Length, floorVerts.Length);
-        Array.Copy(ceilingVerts, 0, combinedVerts, wallVerts.Length + floorVerts.Length, ceilingVerts.Length);
 
-        Vector2[] combinedUVS = new Vector2[wallUVS.Length + floorUVS.Length + ceilingVerts.Length];
-        Array.Copy(wallUVS, combinedUVS, wallUVS.Length);
-        Array.Copy(floorUVS, 0, combinedUVS, wallUVS.Length, floorUVS.Length);
-        Array.Copy(ceilingUVS, 0, combinedUVS, wallUVS.Length + floorUVS.Length, ceilingVerts.Length);
+        List<Vector3> verts = new List<Vector3>();
+        List<Vector2> uvs = new List<Vector2>();
+        verts.AddRange(wallVerts);
+        verts.AddRange(floorVerts);
+        verts.AddRange(ceilingVerts);
+        uvs.AddRange(wallUVS);
+        uvs.AddRange(floorUVS);
+        uvs.AddRange(ceilingUVS);
 
-        Mesh mesh = new Mesh();
-        mesh.vertices = combinedVerts;
-        mesh.uv = combinedUVS;
-        mesh.subMeshCount = 3;
-        mesh.SetTriangles(wallTriangles, 0, false);
-        mesh.SetTriangles(floorTriangles, 1, false);
-        mesh.SetTriangles(ceilingTriangles, 2, false);
-        mesh.RecalculateNormals();
-        mesh.RecalculateBounds();
-        //mesh.SetTriangles(ceiling_triangles, 2, false);
+        int[][] allTriangles = new int[3][];
+        allTriangles[0] = wallTriangles;
+        allTriangles[1] = ceilingTriangles;
+        allTriangles[2] = floorTriangles;
 
-        Material[] material = new Material[mesh.subMeshCount];
-        for (int i = 0; i < material.Length; i++)
-        {
-            material[i] = new Material(Shader.Find("Diffuse"));
-            material[i].name = "material_" + i;
-            Debug.Log("add material");
-        }
-
-        MeshExporter.MeshToFile(mesh, material, "Map");
+        MeshExporter.MeshToFile(MeshExporter.CreateMesh(verts.ToArray(), uvs.ToArray(), allTriangles), MeshExporter.CreateMaterial(allTriangles.GetLength(0)), "Map");
 
     }
     void LoadGridMap(ref Texture2D gridMap)
@@ -256,7 +236,6 @@ public class MapEditor : EditorWindow
         return inside;
     }
 
- 
     bool ClosestPointOnLine (Vector2 startPoint, Vector2 endPoint, Vector2 mousePoint, float maxDistance = 5.0f)
     {
         Vector2 sM = mousePoint - startPoint;
