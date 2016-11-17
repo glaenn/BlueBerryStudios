@@ -84,7 +84,7 @@ public class MapEditor : EditorWindow
    /// <param name="end"></param>
     void DrawNodeStraight(Vector2 start, Vector2 end, Vector2 mPos)
     {
-        if (CheckPointInLine(mPos, start, end))
+        if (ClosestPointOnLine(start + new Vector2(VERT_SIZE / 2, VERT_SIZE / 2), end + new Vector2(VERT_SIZE / 2, VERT_SIZE / 2), mPos))
             Handles.color = Color.blue;
 
         Handles.DrawLine(start + new Vector2(VERT_SIZE/2, VERT_SIZE/2), end + new Vector2(VERT_SIZE/2, VERT_SIZE/2));
@@ -296,5 +296,23 @@ public class MapEditor : EditorWindow
         bool lineContains = point.y - selectionHelper <= calculatedY && calculatedY <= point.y + selectionHelper;
 
         return lineContains;
+    }
+
+    bool ClosestPointOnLine (Vector2 startPoint, Vector2 endPoint, Vector2 mousePoint, float maxDistance = 5.0f)
+    {
+        Vector2 sM = mousePoint - startPoint;
+        Vector2 sE = endPoint - startPoint;
+
+        Vector2 distance = Vector2.Dot(sM, sE) / Vector2.Dot(sE, sE) * sE;
+
+        //Handles.DrawLine(startPoint, startPoint + distance);
+
+        if (Vector2.Dot(sE, distance) < 0 || sE.magnitude < distance.magnitude)
+            return false;
+
+        if (Vector2.Distance(mousePoint, startPoint + distance) < maxDistance)
+            return true;
+
+        return false;
     }
 }
