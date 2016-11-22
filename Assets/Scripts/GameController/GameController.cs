@@ -2,10 +2,11 @@
 
 public class GameController : MonoBehaviour
 {
+    //Localdata
     public static GameController instance = null;              //Static instance of GameManager which allows it to be accessed by any other script.
     private float mouseSensitivity = 0.5f;
-    private float musicVolyme = 1.0f;                      
-    private float soundVolyme = 1.0f;                      
+    private float musicVolyme = 1.0f;
+    private float soundVolyme = 1.0f;                 
 
     public float MouseSensitivity                     
     {

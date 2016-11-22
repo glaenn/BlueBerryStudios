@@ -1,21 +1,20 @@
-﻿using System;
-using UnityEngine;
-[RequireComponent(typeof(PlayerMotor))]
-public class PlayerController : MonoBehaviour
+﻿using UnityEngine;
+
+public class PlayerLocalController : MonoBehaviour
 {
-    [SerializeField]
-    private float speed = 5.0f;
-    [SerializeField]
-    private float mouseSensitivity = 1.0f;
-
     private PlayerMotor playerMotor;
+    private PlayerNetworkData playerNetworkData;
+    private float mouseSensitivity = 1.0f; //The player own settings for mouse sensitivity
 
-    void Start()
+    // Use this for initialization
+    void Start ()
     {
         playerMotor = GetComponent<PlayerMotor>();
+        playerNetworkData = GetComponent<PlayerNetworkData>(); 
     }
 	
-    void Update()
+	// Update is called once per frame
+	void Update ()
     {
         //Calculate movement as 3D vector
         float xMove = Input.GetAxisRaw("Horizontal");
@@ -24,7 +23,7 @@ public class PlayerController : MonoBehaviour
         Vector3 moveHorizontal = transform.right * xMove;
         Vector3 moveVertical = transform.forward * zMove;
 
-        Vector3 velocity = (moveHorizontal + moveVertical).normalized * speed;
+        Vector3 velocity = (moveHorizontal + moveVertical).normalized;
 
         playerMotor.SetVelocity(velocity);
 
@@ -37,12 +36,17 @@ public class PlayerController : MonoBehaviour
         playerMotor.SetCameraRotation(xRot);
 
         //Jump
-        if(Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump"))
         {
             playerMotor.PerformJump();
         }
+
+        if (Input.GetKeyDown(KeyCode.Keypad1))
+            playerNetworkData.ChangeScene(2);
+        else if (Input.GetKeyDown(KeyCode.Keypad2))
+            playerNetworkData.ChangeScene(3);
+
     }
 
-
-
+ 
 }

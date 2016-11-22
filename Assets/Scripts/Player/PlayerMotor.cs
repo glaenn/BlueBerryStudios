@@ -8,6 +8,8 @@ public class PlayerMotor : MonoBehaviour
     private float currentCameraRotationX = 0.0f;
     private Rigidbody rb;
 
+    [SerializeField] private float speed = 5.0f;
+
     [SerializeField] private Camera cam;
     [SerializeField] private Animator animator;
 
@@ -24,7 +26,7 @@ public class PlayerMotor : MonoBehaviour
 
     public void SetVelocity(Vector3 velocity)
     {
-        this.velocity = velocity;
+        this.velocity = velocity*speed;
     }
 
     public void SetCharacterRotation(float characterRotation)
@@ -76,6 +78,4 @@ public class PlayerMotor : MonoBehaviour
             cam.transform.localEulerAngles = new Vector3(currentCameraRotationX, 0f, 0f);
         }
     }
-
-   
 }

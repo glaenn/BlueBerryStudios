@@ -4,7 +4,7 @@ using System.Collections;
 
 public class GameSceneFixer : EditorWindow
 {
-
+    /*
     [MenuItem("MyTools/Game Scene Fixer")]
     public static void ShowWindow()
     {
@@ -33,5 +33,6 @@ public class GameSceneFixer : EditorWindow
             }  
         }
     }
+    */
 
 }

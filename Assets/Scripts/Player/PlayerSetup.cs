@@ -1,33 +1,18 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 
-[RequireComponent(typeof(PlayerController))]
+[RequireComponent(typeof(PlayerLocalController))]
+
 public class PlayerSetup : NetworkBehaviour
 {
+    [SerializeField] GameObject playerCamera;
 
-    [SerializeField]
-    Behaviour[] componentsToDisable;
-
-    // Update is called once per frame
-    void Start()
+    // Only called on localplyrt
+    public override void OnStartLocalPlayer()
     {
-        if (!isLocalPlayer)
-        {
-            DisableComponents();
-        }
-        else
-        {
-            Camera.main.gameObject.SetActive(false);
-
-        }
-    }
-
-    void DisableComponents()
-    {
-        for (int i = 0; i < componentsToDisable.Length; i++)
-        {
-            componentsToDisable[i].enabled = false;
-        }
+        GetComponent<PlayerLocalController>().enabled = true;
+        playerCamera.SetActive(true);
+        base.OnStartLocalPlayer();
     }
 
 
