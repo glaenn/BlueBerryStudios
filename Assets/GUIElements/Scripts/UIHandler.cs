@@ -1,63 +1,21 @@
-﻿//using UnityEngine;
-//using System.Collections;
-//using UnityEngine.UI;
+﻿using UnityEngine;
+using System.Collections;
+using UnityEngine.UI;
 
-//[RequireComponent(typeof(Renderer))]
-//public class UIHandler : MonoBehaviour
-//{
+/*
+Script to handle all inputs with mouse inside menys
+*/
 
-//    [SerializeField] private GameObject trashCan;
-//    [SerializeField] private GameObject playButton;
+public class UIHandler : MonoBehaviour
+{
+   void LeftMouseClick()
+    {
+        // Do not write here
+    }
 
-//    [SerializeField] private bool isVisible = false;
+    void JoystickButtonX()
+    {
+        // Do not write here
+    }
 
-//    public Renderer rend;
-
-//    void Start()
-//    {
-//        rend = GetComponent<Renderer>();
-//        //Debug.Log("Inside interaction area");
-//        playButton = GameObject.FindGameObjectWithTag("PlayButton");
-//        trashCan = GameObject.FindGameObjectWithTag("TrashCan");
-//    }
-
-//    void OnMouseEnter()
-//    {
-//        Debug.Log("Mouse is over!");
-//        isVisible = false;
-//    }
-
-//    //void FixedUpdate()
-//    //{
-//    //    if(isVisible)
-//    //    {
-//    //        Debug.Log("Is active");
-//    //        trashCan.SetActive(true);
-//    //        playButton.SetActive(true);
-             
-//    //    }
-
-//    //    else
-//    //    {
-//    //        //Debug.Log("Is not active");
-//    //        trashCan.SetActive(false);
-//    //        playButton.SetActive(false);
-//    //    }
-//    //}
-
-//    //void OnMouseExit()
-//    //{
-//    //    isVisible = false;
-//    //}
-
-
-
-
-
-
-
-
-
-
-
-//}
+}

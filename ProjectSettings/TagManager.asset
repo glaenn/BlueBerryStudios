@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Fire
   - GameNetworkManager
+  - PlayButton
+  - TrashCan
+  - InteractionLayout
   layers:
   - Default
   - TransparentFX

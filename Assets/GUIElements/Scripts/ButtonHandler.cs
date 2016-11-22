@@ -2,18 +2,22 @@
 using System.Collections;
 
 public class ButtonHandler : MonoBehaviour {
-    private bool isVisible = false;
+    private bool trashAndPlayVisible = false;
+    private bool interactionLayoutVisible = false;
     private bool insideProfile = false;
     private bool insideTrash = false;
     private bool insidePlay = false;
+    private bool insideInteractionLayout = false;
     [SerializeField] private GameObject trashBin;
     [SerializeField] private GameObject playButton;
+    [SerializeField] private GameObject interactionLayout;
 
-    public bool IsVisible
+    public bool TrashAndPlayVisible
     {
-        get { return isVisible; }
-        set { isVisible = value; }
+        get { return trashAndPlayVisible; }
+        set { trashAndPlayVisible = value; }
     }
+
 
     public bool InsideProfile
     {
@@ -32,11 +36,18 @@ public class ButtonHandler : MonoBehaviour {
         get { return insidePlay; }
         set { insidePlay = value; }
     }
+
+    public bool InsideInteractionLayout
+    {
+        get { return insideInteractionLayout; }
+        set { insideInteractionLayout = value; }
+    }
     // Use this for initialization
     void Start ()
     {
         trashBin = GameObject.FindGameObjectWithTag("TrashCan");
         playButton = GameObject.FindGameObjectWithTag("PlayButton");
+        interactionLayout = GameObject.FindGameObjectWithTag("InteractionLayout");
 	}
 	
 	// Update is called once per frame
@@ -44,24 +55,37 @@ public class ButtonHandler : MonoBehaviour {
     {
         if(InsideProfile || InsideTrash || InsidePlay)
         {
-            isVisible = true;
+            trashAndPlayVisible = true;
         }
 	    if(!InsideProfile && !InsideTrash && !InsidePlay)
         {
-            isVisible = false;
+            trashAndPlayVisible = false;
         }
 
-        if(isVisible)
+        if(trashAndPlayVisible)
         {
             //TODO: find the trashcan and the play button and add them to the script
             trashBin.SetActive(true);
             playButton.SetActive(true);
+           
+
         }
 
         else
         {
             trashBin.SetActive(false);
             playButton.SetActive(false);
+            
+        }
+
+        if(InsidePlay)
+        {
+            interactionLayout.SetActive(true);
+        }
+
+        else
+        {
+            interactionLayout.SetActive(false);
         }
 	}
 }
