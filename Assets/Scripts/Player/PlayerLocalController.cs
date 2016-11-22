@@ -25,15 +25,15 @@ public class PlayerLocalController : MonoBehaviour
 
         Vector3 velocity = (moveHorizontal + moveVertical).normalized;
 
-        playerMotor.SetVelocity(velocity);
+        playerMotor.PerformMovement(velocity);
 
         //Calculate character rotation (turning around)
         float yRot = Input.GetAxisRaw("Mouse X") * mouseSensitivity;
-        playerMotor.SetCharacterRotation(yRot);
 
         //Calculate camera rotation (looking up and down)
         float xRot = Input.GetAxisRaw("Mouse Y") * mouseSensitivity;
-        playerMotor.SetCameraRotation(xRot);
+   
+        playerMotor.PerformRotation(yRot, xRot);
 
         //Jump
         if (Input.GetButtonDown("Jump"))

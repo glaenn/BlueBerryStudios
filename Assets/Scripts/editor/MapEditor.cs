@@ -25,7 +25,7 @@ public class MapEditor : EditorWindow
     [MenuItem("MyTools/Map editor")]
     static void ShowEditor()
     {
-        MapEditor editor = EditorWindow.GetWindow<MapEditor>();
+        GetWindow<MapEditor>();
     }
 
     public void Awake()

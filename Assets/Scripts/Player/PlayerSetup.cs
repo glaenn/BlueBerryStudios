@@ -15,5 +15,9 @@ public class PlayerSetup : NetworkBehaviour
         base.OnStartLocalPlayer();
     }
 
+    void Start()
+    {
+        GetComponent<NetworkAnimator>().SetParameterAutoSend(0, true);
+    }
 
 }

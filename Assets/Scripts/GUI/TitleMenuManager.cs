@@ -34,7 +34,10 @@ public class TitleMenuManager : MonoBehaviour
 
     public void JoinGame()
     {
-        networkManager.networkAddress = IPAddress.text;
+
+        //IPAddress.text = "localhost";
+
+        networkManager.networkAddress = "localhost";
         networkManager.StartClient();
     }
 

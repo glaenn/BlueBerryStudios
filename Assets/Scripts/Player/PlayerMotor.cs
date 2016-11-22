@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerMotor : MonoBehaviour
+public class PlayerMotor : NetworkBehaviour
 {
-    private Vector3 velocity;
-    private float characterRotation;
-    private float cameraRotationX = 0.0f;
     private float currentCameraRotationX = 0.0f;
     private Rigidbody rb;
+    [SyncVar]private Vector3 velocity;
 
     [SerializeField] private float speed = 5.0f;
+    [SerializeField] private float currentRunSpeed = 0.0f;
 
     [SerializeField] private Camera cam;
     [SerializeField] private Animator animator;
@@ -24,47 +24,47 @@ public class PlayerMotor : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    public void SetVelocity(Vector3 velocity)
-    {
-        this.velocity = velocity*speed;
-    }
-
-    public void SetCharacterRotation(float characterRotation)
-    {
-        this.characterRotation = characterRotation;
-    }
-
-    public void SetCameraRotation(float cameraRotationX)
-    {
-        this.cameraRotationX = cameraRotationX;
-    }
-
     public void PerformJump()
     {
-        if(Physics.Raycast(transform.position,Vector3.down, 1.0f))
+        if(Physics.Raycast(transform.position,Vector3.down, 1.2f))
             rb.AddForce(Vector3.up * JUMPFORCE);
+    }
+
+    public void PerformMovement(Vector3 velocity)
+    {
+        CmdSetVelocity(velocity);
+
+        if (velocity != Vector3.zero)
+        {
+            rb.MovePosition(rb.position + velocity * speed * Time.deltaTime);
+            
+        }
+    }
+
+
+    [Command] //This function will run on the server when it is called on the client.
+    public void CmdSetVelocity(Vector3 velocity)
+    {
+        this.velocity = velocity;
+
     }
 
     void Update()
     {
-        PerformMovement();
-        PerformRotation();  
-    }
-	
-    private void PerformMovement()
-    {
         if (velocity != Vector3.zero)
         {
-            rb.MovePosition(rb.position + velocity * Time.deltaTime);
-            animator.SetFloat("MovingSpeed", 1);
+            currentRunSpeed += Time.deltaTime * 3;
         }
         else
         {
-            animator.SetFloat("MovingSpeed", 0);
+            currentRunSpeed -= Time.deltaTime * 3;
         }
+ 
+        currentRunSpeed = Mathf.Clamp(currentRunSpeed, 0, 1);
+        animator.SetFloat("MovingSpeed", currentRunSpeed);
     }
 
-    private void PerformRotation()
+    public void PerformRotation(float characterRotation, float cameraRotationX)
     {
         rb.MoveRotation(rb.rotation * Quaternion.Euler(new Vector3(0.0f, characterRotation, 0.0f)));
 
@@ -76,6 +76,10 @@ public class PlayerMotor : MonoBehaviour
 
             //Apply our rotation to the transform of our camera
             cam.transform.localEulerAngles = new Vector3(currentCameraRotationX, 0f, 0f);
+
+            //cam.transform.localRotation = Quaternion.Slerp(camera.localRotation, m_CameraTargetRot,
+            //        smoothTime * Time.deltaTime);
+
         }
     }
 }

@@ -104,7 +104,6 @@ GameObject:
   - 114: {fileID: 114000012639082128}
   - 114: {fileID: 114000011655007476}
   - 95: {fileID: 95000014147205714}
-  - 114: {fileID: 114000014025712212}
   m_Layer: 0
   m_Name: ClientController
   m_TagString: Untagged
@@ -2044,7 +2043,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ef01f0fba1722348b0c4daa79ce2fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentScene: 0
   playerCharacter: {fileID: 1000010462431758}
 --- !u!114 &114000012301566052
 MonoBehaviour:
@@ -2102,12 +2100,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TransformSyncMode: 3
-  m_SendInterval: 0.1
+  m_SendInterval: 0.11111111
   m_SyncRotationAxis: 2
   m_RotationSyncCompression: 0
   m_SyncSpin: 0
   m_MovementTheshold: 0.001
-  m_SnapThreshold: 5
+  m_SnapThreshold: 10
   m_InterpolateRotation: 10
   m_InterpolateMovement: 1
 --- !u!114 &114000013516767480
@@ -2122,6 +2120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  currentRunSpeed: 0
   cam: {fileID: 20000010304662616}
   animator: {fileID: 95000014147205714}
 --- !u!114 &114000013740329142
@@ -2135,26 +2134,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a78a477cff50c04582c35e63284a949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentScene: 0
---- !u!114 &114000014025712212
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000010420293218}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1590678366, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Animator: {fileID: 95000014147205714}
-  m_ParameterSendBits: 1
-  param0: 
-  param1: 
-  param2: 
-  param3: 
-  param4: 
-  param5: 
 --- !u!124 &124000011538171160
 Behaviour:
   m_ObjectHideFlags: 1
