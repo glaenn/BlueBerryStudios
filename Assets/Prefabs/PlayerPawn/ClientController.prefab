@@ -637,6 +637,7 @@ GameObject:
   - 124: {fileID: 124000011538171160}
   - 92: {fileID: 92000010487343620}
   - 81: {fileID: 81000012528868810}
+  - 114: {fileID: 114000011139178714}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -2032,6 +2033,17 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114000011139178714
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012511439114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccf40446052483247af409b759ca1cd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114000011655007476
 MonoBehaviour:
   m_ObjectHideFlags: 1
