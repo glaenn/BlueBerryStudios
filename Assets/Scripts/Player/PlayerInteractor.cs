@@ -32,7 +32,7 @@ public class PlayerInteractor : MonoBehaviour
 
             if (Input.GetButtonDown("Use"))
             {
-                new_interactive.Use();
+                new_interactive.Use(transform.parent.gameObject);
             }
 
         }

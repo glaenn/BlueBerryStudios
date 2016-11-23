@@ -1,14 +1,10 @@
-﻿public class InteractiveDoor : Interactive
+﻿using UnityEngine;
+
+public class InteractiveDoor : Interactive
 {
-
     // Use this for initialization
-    public override void Use()
+    public override void Use(GameObject player = null)
     {
-        base.Use();
-    }
-
-    public override string GetName()
-    {
-        return objectName;
+       
     }
 }

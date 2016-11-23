@@ -558,6 +558,16 @@ Prefab:
       propertyPath: m_LogLevel
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114000011561788336, guid: 812c50406342c4f4299a94e6065f02c6,
+        type: 2}
+      propertyPath: m_PlayerSpawnMethod
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000011561788336, guid: 812c50406342c4f4299a94e6065f02c6,
+        type: 2}
+      propertyPath: m_SpawnPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 812c50406342c4f4299a94e6065f02c6, type: 2}
   m_IsPrefabParent: 0

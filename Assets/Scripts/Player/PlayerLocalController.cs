@@ -42,9 +42,9 @@ public class PlayerLocalController : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad1))
-            playerNetworkData.ChangeScene(2);
+            playerNetworkData.LoadScene(2);
         else if (Input.GetKeyDown(KeyCode.Keypad2))
-            playerNetworkData.ChangeScene(3);
+            playerNetworkData.LoadScene(3);
 
     }
 

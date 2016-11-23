@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Fire
   - GameNetworkManager
+  - SpawnPoint
   layers:
   - Default
   - TransparentFX

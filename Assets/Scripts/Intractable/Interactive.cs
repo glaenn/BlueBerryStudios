@@ -4,12 +4,12 @@ public class Interactive : MonoBehaviour
 {
     [SerializeField] protected string objectName;
 
-	public virtual void Use ()
+	public virtual void Use (GameObject player = null)
     {
-        Debug.Log("Use");
+        //Do nothing
 	}
 
-    public virtual string GetName()
+    public string GetName()
     {
         return objectName;
     }
