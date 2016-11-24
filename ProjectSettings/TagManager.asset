@@ -4,9 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Fire
+  - InGameUI
   - GameNetworkManager
   - SpawnPoint
+  - PlayerNetworkManager
   layers:
   - Default
   - TransparentFX

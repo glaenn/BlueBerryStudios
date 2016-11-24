@@ -4,7 +4,7 @@ public class PlayerLocalController : MonoBehaviour
 {
     private PlayerMotor playerMotor;
     private PlayerNetworkData playerNetworkData;
-    private float mouseSensitivity = 1.0f; //The player own settings for mouse sensitivity
+    private float mouseSensitivity = 2.5f; //The player own settings for mouse sensitivity
 
     // Use this for initialization
     void Start ()
@@ -40,11 +40,6 @@ public class PlayerLocalController : MonoBehaviour
         {
             playerMotor.PerformJump();
         }
-
-        if (Input.GetKeyDown(KeyCode.Keypad1))
-            playerNetworkData.LoadScene(2);
-        else if (Input.GetKeyDown(KeyCode.Keypad2))
-            playerNetworkData.LoadScene(3);
 
     }
 

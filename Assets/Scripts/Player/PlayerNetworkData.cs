@@ -9,8 +9,9 @@ using UnityEngine.SceneManagement;
 public class PlayerNetworkData : NetworkBehaviour
 {
     public static PlayerNetworkData localPlayerInstance = null;
-    [SyncVar] private int currentScene = 2; //SyncVar makes sure that the server updates the variable to the clients
-    //private GameController gameController;
+    [SyncVar] private string currentScene = "Map01"; //SyncVar makes sure that the server updates the variable to the clients
+    private HudGUIManager hudGUIManager;
+    private string storedDestinationSpawnName;
     [SerializeField] private GameObject playerCharacter;
     private CapsuleCollider playerCollider;
     private Rigidbody rigidBody;
@@ -25,17 +26,20 @@ public class PlayerNetworkData : NetworkBehaviour
         {
             localPlayerInstance = this;
             SceneManager.sceneLoaded += LoadSceneFinished;
-            LoadScene(currentScene); //Set start Scene
+            LoadScene(currentScene, "FirstSpawn"); //Set start Scene
+            hudGUIManager = GameObject.FindGameObjectWithTag("InGameUI").GetComponent<HudGUIManager>();
         }
     }
 	
     //Locally changes the scene for the player
-    public void LoadScene(int scene)
+    public void LoadScene(string scene, string destinationSpawnName)
     {
         for (int i = 2; i < SceneManager.sceneCountInBuildSettings; i++)
         {
             SceneManager.UnloadScene(i);
         }
+
+        storedDestinationSpawnName = destinationSpawnName;
 
         SceneManager.LoadScene(scene, LoadSceneMode.Additive);
         CmdSetPlayerScene(scene);     
@@ -43,31 +47,19 @@ public class PlayerNetworkData : NetworkBehaviour
 
     public void LoadSceneFinished(Scene scene, LoadSceneMode loadSceneMode)
     {
-        Transform spawnPoint = GameObject.FindGameObjectWithTag("SpawnPoint").transform;
-        
-        transform.position = new Vector3(   spawnPoint.position.x + Random.Range(-spawnPoint.localScale.x / 2, spawnPoint.localScale.x / 2),
+        GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
+
+        foreach(GameObject spawn in spawnPoints)
+        {
+            if(spawn.name == storedDestinationSpawnName)
+            {
+                Transform spawnPoint = spawn.transform;
+                transform.position = new Vector3(spawnPoint.position.x + Random.Range(-spawnPoint.localScale.x / 2, spawnPoint.localScale.x / 2),
                                             spawnPoint.position.y,
                                             spawnPoint.position.z + Random.Range(-spawnPoint.localScale.z / 2, spawnPoint.localScale.z / 2));
-
-        transform.rotation = spawnPoint.rotation;
-
-        Debug.Log(transform.position);
-
-        /*
-        try
-        {
-            foreach (GameObject point in spawnPoint)
-            {
-
-
+                break;
             }
         }
-        catch
-        {
-            Debug.LogError("There is no spawn point in " + scene.name);
-        }
-        */
-
     }
 
     public void LateUpdate()
@@ -77,14 +69,13 @@ public class PlayerNetworkData : NetworkBehaviour
 
 
     [Command] //This function will run on the server when it is called on the client.
-    public void CmdSetPlayerScene(int scene)
+    public void CmdSetPlayerScene(string scene)
     {
         currentScene = scene;
-        //RpcChangeScene(scene);
     }
 
     [ClientRpc] //This function will run on all Clients, including the one running the server
-    void RpcChangeScene(int scene)
+    void RpcChangeScene(string scene)
     {
         currentScene = scene;
     }
