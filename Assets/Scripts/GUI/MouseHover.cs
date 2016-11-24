@@ -27,9 +27,13 @@ public class MouseHover : MonoBehaviour
         foreach (GameObject selectObject in selectGameObject)
         {
             selectObject.SetActive(isClicked);
+            Debug.Log("MJAU ");            
         }
+        Debug.Log("Not clicked anymore " + selectGameObject);
 
     }
+
+    
 
     
 
