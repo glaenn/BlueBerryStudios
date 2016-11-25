@@ -15,12 +15,12 @@
 //		5. Pass it to Poly2Mesh.CreateMesh, or Poly2Mesh.CreateGameObject.
 
 using UnityEngine;
-using UnityEngine.Events;
 using System.Collections.Generic;
 using Poly2Tri;
 using System.Linq;
 
-public static class Poly2Mesh {
+public static class Poly2Mesh
+{
 
 	// Polygon: defines the input to the triangulation algorithm.
 	public class Polygon {
@@ -288,22 +288,6 @@ public static class Poly2Mesh {
 		return msh;
 	}
 
-	/// <summary>
-	/// Create a GameObject from the given polygon.  The resulting object will
-	/// have a Mesh, a MeshFilter, and a MeshRenderer.  It will be all ready
-	/// to display (though you may want to add your own material).
-	/// </summary>
-	/// <returns>The newly created game object.</returns>
-	/// <param name="polygon">Polygon you want to triangulate.</param>
-	/// <param name="name">Name to assign to the new GameObject.</param>
-	public static GameObject CreateGameObject(Polygon polygon, string name="Polygon") {
-		GameObject gob = new GameObject();
-		gob.name = name;
-		gob.AddComponent(typeof(MeshRenderer));
-		MeshFilter filter = gob.AddComponent(typeof(MeshFilter)) as MeshFilter;
-		filter.mesh = CreateMesh(polygon);
-		return gob;
-	}
 
     public static int[] ReturnTriangles(ref Vector3[] points, Vector3 dir)
     {

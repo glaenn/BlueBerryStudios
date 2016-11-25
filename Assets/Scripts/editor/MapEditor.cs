@@ -54,7 +54,7 @@ public class MapEditor : EditorWindow
 
         Event e = Event.current;
 
-        //if selectID is higher than -1 then something is currently selected
+        //if selectID is higher than -1, then something is currently selected
         //Then we shouldn't allow for any new type to be selected at all
         if (selectID == -1)
             typeSelected = TypeSelected.none;
@@ -62,16 +62,16 @@ public class MapEditor : EditorWindow
         //Paint vertices
         for (int i = 0; i < mapData.verts.Length; i++)
         {
-            DrawVert(i, e.mousePosition, e.type);
+            DrawVert(i, e.mousePosition, e.type == EventType.mouseDown);
         }
 
         //Paint lines
         for (int i = 0; i < mapData.lines.Length; i++)
         {
-            DrawNodeStraight(i, mapData.verts[mapData.lines[i].startVert], mapData.verts[mapData.lines[i].endVert], e.mousePosition, e.type);
+            DrawNodeStraight(i, mapData.verts[mapData.lines[i].startVert], mapData.verts[mapData.lines[i].endVert], e.mousePosition, e.type == EventType.mouseDown);
         }
 
-        if (e.type == EventType.MouseDrag && selectID != 1)
+        if (e.type == EventType.MouseDrag && selectID != -1)
         {
             if (typeSelected == TypeSelected.Vertex)
             {
@@ -94,7 +94,7 @@ public class MapEditor : EditorWindow
    /// </summary>
    /// <param name="start"></param>
    /// <param name="end"></param>
-    void DrawNodeStraight(int lineID, Vector2 start, Vector2 end, Vector2 mPos, EventType e)
+    void DrawNodeStraight(int lineID, Vector2 start, Vector2 end, Vector2 mPos, bool inputAction)
     {
         Handles.color = Color.white;
 
@@ -105,7 +105,7 @@ public class MapEditor : EditorWindow
                 typeSelected = TypeSelected.Line;
                 Handles.color = Color.green;
 
-                if (e == EventType.mouseDown)
+                if (inputAction)
                 {
                     selectID = lineID;
                     mousePosSave = mPos;
@@ -123,7 +123,7 @@ public class MapEditor : EditorWindow
         Handles.DrawLine(start + new Vector2(VERT_SIZE/2, VERT_SIZE/2), end + new Vector2(VERT_SIZE/2, VERT_SIZE/2));
   
     }
-    void DrawVert(int vertID, Vector2 mPos, EventType e)
+    void DrawVert(int vertID, Vector2 mPos, bool inputAction)
     {
         GUI.color = Color.white;
 
@@ -134,9 +134,8 @@ public class MapEditor : EditorWindow
                 typeSelected = TypeSelected.Vertex;
                 GUI.color = Color.green;
 
-                if (e == EventType.mouseDown)
+                if (inputAction)
                     selectID = vertID;
-
             }
         }
 
@@ -145,6 +144,8 @@ public class MapEditor : EditorWindow
 
         GUI.Box(new Rect(mapData.verts[vertID], new Vector2(VERT_SIZE, VERT_SIZE)), "");   
     }
+
+ 
     /// <summary>
     /// 
     /// </summary>

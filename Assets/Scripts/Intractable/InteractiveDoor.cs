@@ -8,6 +8,6 @@ public class InteractiveDoor : Interactive
     // Use this for initialization
     public override void Use(GameObject player = null)
     {
-        player.GetComponent<PlayerNetworkData>().LoadScene(destinationRoom, destinationSpawnName);
+        player.GetComponent<PlayerSceneManager>().LoadScene(destinationRoom, destinationSpawnName);
     }
 }

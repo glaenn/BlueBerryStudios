@@ -103,10 +103,11 @@ GameObject:
   - 114: {fileID: 114000012609173334}
   - 114: {fileID: 114000012639082128}
   - 114: {fileID: 114000011655007476}
+  - 114: {fileID: 114000012479561488}
   - 95: {fileID: 95000014147205714}
   m_Layer: 0
   m_Name: ClientController
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2055,7 +2056,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ef01f0fba1722348b0c4daa79ce2fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCharacter: {fileID: 1000010462431758}
 --- !u!114 &114000012301566052
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2068,6 +2068,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 1000012511439114}
+--- !u!114 &114000012479561488
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010420293218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46cee57c739b54e4abf09c5e699bc534, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCharacter: {fileID: 1000010462431758}
 --- !u!114 &114000012609173334
 MonoBehaviour:
   m_ObjectHideFlags: 1
