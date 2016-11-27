@@ -6,9 +6,12 @@ using System.Collections.Generic;
 public class MapEditor : EditorWindow
 {
     MapData mapData = new MapData();
-    enum TypeSelected { none, Vertex, Line};
-    TypeSelected typeSelected;
+    enum MapDataType { none, Vertex, Line};
+    MapDataType typeHovered;
+    MapDataType typeSelected;
+    int hoverID = -1;
     int selectID = -1;
+    bool isHolding = false;
 
     //Line moving variables
     Vector2 mousePosSave;
@@ -21,11 +24,12 @@ public class MapEditor : EditorWindow
     public string[] editModeName = new string[] { "Vertices\\Lines", "Sector"};
 
     GUIStyle blackBG = new GUIStyle();
+    GUIStyle LightGrayBG = new GUIStyle();
 
     static Rect EDIT_MODE_AREA = new Rect(16.0f, 96.0f, 96.0f, 64.0f);
-    static Rect TOOL_MODE_AREA = new Rect(16.0f, 164.0f, 96.0f, 64.0f);
     static Rect FILE_FUNCTION_AREA = new Rect(128.0f, 16.0f, 128.0f, 32.0f);
-    static Rect WORK_AREA = new Rect(128.0f, 64.0f,  96 * 8, 96 * 8);
+    static Rect WORK_AREA = new Rect(128.0f, 64.0f, 768, 768);
+    static Rect SELCTION_EDIT_AREA = new Rect(896, 64, 256, 768);
     const float VERT_SIZE = 10;
 
     [MenuItem("MyTools/Map editor")]
@@ -40,6 +44,7 @@ public class MapEditor : EditorWindow
         Texture2D gridBG = new Texture2D(128 * 8, 128 * 8);
         LoadGridMap(ref gridBG);
         blackBG.normal.background = CreateColorTexture(1, 1, new Color(0.3f, 0.3f, 0.32f, 1.0f));
+        LightGrayBG.normal.background = CreateColorTexture(1, 1, new Color(0.9f, 0.9f, 0.9f, 1.0f));
     } 
 
     void OnGUI()
@@ -49,110 +54,159 @@ public class MapEditor : EditorWindow
         if (GUI.Button(FILE_FUNCTION_AREA, "Export map"))
             ExportMesh();
 
+        GUI.BeginGroup(SELCTION_EDIT_AREA, LightGrayBG);
+        GUI.EndGroup();
+
         GUI.BeginGroup(WORK_AREA, blackBG);
         GUI.EndGroup();
 
         Event e = Event.current;
 
+
         //if selectID is higher than -1, then something is currently selected
         //Then we shouldn't allow for any new type to be selected at all
-        if (selectID == -1)
-            typeSelected = TypeSelected.none;
+        typeHovered = MapDataType.none;
+        hoverID = -1;
 
         //Paint vertices
         for (int i = 0; i < mapData.verts.Count; i++)
         {
-            DrawVert(i, e.mousePosition, e.type == EventType.mouseDown);
+            DrawVert(i, e.mousePosition);
         }
 
         //Paint lines
         for (int i = 0; i < mapData.lines.Count; i++)
         {
-            DrawNodeStraight(i, mapData.verts[mapData.lines[i].startVert], mapData.verts[mapData.lines[i].endVert], e.mousePosition, e.type == EventType.mouseDown);
+           DrawNodeStraight(i, mapData.verts[mapData.lines[i].startVert], mapData.verts[mapData.lines[i].endVert], e.mousePosition);
         }
 
-        if (e.type == EventType.MouseDrag && selectID != -1)
+        Repaint();
+
+ 
+        //If we are not in the work area. Then the followin stuff shouldn't happen.
+        if (!WORK_AREA.Contains(e.mousePosition))
         {
-            if (typeSelected == TypeSelected.Vertex)
+            isHolding = false;
+            return;
+        }
+
+        if(e.type == EventType.mouseDown && e.button == 0)
+        {
+            if(hoverID != -1)
+            {
+                typeSelected = typeHovered;
+                selectID = hoverID;
+                Debug.Log("Mousedown - isholding true");
+                isHolding = true;
+
+                if(typeSelected == MapDataType.Line)
+                {
+                    mousePosSave = e.mousePosition;
+                    vertex1Save = mapData.verts[mapData.lines[selectID].startVert];
+                    vertex2Save = mapData.verts[mapData.lines[selectID].endVert];
+                }
+            }
+        }
+
+        else if (e.type == EventType.keyDown && typeSelected == MapDataType.Vertex && e.keyCode == KeyCode.Delete)
+        {
+            isHolding = false;
+            mapData.RemoveVertex(selectID);
+            selectID = -1;
+            typeSelected = MapDataType.none;
+        }
+
+        else if (e.type == EventType.MouseDrag && e.button == 0 && selectID != -1)
+        {
+            if (typeSelected == MapDataType.Vertex)
             {
                 mapData.verts[selectID] = e.mousePosition;
             }
-            else if (typeSelected == TypeSelected.Line)
+            else if (typeSelected == MapDataType.Line)
             {
                 mapData.verts[mapData.lines[selectID].startVert] = vertex1Save - (mousePosSave - e.mousePosition);
                 mapData.verts[mapData.lines[selectID].endVert] = vertex2Save - (mousePosSave - e.mousePosition);
             }
         }
-        else if (e.type == EventType.mouseDown && e.button == 1 && e.isMouse)
+        else if (e.type == EventType.mouseDown && e.button == 1)
         {
-            if (typeSelected == TypeSelected.Line)
+            if (typeHovered == MapDataType.Line)
             {
-                mapData.AddVertex(e.mousePosition, selectID);
+                mapData.AddVertex(e.mousePosition, hoverID);
             }
         }
-        else if (e.type == EventType.mouseUp)
-            selectID = -1;
+        else if (e.type == EventType.mouseUp && e.button == 0)
+        {
+            isHolding = false;
+        }
 
-        Repaint();
-    }
-
-   /// <summary>
-   /// 
-   /// </summary>
-   /// <param name="start"></param>
-   /// <param name="end"></param>
-    void DrawNodeStraight(int lineID, Vector2 start, Vector2 end, Vector2 mPos, bool inputAction)
+  
+    } 
+    void DrawVert(int vertID, Vector2 mPos)
     {
-        Handles.color = Color.white;
+        if (isHolding && typeSelected != MapDataType.Vertex)
+            GUI.color = Color.white;
+        else if (isHolding && selectID != vertID && typeSelected == MapDataType.Vertex)
+            GUI.color = Color.white;
+        else if (isHolding && selectID == vertID && typeSelected == MapDataType.Vertex)
+            GUI.color = Color.yellow;
+        else if (!isHolding && selectID == vertID && typeSelected == MapDataType.Vertex)
+        {
+            if (new Rect(mapData.verts[vertID].x, mapData.verts[vertID].y, VERT_SIZE, VERT_SIZE).Contains(mPos))
+            {
+                GUI.color = Color.blue;
+                typeHovered = MapDataType.Vertex;
+                hoverID = vertID;
+            }
+            else
+                GUI.color = Color.cyan;
+        }
+        else if (typeHovered == MapDataType.none && new Rect(mapData.verts[vertID].x, mapData.verts[vertID].y, VERT_SIZE, VERT_SIZE).Contains(mPos))
+        {
+            GUI.color = Color.green;
+            typeHovered = MapDataType.Vertex;
+            hoverID = vertID;
+        }
+        else
+            GUI.color = Color.white;
 
-        if (typeSelected == TypeSelected.none && selectID == -1 && editMode == 0)
+        GUI.Box(new Rect(mapData.verts[vertID], new Vector2(VERT_SIZE, VERT_SIZE)), "");
+    }
+    void DrawNodeStraight(int lineID, Vector2 start, Vector2 end, Vector2 mPos)
+    {
+        if (isHolding && typeSelected != MapDataType.Line)
+            Handles.color = Color.white;
+        else if (isHolding && selectID != lineID && typeSelected == MapDataType.Line)
+            Handles.color = Color.white;
+        else if (isHolding && selectID == lineID && typeSelected == MapDataType.Line)
+        {
+            Handles.color = Color.yellow;
+        }
+        else if (!isHolding && selectID == lineID && typeSelected == MapDataType.Line)
         {
             if (ClosestPointOnLine(start + new Vector2(VERT_SIZE / 2, VERT_SIZE / 2), end + new Vector2(VERT_SIZE / 2, VERT_SIZE / 2), mPos))
             {
-                typeSelected = TypeSelected.Line;
-                Handles.color = Color.green;
-
-                if (inputAction)
-                {
-                    selectID = lineID;
-                    mousePosSave = mPos;
-                    vertex1Save = mapData.verts[mapData.lines[selectID].startVert];
-                    vertex2Save = mapData.verts[mapData.lines[selectID].endVert];
-                }
-                
-
+                Handles.color = Color.blue;
+                typeHovered = MapDataType.Line;
+                hoverID = lineID;
             }
+            else
+                Handles.color = Color.cyan;
+            
         }
-        if (typeSelected == TypeSelected.Line && selectID == lineID)
-            Handles.color = Color.blue;
- 
 
-        Handles.DrawLine(start + new Vector2(VERT_SIZE/2, VERT_SIZE/2), end + new Vector2(VERT_SIZE/2, VERT_SIZE/2));
-  
-    }
-    void DrawVert(int vertID, Vector2 mPos, bool inputAction)
-    {
-        GUI.color = Color.white;
-
-        if (typeSelected == TypeSelected.none && selectID == -1 && editMode == 0)
+        else if (typeHovered == MapDataType.none && ClosestPointOnLine(start + new Vector2(VERT_SIZE / 2, VERT_SIZE / 2), end + new Vector2(VERT_SIZE / 2, VERT_SIZE / 2), mPos))
         {
-            if (new Rect(mapData.verts[vertID].x, mapData.verts[vertID].y,VERT_SIZE, VERT_SIZE).Contains(mPos))
-            {   
-                typeSelected = TypeSelected.Vertex;
-                GUI.color = Color.green;
-
-                if (inputAction)
-                    selectID = vertID;
-            }
+            Handles.color = Color.green;
+            typeHovered = MapDataType.Line;
+            hoverID = lineID;
         }
+        else
+            Handles.color = Color.white;
 
-        if(typeSelected == TypeSelected.Vertex && selectID == vertID)
-            GUI.color = Color.blue;
-
-        GUI.Box(new Rect(mapData.verts[vertID], new Vector2(VERT_SIZE, VERT_SIZE)), "");   
+        Handles.DrawLine(start + new Vector2(VERT_SIZE / 2, VERT_SIZE / 2), end + new Vector2(VERT_SIZE / 2, VERT_SIZE / 2));
     }
 
- 
     /// <summary>
     /// 
     /// </summary>

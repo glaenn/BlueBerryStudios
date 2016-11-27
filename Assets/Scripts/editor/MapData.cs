@@ -52,6 +52,12 @@ public class MapData
         BuildLines();
     }
 
+    public void RemoveVertex(int pointID)
+    {
+        verts.RemoveAt(pointID);
+        BuildLines();
+    }
+
     private void BuildLines()
     {
         lines.Clear();
