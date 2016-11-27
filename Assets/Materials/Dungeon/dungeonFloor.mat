@@ -268,7 +268,7 @@ Material:
       second: 0.273
     - first:
         name: _Glossiness
-      second: 0.487
+      second: 0.691
     - first:
         name: _GlossyReflections
       second: 0
@@ -286,7 +286,7 @@ Material:
       second: 1
     - first:
         name: _Metallic
-      second: 0.772
+      second: 0.162
     - first:
         name: _Mode
       second: 0

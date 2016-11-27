@@ -36,7 +36,7 @@ public class MapEditor : EditorWindow
 
     public void Awake()
     {
-        mapData.InitiateBox(new Vector2(200, 200), new Vector2(300, 300));
+        mapData.CreateSector(new Vector2(200, 200), new Vector2(300, 300));
         Texture2D gridBG = new Texture2D(128 * 8, 128 * 8);
         LoadGridMap(ref gridBG);
         blackBG.normal.background = CreateColorTexture(1, 1, new Color(0.3f, 0.3f, 0.32f, 1.0f));
@@ -60,13 +60,13 @@ public class MapEditor : EditorWindow
             typeSelected = TypeSelected.none;
 
         //Paint vertices
-        for (int i = 0; i < mapData.verts.Length; i++)
+        for (int i = 0; i < mapData.verts.Count; i++)
         {
             DrawVert(i, e.mousePosition, e.type == EventType.mouseDown);
         }
 
         //Paint lines
-        for (int i = 0; i < mapData.lines.Length; i++)
+        for (int i = 0; i < mapData.lines.Count; i++)
         {
             DrawNodeStraight(i, mapData.verts[mapData.lines[i].startVert], mapData.verts[mapData.lines[i].endVert], e.mousePosition, e.type == EventType.mouseDown);
         }
@@ -81,6 +81,13 @@ public class MapEditor : EditorWindow
             {
                 mapData.verts[mapData.lines[selectID].startVert] = vertex1Save - (mousePosSave - e.mousePosition);
                 mapData.verts[mapData.lines[selectID].endVert] = vertex2Save - (mousePosSave - e.mousePosition);
+            }
+        }
+        else if (e.type == EventType.mouseDown && e.button == 1 && e.isMouse)
+        {
+            if (typeSelected == TypeSelected.Line)
+            {
+                mapData.AddVertex(e.mousePosition, selectID);
             }
         }
         else if (e.type == EventType.mouseUp)
@@ -151,18 +158,18 @@ public class MapEditor : EditorWindow
     /// </summary>
     void ExportMesh()
     {
-        Vector3[] wallVerts = new Vector3[mapData.lines.Length*4];
-        Vector2[] wallUVS = new Vector2[mapData.lines.Length * 4];
-        Vector3[] floorVerts = new Vector3[mapData.lines.Length];
-        Vector2[] floorUVS = new Vector2[mapData.lines.Length];
-        Vector3[] ceilingVerts = new Vector3[mapData.lines.Length];
-        Vector2[] ceilingUVS = new Vector2[mapData.lines.Length];
+        Vector3[] wallVerts = new Vector3[mapData.lines.Count*4];
+        Vector2[] wallUVS = new Vector2[mapData.lines.Count * 4];
+        Vector3[] floorVerts = new Vector3[mapData.lines.Count];
+        Vector2[] floorUVS = new Vector2[mapData.lines.Count];
+        Vector3[] ceilingVerts = new Vector3[mapData.lines.Count];
+        Vector2[] ceilingUVS = new Vector2[mapData.lines.Count];
 
-        int[] wallTriangles = new int[mapData.lines.Length * 6];
+        int[] wallTriangles = new int[mapData.lines.Count * 6];
         int[] floorTriangles, ceilingTriangles;
    
         int j = 0;
-        for(int i = 0; i < mapData.lines.Length; i++)
+        for(int i = 0; i < mapData.lines.Count; i++)
         {
             wallVerts[j] = new Vector3(mapData.verts[mapData.lines[i].startVert].x, 0, mapData.verts[mapData.lines[i].startVert].y) * 0.1f;
             wallUVS[j] = new Vector2(0, 0);
@@ -178,7 +185,7 @@ public class MapEditor : EditorWindow
             j++;
         }
 
-        for (int i = 0; i < mapData.lines.Length; i++)
+        for (int i = 0; i < mapData.lines.Count; i++)
         {
             wallTriangles[(i * 6)] = (i * 4);
             wallTriangles[(i * 6) + 1] = (i * 4) + 2;
@@ -188,7 +195,7 @@ public class MapEditor : EditorWindow
             wallTriangles[(i * 6) + 5] = (i * 4) + 3;
         }
 
-        for (int i = 0; i < mapData.verts.Length; i++)
+        for (int i = 0; i < mapData.verts.Count; i++)
         {
             floorVerts[i] = new Vector3(mapData.verts[i].x, 0, mapData.verts[i].y) * 0.1f;
             ceilingVerts[i] = new Vector3(mapData.verts[i].x, 30, mapData.verts[i].y) * 0.1f;

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class MapData
 {
@@ -10,39 +11,56 @@ public class MapData
         public int floorMaterial;
         public int ceilingMaterial;
     }
-    public struct Lines
+    public struct Line
     {
         public int startVert;
         public int endVert;
         public int wallMaterialUpper;
-        public int WallMaterialMiddle;
-        public int WallMaterialLower;
+        public int wallMaterialMiddle;
+        public int wallMaterialLower;
+
+        public Line (int startVert, int endVert)
+        {
+            this.startVert = startVert;
+            this.endVert = endVert;
+
+            wallMaterialUpper = 0;
+            wallMaterialMiddle = 0;
+            wallMaterialLower = 0;
+        }
     }
 
     //MapData
-    public Sector[] sectors;
-    public Vector2[] verts;
-    public Lines[] lines;
+    public List<Sector> sectors = new List<Sector>();
+    public List <Vector2> verts = new List<Vector2>();
+    public List<Line> lines = new List<Line>();
 
-    public void InitiateBox(Vector2 startPoint, Vector2 endPoint)
+    public void CreateSector(Vector2 startPoint, Vector2 endPoint)
     {
-        verts = new Vector2[5];
-        lines = new MapData.Lines[5];
+        verts.Add(new Vector2(startPoint.x, startPoint.y));
+        verts.Add(new Vector2(endPoint.x, startPoint.y));
+        verts.Add(new Vector2(endPoint.x, endPoint.y));
+        verts.Add(new Vector2(startPoint.x, endPoint.y));
 
-        verts[0] = new Vector2(startPoint.x, startPoint.y);
-        verts[1] = new Vector2(endPoint.x, startPoint.y);
-        verts[2] = new Vector2(endPoint.x, endPoint.y);
-        verts[3] = new Vector2(startPoint.x, endPoint.y);
-        verts[4] = new Vector2(startPoint.x, Mathf.Lerp(startPoint.y, endPoint.y, 0.5f));
+        BuildLines();
+    }
 
-        for (int i = 0; i < lines.Length; i++)
+    public void AddVertex(Vector2 point, int lineID)
+    {
+        int placement = lines[lineID].startVert;
+        verts.Insert(placement+1, point);
+        BuildLines();
+    }
+
+    private void BuildLines()
+    {
+        lines.Clear();
+        for (int i = 0; i < verts.Count; i++)
         {
-            lines[i].startVert = i;
-
-            if (i + 1 < verts.Length)
-                lines[i].endVert = i + 1;
+            if (i + 1 < verts.Count)
+                lines.Add(new Line(i, i + 1));
             else
-                lines[i].endVert = 0;
+                lines.Add(new Line(i, 0));
         }
 
     }
