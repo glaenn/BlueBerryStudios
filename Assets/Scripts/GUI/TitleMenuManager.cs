@@ -37,7 +37,7 @@ public class TitleMenuManager : MonoBehaviour
 
         //IPAddress.text = "localhost";
 
-        networkManager.networkAddress = "localhost";
+        networkManager.networkAddress = IPAddress.text;
         networkManager.StartClient();
     }
 
