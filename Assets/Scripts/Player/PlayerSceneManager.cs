@@ -46,7 +46,7 @@ public class PlayerSceneManager : NetworkBehaviour
         playerNetworkData.CmdSetPlayerScene(scene);
     }
 
-    public void LoadSceneFinished(Scene scene, LoadSceneMode loadSceneMode)
+    private void LoadSceneFinished(Scene scene, LoadSceneMode loadSceneMode)
     {
         GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
 
