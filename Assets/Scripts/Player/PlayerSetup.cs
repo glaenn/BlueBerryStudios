@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 
-[RequireComponent(typeof(PlayerLocalController))]
+[RequireComponent(typeof(PlayerInput))]
 
 public class PlayerSetup : NetworkBehaviour
 {
@@ -10,7 +10,7 @@ public class PlayerSetup : NetworkBehaviour
     // Only called on localplyrt
     public override void OnStartLocalPlayer()
     {
-        GetComponent<PlayerLocalController>().enabled = true;
+        GetComponent<PlayerInput>().enabled = true;
         playerCamera.SetActive(true);
         base.OnStartLocalPlayer();
     }

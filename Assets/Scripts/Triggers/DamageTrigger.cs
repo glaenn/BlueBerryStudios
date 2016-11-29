@@ -20,7 +20,7 @@ public class DamageTrigger : MonoBehaviour
 
 	    if(other.gameObject.tag == "Player")
         {
-            other.GetComponent<PlayerNetworkData>().CmdAddPlayerHealth(-damage);
+            other.GetComponent<PlayerNetworkData>().CmdTakeDamage(damage);
         }
 	}
 

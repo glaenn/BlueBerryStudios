@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.SceneManagement;
+using System.Collections;
 /// <summary>
 /// Holds are the player data.
 /// Current Scene
 /// Equipment and inventory
 /// </summary>
+
+
+
 public class PlayerNetworkData : NetworkBehaviour
 {
     public static PlayerNetworkData localPlayerInstance = null;
@@ -45,9 +48,26 @@ public class PlayerNetworkData : NetworkBehaviour
 
 
     [Command] //This function will run on the server when it is called on the client.
-    public void CmdAddPlayerHealth(int amount)
+    public void CmdTakeDamage(int damage)
     {
-        playerCurrentHealth = Mathf.Clamp(playerCurrentHealth + amount, 0, 100);
+        playerCurrentHealth = Mathf.Clamp(playerCurrentHealth - damage, 0, 100);
+    }
+
+    [Command] //This function will run on the server when it is called on the client.
+    public void CmdRestoreHealth(int health)
+    {
+        playerCurrentHealth = Mathf.Clamp(playerCurrentHealth + health, 0, 100);
+    }
+
+    [Command] //This function will run on the server when it is called on the client.
+    public void CmdSetStatusEffect(int type, int power, float time)
+    {
+        
+    }
+
+    private IEnumerator StartStatusEffect(float time)
+    {
+        yield return new WaitForSeconds(time);
     }
 
     public string GetPlayerScene()

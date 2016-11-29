@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PlayerLocalController : MonoBehaviour
+public class PlayerInput : MonoBehaviour
 {
     private PlayerMotor playerMotor;
     private PlayerNetworkData playerNetworkData;
