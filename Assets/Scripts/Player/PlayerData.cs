@@ -12,13 +12,13 @@ public class PlayerData : NetworkBehaviour
     public static PlayerData localPlayerInstance = null;
     private HudGUIManager hudGUIManager;
 
-    [SerializeField] List<BaseEffect> effects = new List<BaseEffect>();
+    [SerializeField] List<BaseStatusEffect> effects = new List<BaseStatusEffect>();
 
     //Player variables
     [SyncVar] private string playerScene = "Map01"; //SyncVar makes sure that the server updates the variable to the clients
     [SyncVar] private int playerMaxHealth = 100;
     [SyncVar] private int playerCurrentHealth = 100;
-    private string resurrectionSpawnPoint;
+    [SyncVar] private string resurrectionSpawnPoint = "Map01";
 
     // Use this for initialization
     void Start ()
@@ -37,30 +37,31 @@ public class PlayerData : NetworkBehaviour
         playerScene = scene;
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        if(isLocalPlayer)
+        if (isLocalPlayer)
         {
             hudGUIManager.UpdateHealthBar(playerCurrentHealth, playerMaxHealth);
-        }
 
+            if(playerCurrentHealth <= 0)
+            {
+                GetComponent<PlayerSceneManager>().LoadScene(resurrectionSpawnPoint, "Respawn"); //Respawn at latest respawnpoint
+                CmdRestoreHealth(playerMaxHealth * 2);
+            }
+        }
         if(isServer)
-        {
+        { 
             for(int i = 0; i < effects.Count; i++)
             {
                 effects[i].UpdateEffect(this, Time.deltaTime);  
                 
                 if(effects[i].GetEffectDuration() <= 0)
                 {
-                    effects[i].EndEffect(this);
-                    effects.RemoveAt(i);
-                }
-                     
+                    RpcRemoveStatusEffect(i);
+                }      
             }
-
         }
     }
-
 
     [Command] //This function will run on the server when it is called on the client.
     public void CmdApplyDamage(int damage)
@@ -75,16 +76,14 @@ public class PlayerData : NetworkBehaviour
     }
 
     [Command] //This function will run on the server when it is called on the client.
-    public void CmdSetStatusEffect(BaseEffect effect)
+    public void CmdSetStatusEffect(BaseStatusEffect effect)
     {
-       
             RpcSetStatusEffect(effect);
     }
 
     [ClientRpc] //This fuction will run on all clients when called from the server
-    private void RpcSetStatusEffect(BaseEffect effect)
+    private void RpcSetStatusEffect(BaseStatusEffect effect)
     {
-
         for (int i = 0; i < effects.Count; i++)
         {
             if (effects[i].GetEffectType() == effect.GetEffectType())
@@ -96,15 +95,19 @@ public class PlayerData : NetworkBehaviour
                 return;
             }
         }
-
         effects.Add(effect);
+        effect.StartEffect(this);
     }
-
+    [ClientRpc] //This fuction will run on all clients when called from the server
+    private void RpcRemoveStatusEffect(int effectID)
+    {
+        effects[effectID].EndEffect(this);
+        effects.RemoveAt(effectID);
+    }
 
     public string GetPlayerScene()
     {
         return playerScene;
     }
-
 
 }

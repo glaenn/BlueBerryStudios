@@ -11,6 +11,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 242f01da5680b4c41a129e40af9a1e87, type: 3}
   m_Name: LavaPit
   m_EditorClassIdentifier: 
-  effectype: 0
+  statusEffectType: 0
   duration: 2
   power: 5
+  visualEffect: {fileID: 1000010465571724, guid: 1e3fe8cf3e6182e40b154ad662f8af03,
+    type: 2}

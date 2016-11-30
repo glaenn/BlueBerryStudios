@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: dungeonLavaFloor
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: 295f173b651b2bf438b0a4c870d4b909, type: 3}
   m_ShaderKeywords: _EMISSION _GLOSSYREFLECTIONS_OFF _SPECULARHIGHLIGHTS_OFF
   m_LightmapFlags: 2
   m_CustomRenderQueue: -1
@@ -43,13 +43,13 @@ Material:
         name: _EmissionMap
       second:
         m_Texture: {fileID: 2800000, guid: 91ebb0065bee4e64b8b2df343647e2c6, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 0.25, y: 0.25}
         m_Offset: {x: 0, y: 0}
     - first:
         name: _MainTex
       second:
         m_Texture: {fileID: 2800000, guid: 7bec03722e61ce0469c3e88330eb3dbb, type: 3}
-        m_Scale: {x: 5, y: 2}
+        m_Scale: {x: 0.25, y: 0.25}
         m_Offset: {x: 0, y: 0}
     - first:
         name: _MetallicGlossMap
@@ -93,13 +93,13 @@ Material:
       second: 1
     - first:
         name: _Glossiness
-      second: 0.5
+      second: 0.29
     - first:
         name: _GlossyReflections
       second: 0
     - first:
         name: _Metallic
-      second: 0
+      second: 0.369
     - first:
         name: _Mode
       second: 0
@@ -130,7 +130,7 @@ Material:
       second: {r: 1, g: 1, b: 1, a: 1}
     - first:
         name: _EmissionColor
-      second: {r: 1, g: 0.16911763, b: 0.16911763, a: 1}
+      second: {r: 2, g: 0.61764693, b: 0.61764693, a: 1}
     - first:
         name: _SpecColor
       second: {r: 0.5955882, g: 0.20356311, b: 0.113862455, a: 1}

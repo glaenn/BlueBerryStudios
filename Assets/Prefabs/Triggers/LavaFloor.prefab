@@ -38,6 +38,7 @@ GameObject:
   - 4: {fileID: 4000014232209814}
   - 33: {fileID: 33000014228590130}
   - 23: {fileID: 23000012388669108}
+  - 114: {fileID: 114000013183356738}
   m_Layer: 0
   m_Name: LavaFloor
   m_TagString: Untagged
@@ -131,5 +132,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b7d1664f39c85f46834292f8d521274, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
-  seconds: 0.5
+  statusEffect: {fileID: 11400000, guid: 1c85a39e94c3fe3469a81dc33e8905b4, type: 2}
+--- !u!114 &114000013183356738
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013408135406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2655e4c9b9c849545816f1efb447401f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  xSpeed: 0.01
+  ySpeed: 0.005

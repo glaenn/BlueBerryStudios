@@ -8,8 +8,7 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: dungeonFloor
   m_Shader: {fileID: 4800000, guid: 295f173b651b2bf438b0a4c870d4b909, type: 3}
-  m_ShaderKeywords: _GLOSSYREFLECTIONS_OFF _NORMALMAP _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-    _SPECULARHIGHLIGHTS_OFF
+  m_ShaderKeywords: _GLOSSYREFLECTIONS_OFF _NORMALMAP _SPECULARHIGHLIGHTS_OFF
   m_LightmapFlags: 5
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -50,13 +49,13 @@ Material:
         name: _EmissionMap
       second:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 0.5, y: 0.5}
         m_Offset: {x: 0, y: 0}
     - first:
         name: _MainTex
       second:
         m_Texture: {fileID: 2800000, guid: d2853c074c35252448bfd28ee9fd697d, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 0.5, y: 0.5}
         m_Offset: {x: 0, y: 0}
     - first:
         name: _Mask
@@ -253,10 +252,10 @@ Material:
       second: 1
     - first:
         name: _BumpScale
-      second: 1
+      second: 3
     - first:
         name: _Cutoff
-      second: 0.5
+      second: 0
     - first:
         name: _DetailNormalMapScale
       second: 1
@@ -265,10 +264,10 @@ Material:
       second: 0
     - first:
         name: _GlossMapScale
-      second: 0.273
+      second: 0.644
     - first:
         name: _Glossiness
-      second: 0.691
+      second: 0.222
     - first:
         name: _GlossyReflections
       second: 0
@@ -286,7 +285,7 @@ Material:
       second: 1
     - first:
         name: _Metallic
-      second: 0.162
+      second: 0.845
     - first:
         name: _Mode
       second: 0
@@ -295,13 +294,13 @@ Material:
       second: 1
     - first:
         name: _Parallax
-      second: 0.02
+      second: 0.0269
     - first:
         name: _Scale
       second: 0.5
     - first:
         name: _SmoothnessTextureChannel
-      second: 1
+      second: 0
     - first:
         name: _SpecularHighlights
       second: 0
@@ -317,7 +316,7 @@ Material:
     m_Colors:
     - first:
         name: _Color
-      second: {r: 1, g: 1, b: 1, a: 1}
+      second: {r: 0.59331745, g: 0.6014318, b: 0.6838235, a: 1}
     - first:
         name: _EmissionColor
       second: {r: 0, g: 0, b: 0, a: 1}
@@ -335,4 +334,4 @@ Material:
       second: {r: 1, g: 1, b: 1, a: 1}
     - first:
         name: _SpecColor
-      second: {r: 0.48452914, g: 0.48452914, b: 0.48452914, a: 1}
+      second: {r: 0.014705896, g: 0.014381502, b: 0.014381502, a: 1}
