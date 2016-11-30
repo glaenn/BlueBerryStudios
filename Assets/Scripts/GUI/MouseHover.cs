@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class MouseHover : MonoBehaviour
 {
+    public Animator menuAnim;
+
     [SerializeField] private GameObject[] hiddenGameObject;
     [SerializeField] private GameObject[] selectGameObject; 
     //[SerializeField] private Scene sceneSelection;     
@@ -36,7 +38,8 @@ public class MouseHover : MonoBehaviour
                        
         }
 
-        SceneManager.LoadScene("NetworkScene");
+        //SceneManager.LoadScene("NetworkScene");
+        menuAnim.SetTrigger("gotoOptions");
         Debug.Log("Not clicked anymore " + selectGameObject);       
 
     }
