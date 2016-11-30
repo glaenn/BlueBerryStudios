@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public class MouseHover : MonoBehaviour
 {
     [SerializeField] private GameObject[] hiddenGameObject;
-    [SerializeField] private GameObject[] selectGameObject;    
+    [SerializeField] private GameObject[] selectGameObject; 
+    //[SerializeField] private Scene sceneSelection;     
 
     void Start()
     {
@@ -23,15 +25,23 @@ public class MouseHover : MonoBehaviour
 
     public void ConfirmSelection(bool isClicked)
     {
+        if (!isClicked)
+            return;
+
         Debug.Log("Clicked " + selectGameObject);
         foreach (GameObject selectObject in selectGameObject)
         {
             selectObject.SetActive(isClicked);
-            Debug.Log("MJAU ");            
+            Debug.Log(gameObject + "was clicked");                   
+                       
         }
-        Debug.Log("Not clicked anymore " + selectGameObject);
+
+        SceneManager.LoadScene("NetworkScene");
+        Debug.Log("Not clicked anymore " + selectGameObject);       
 
     }
+
+    
 
     
 
