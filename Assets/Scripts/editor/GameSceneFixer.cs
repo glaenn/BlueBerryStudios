@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
 using UnityEditor;
-using System.Collections;
 
 public class GameSceneFixer : EditorWindow
 {
-    /*
     [MenuItem("MyTools/Game Scene Fixer")]
     public static void ShowWindow()
     {
@@ -14,25 +12,22 @@ public class GameSceneFixer : EditorWindow
 
     void OnGUI()
     {
-        if(GUILayout.Button("Fix Scene"))
+        if(GUILayout.Button("Remove (number) endings"))
         {
-            GameObject[] allParents = UnityEngine.Object.FindObjectsOfType<GameObject>();
+            GameObject[] allObjects = FindObjectsOfType<GameObject>();
 
-            foreach (GameObject parent in allParents)
+            foreach (GameObject parent in allObjects)
             {
-                foreach (Transform child in parent.transform)
+                if (parent.name.EndsWith(")"))
                 {
-                    foreach (Transform childchild in child.transform)
-                    {
-                        foreach (Transform childchildchild in childchild.transform)
-                        {
-                            Debug.Log(childchild.name);
-                        }
-                    }
+                    int startIndex = parent.name.IndexOf("(");
+
+                    parent.name = parent.name.Remove(startIndex);
                 }
-            }  
+            }
+
         }
     }
-    */
+ 
 
 }

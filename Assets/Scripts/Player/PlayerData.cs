@@ -1,18 +1,18 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
-using System.Collections;
+using System.Collections.Generic;
 /// <summary>
 /// Holds are the player data.
 /// Current Scene
 /// Equipment and inventory
 /// </summary>
 
-
-
-public class PlayerNetworkData : NetworkBehaviour
+public class PlayerData : NetworkBehaviour
 {
-    public static PlayerNetworkData localPlayerInstance = null;
+    public static PlayerData localPlayerInstance = null;
     private HudGUIManager hudGUIManager;
+
+    [SerializeField] List<BaseEffect> effects = new List<BaseEffect>();
 
     //Player variables
     [SyncVar] private string playerScene = "Map01"; //SyncVar makes sure that the server updates the variable to the clients
@@ -44,11 +44,26 @@ public class PlayerNetworkData : NetworkBehaviour
             hudGUIManager.UpdateHealthBar(playerCurrentHealth, playerMaxHealth);
         }
 
+        if(isServer)
+        {
+            for(int i = 0; i < effects.Count; i++)
+            {
+                effects[i].UpdateEffect(this, Time.deltaTime);  
+                
+                if(effects[i].GetEffectDuration() <= 0)
+                {
+                    effects[i].EndEffect(this);
+                    effects.RemoveAt(i);
+                }
+                     
+            }
+
+        }
     }
 
 
     [Command] //This function will run on the server when it is called on the client.
-    public void CmdTakeDamage(int damage)
+    public void CmdApplyDamage(int damage)
     {
         playerCurrentHealth = Mathf.Clamp(playerCurrentHealth - damage, 0, 100);
     }
@@ -60,15 +75,31 @@ public class PlayerNetworkData : NetworkBehaviour
     }
 
     [Command] //This function will run on the server when it is called on the client.
-    public void CmdSetStatusEffect(int type, int power, float time)
+    public void CmdSetStatusEffect(BaseEffect effect)
     {
-        
+       
+            RpcSetStatusEffect(effect);
     }
 
-    private IEnumerator StartStatusEffect(float time)
+    [ClientRpc] //This fuction will run on all clients when called from the server
+    private void RpcSetStatusEffect(BaseEffect effect)
     {
-        yield return new WaitForSeconds(time);
+
+        for (int i = 0; i < effects.Count; i++)
+        {
+            if (effects[i].GetEffectType() == effect.GetEffectType())
+            {
+                if (effects[i].GetEffectDuration() < effect.GetEffectDuration())
+                {
+                    effects[i].SetEffectDuration(effect.GetEffectDuration());
+                }
+                return;
+            }
+        }
+
+        effects.Add(effect);
     }
+
 
     public string GetPlayerScene()
     {

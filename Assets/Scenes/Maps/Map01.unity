@@ -102,7 +102,7 @@ GameObject:
   - 4: {fileID: 64490201}
   - 108: {fileID: 64490200}
   m_Layer: 0
-  m_Name: Point light (4)
+  m_Name: 'Point light '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -165,7 +165,7 @@ GameObject:
   - 4: {fileID: 260811019}
   - 108: {fileID: 260811018}
   m_Layer: 0
-  m_Name: Point light (2)
+  m_Name: 'Point light '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -383,7 +383,7 @@ GameObject:
   - 4: {fileID: 665052089}
   - 108: {fileID: 665052088}
   m_Layer: 0
-  m_Name: Point light (11)
+  m_Name: 'Point light '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -475,6 +475,12 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114000011929444906, guid: 209792b2b2a2863429202bd1e8d271e0,
+        type: 2}
+      propertyPath: effect
+      value: 
+      objectReference: {fileID: 11400000, guid: 1c85a39e94c3fe3469a81dc33e8905b4,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 209792b2b2a2863429202bd1e8d271e0, type: 2}
   m_IsPrefabParent: 0
@@ -589,7 +595,7 @@ GameObject:
   - 23: {fileID: 1017942199}
   - 65: {fileID: 1017942198}
   m_Layer: 0
-  m_Name: Window (1)
+  m_Name: 'Window '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -681,7 +687,7 @@ GameObject:
   - 23: {fileID: 1082663847}
   - 65: {fileID: 1082663846}
   m_Layer: 0
-  m_Name: Window (2)
+  m_Name: 'Window '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -857,7 +863,7 @@ GameObject:
   - 4: {fileID: 1350412725}
   - 108: {fileID: 1350412724}
   m_Layer: 0
-  m_Name: Point light (5)
+  m_Name: 'Point light '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -987,7 +993,7 @@ GameObject:
   - 4: {fileID: 1538682639}
   - 108: {fileID: 1538682640}
   m_Layer: 0
-  m_Name: Point light (12)
+  m_Name: 'Point light '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1183,7 +1189,7 @@ GameObject:
   - 23: {fileID: 2140530580}
   - 65: {fileID: 2140530579}
   m_Layer: 0
-  m_Name: Window (3)
+  m_Name: 'Window '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

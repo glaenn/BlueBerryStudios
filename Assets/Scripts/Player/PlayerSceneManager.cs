@@ -8,7 +8,7 @@ public class PlayerSceneManager : NetworkBehaviour
     private CapsuleCollider playerCollider;
     private Rigidbody rigidBody;
     [SerializeField] private GameObject playerCharacter;
-    PlayerNetworkData playerNetworkData;
+    PlayerData playerNetworkData;
     private HudGUIManager hudGUIManager;
 
     private string destinationName;
@@ -17,7 +17,7 @@ public class PlayerSceneManager : NetworkBehaviour
     {
         playerCollider = GetComponent<CapsuleCollider>();
         rigidBody = GetComponent<Rigidbody>();
-        playerNetworkData = GetComponent<PlayerNetworkData>();
+        playerNetworkData = GetComponent<PlayerData>();
 
         if (isLocalPlayer)
         {
@@ -70,14 +70,14 @@ public class PlayerSceneManager : NetworkBehaviour
 
     public void LateUpdate()
     {
-        if(PlayerNetworkData.localPlayerInstance != null)
+        if(PlayerData.localPlayerInstance != null)
             UpdateCharacterVisibility();
     }
 
 
     private void UpdateCharacterVisibility()
     {
-        if (playerNetworkData.GetPlayerScene() != PlayerNetworkData.localPlayerInstance.GetPlayerScene())
+        if (playerNetworkData.GetPlayerScene() != PlayerData.localPlayerInstance.GetPlayerScene())
         {
             rigidBody.useGravity = false;
             playerCharacter.SetActive(false);
