@@ -9,7 +9,7 @@ public class BaseStatusEffect : ScriptableObject
     [SerializeField][Range(1.0f,600.0f)] private float duration = 2.0f;
     [SerializeField][Range(1,100)] private int power = 5;
 
-    private float secondCounter = 1.0f;
+    private float secondCounter;
     [SerializeField] GameObject visualEffect;
     GameObject visualEffectInstance;
     public string GetEffectType()
@@ -34,8 +34,9 @@ public class BaseStatusEffect : ScriptableObject
 
     public void StartEffect(PlayerData playerData)
     {
-        visualEffectInstance = Instantiate(visualEffect);
-        visualEffectInstance.transform.parent = playerData.transform.parent;
+        //visualEffectInstance = Instantiate(visualEffect);
+        //visualEffectInstance.transform.parent = playerData.transform.parent;
+         secondCounter = 1.0f;
     }
 
     public void UpdateEffect(PlayerData playerData, float time )

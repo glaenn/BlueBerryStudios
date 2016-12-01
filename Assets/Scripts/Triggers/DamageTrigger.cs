@@ -3,7 +3,6 @@ using System.Collections;
 
 public class DamageTrigger : MonoBehaviour
 {
-
     [SerializeField] BaseStatusEffect statusEffect;
 
 	// Use this for initialization
@@ -13,8 +12,5 @@ public class DamageTrigger : MonoBehaviour
         {
             other.GetComponent<PlayerData>().CmdSetStatusEffect(statusEffect);
         }
-
     }
-
-
 }

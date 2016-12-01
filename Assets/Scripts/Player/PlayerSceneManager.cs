@@ -3,6 +3,9 @@ using System.Collections;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(CapsuleCollider))]
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(PlayerData))]
 public class PlayerSceneManager : NetworkBehaviour
 {
     private CapsuleCollider playerCollider;
@@ -33,8 +36,11 @@ public class PlayerSceneManager : NetworkBehaviour
         hudGUIManager.SetScreenFade(true);
 
         //Unloads all the previous scenes
-        for (int i = 2; i < SceneManager.sceneCountInBuildSettings; i++)
-            SceneManager.UnloadScene(i);
+        for (int i = 0; i < SceneManager.sceneCount; i++)
+        {
+            if (SceneManager.GetSceneAt(i).name.Contains("Map"))
+                SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(i).buildIndex);
+        }
 
         //Stores the destination for this destination 
         this.destinationName = destinationName;

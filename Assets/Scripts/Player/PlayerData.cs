@@ -7,6 +7,7 @@ using System.Collections.Generic;
 /// Equipment and inventory
 /// </summary>
 
+[RequireComponent(typeof(PlayerSceneManager))]
 public class PlayerData : NetworkBehaviour
 {
     public static PlayerData localPlayerInstance = null;
