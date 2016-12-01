@@ -5,7 +5,7 @@ public class MapData
 {
     public struct Sector
     {
-        public int[] verts;
+        public List<int> verts;
         public int groundLevel;
         public int ceilingLevel;
         public int floorMaterial;
