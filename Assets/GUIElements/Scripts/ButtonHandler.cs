@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ButtonHandler : MonoBehaviour {
+public class ButtonHandler : MonoBehaviour
+{
     private bool trashAndPlayVisible = false;
     private bool interactionLayoutVisible = false;
     private bool insideProfile = false;

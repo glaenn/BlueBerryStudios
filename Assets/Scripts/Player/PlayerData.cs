@@ -54,7 +54,7 @@ public class PlayerData : NetworkBehaviour
         { 
             for(int i = 0; i < effects.Count; i++)
             {
-                effects[i].UpdateEffect(this, Time.deltaTime);  
+                effects[i].UpdateEffect(Time.deltaTime);  
                 
                 if(effects[i].GetEffectDuration() <= 0)
                 {
@@ -77,32 +77,34 @@ public class PlayerData : NetworkBehaviour
     }
 
     [Command] //This function will run on the server when it is called on the client.
-    public void CmdSetStatusEffect(BaseStatusEffect effect)
+    public void CmdSetStatusEffect(string effectName)
     {
-            RpcSetStatusEffect(effect);
+            RpcSetStatusEffect(effectName);
     }
 
     [ClientRpc] //This fuction will run on all clients when called from the server
-    private void RpcSetStatusEffect(BaseStatusEffect effect)
+    private void RpcSetStatusEffect(string effectName)
     {
+        BaseStatusEffect newEffect = Instantiate(Resources.Load<BaseStatusEffect>("StatusEffects/" + effectName));
+
         for (int i = 0; i < effects.Count; i++)
         {
-            if (effects[i].GetEffectType() == effect.GetEffectType())
+            if (effects[i].GetEffectType() == newEffect.GetEffectType())
             {
-                if (effects[i].GetEffectDuration() < effect.GetEffectDuration())
+                if (effects[i].GetEffectDuration() < newEffect.GetEffectDuration())
                 {
-                    effects[i].SetEffectDuration(effect.GetEffectDuration());
+                    effects[i].SetEffectDuration(newEffect.GetEffectDuration());
                 }
                 return;
             }
         }
-        effects.Add(effect);
-        effect.StartEffect(this);
+        effects.Add(newEffect);
+        newEffect.StartEffect(this);
     }
     [ClientRpc] //This fuction will run on all clients when called from the server
     private void RpcRemoveStatusEffect(int effectID)
     {
-        effects[effectID].EndEffect(this);
+        effects[effectID].EndEffect();
         effects.RemoveAt(effectID);
     }
 

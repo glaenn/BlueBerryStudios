@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 [CreateAssetMenu(fileName ="StatusEffect", menuName = "StatusEffect/Base")]
 public class BaseStatusEffect : ScriptableObject
@@ -9,9 +10,13 @@ public class BaseStatusEffect : ScriptableObject
     [SerializeField][Range(1.0f,600.0f)] private float duration = 2.0f;
     [SerializeField][Range(1,100)] private int power = 5;
 
-    private float secondCounter;
-    [SerializeField] GameObject visualEffect;
-    GameObject visualEffectInstance;
+    private float secondCounter = 1.0f;
+    [SerializeField] string effectPlayer;
+
+    GameObject effectPlayerInstance;
+
+    PlayerData playerData;
+
     public string GetEffectType()
     {
         return statusEffectType.ToString();
@@ -34,12 +39,11 @@ public class BaseStatusEffect : ScriptableObject
 
     public void StartEffect(PlayerData playerData)
     {
-        //visualEffectInstance = Instantiate(visualEffect);
-        //visualEffectInstance.transform.parent = playerData.transform.parent;
-         secondCounter = 1.0f;
+        this.playerData = playerData;
+        effectPlayerInstance = Instantiate(Resources.Load<GameObject>("EffectPlayers/" + effectPlayer), playerData.transform, false);
     }
-
-    public void UpdateEffect(PlayerData playerData, float time )
+    
+    public void UpdateEffect(float time )
     {
         duration -= time;
         secondCounter -= time;
@@ -49,12 +53,11 @@ public class BaseStatusEffect : ScriptableObject
             playerData.CmdApplyDamage(power);
             secondCounter = 1.0f;
         }
-
     }
 
-    public void EndEffect(PlayerData playerData)
+    public void EndEffect()
     {
-
+        Destroy(effectPlayerInstance);
     }
 
 }
