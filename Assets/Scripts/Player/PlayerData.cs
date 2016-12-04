@@ -19,7 +19,7 @@ public class PlayerData : NetworkBehaviour
     [SyncVar] private string playerScene = "Map01"; //SyncVar makes sure that the server updates the variable to the clients
     [SyncVar] private int playerMaxHealth = 100;
     [SyncVar] private int playerCurrentHealth = 100;
-    [SyncVar] private string resurrectionSpawnPoint = "Map01";
+    [SyncVar] private string playerRespawnScene = "Map01";
 
     // Use this for initialization
     void Start ()
@@ -46,7 +46,7 @@ public class PlayerData : NetworkBehaviour
 
             if(playerCurrentHealth <= 0)
             {
-                GetComponent<PlayerSceneManager>().LoadScene(resurrectionSpawnPoint, "Respawn"); //Respawn at latest respawnpoint
+                GetComponent<PlayerSceneManager>().LoadScene(playerRespawnScene, "Respawn"); //Respawn at latest respawnpoint
                 CmdRestoreHealth(playerMaxHealth * 2);
             }
         }
@@ -62,6 +62,11 @@ public class PlayerData : NetworkBehaviour
                 }      
             }
         }
+    }
+    [Command] //This function will run on the server when it is called on the client.
+    public void CmdSetPlayerRespawnScene(string mapName)
+    {
+        playerRespawnScene = mapName;
     }
 
     [Command] //This function will run on the server when it is called on the client.

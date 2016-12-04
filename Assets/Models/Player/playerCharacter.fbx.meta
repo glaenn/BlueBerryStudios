@@ -79,6 +79,8 @@ ModelImporter:
     100142: ring_03_r_end
     100144: thumb_03_l_end
     100146: thumb_03_r_end
+    100148: male_muscle_13290Mesh
+    100150: shoes02Mesh
     400000: ball_l
     400002: ball_r
     400004: calf_l
@@ -153,12 +155,28 @@ ModelImporter:
     400142: ring_03_r_end
     400144: thumb_03_l_end
     400146: thumb_03_r_end
+    400148: male_muscle_13290Mesh
+    400150: shoes02Mesh
+    2300000: low-polyMesh
+    2300002: male_casualsuit06Mesh
+    2300004: male_muscle_13290Mesh
+    2300006: shoes01Mesh
+    2300008: short02Mesh
+    2300010: shoes02Mesh
+    3300000: low-polyMesh
+    3300002: male_casualsuit06Mesh
+    3300004: male_muscle_13290Mesh
+    3300006: shoes01Mesh
+    3300008: short02Mesh
+    3300010: shoes02Mesh
     4300000: male_genericMesh
     4300002: short02Mesh
     4300004: low-polyMesh
     4300006: teeth_baseMesh
     4300008: male_casualsuit06Mesh
     4300010: shoes01Mesh
+    4300012: male_muscle_13290Mesh
+    4300014: shoes02Mesh
     9500000: //RootNode
     13700000: low-polyMesh
     13700002: male_casualsuit06Mesh
@@ -166,6 +184,8 @@ ModelImporter:
     13700006: shoes01Mesh
     13700008: short02Mesh
     13700010: teeth_baseMesh
+    13700012: male_muscle_13290Mesh
+    13700014: shoes02Mesh
   materials:
     importMaterials: 0
     materialName: 0
