@@ -5,7 +5,6 @@ public class TitleMenuManager : MonoBehaviour
     [SerializeField]    private GameObject[] GUIMenys;
     [SerializeField]    private UnityEngine.UI.Text IPAddress;
     UnityEngine.Networking.NetworkManager networkManager;
-    private GameController gameController;
 
     public void OpenMeny(int menuChoice)
     {
@@ -19,7 +18,6 @@ public class TitleMenuManager : MonoBehaviour
     void Start()
     {
         networkManager = UnityEngine.Networking.NetworkManager.singleton;
-        gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
     }
 
     public void StartGame()
@@ -43,17 +41,17 @@ public class TitleMenuManager : MonoBehaviour
 
     public void SetMouseSensitivity(float mouseSensitivity)
     {
-        gameController.MouseSensitivity = mouseSensitivity;
+        GameController.instance.MouseSensitivity = mouseSensitivity;
     }
 
     public void SetMusicVolyme(float musicVolyme)
     {
-        gameController.MusicVolyme = musicVolyme;
+        GameController.instance.MusicVolyme = musicVolyme;
     }
 
     public void SetSoundVolyme(float soundVolyme)
     {
-        gameController.SoundVolyme = soundVolyme;
+        GameController.instance.SoundVolyme = soundVolyme;
     }
 
     public void QuitGame()
