@@ -431,8 +431,6 @@ GameObject:
   - component: {fileID: 717457377}
   - component: {fileID: 717457376}
   - component: {fileID: 717457378}
-  - component: {fileID: 717457380}
-  - component: {fileID: 717457379}
   - component: {fileID: 717457382}
   m_Layer: 5
   m_Name: ProfileBox
@@ -508,71 +506,6 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
---- !u!114 &717457379
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 717457374}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1862395651, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 0
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 717457380}
-          m_MethodName: SetVisibile
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 1
-          m_CallState: 2
-      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
-        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  - eventID: 1
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 717457380}
-          m_MethodName: SetVisibile
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
-        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  delegates: []
---- !u!114 &717457380
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 717457374}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80c09fa37fb9c3f469a2da816dc9a24a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  menuAnim: {fileID: 0}
-  hiddenGameObject:
-  - {fileID: 1340244729}
-  - {fileID: 847630901}
-  selectGameObject:
-  - {fileID: 1340244729}
-  - {fileID: 847630901}
 --- !u!114 &717457382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -992,8 +925,6 @@ GameObject:
   - component: {fileID: 1055322879}
   - component: {fileID: 1055322878}
   - component: {fileID: 1055322877}
-  - component: {fileID: 1055322876}
-  - component: {fileID: 1055322875}
   m_Layer: 5
   m_Name: FadedUserIcon
   m_TagString: Untagged
@@ -1020,53 +951,6 @@ RectTransform:
   m_AnchoredPosition: {x: 22.1, y: -38.506}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1055322875
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1055322873}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1862395651, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 4
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1055322876}
-          m_MethodName: ConfirmSelection
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 1
-          m_CallState: 2
-      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
-        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  delegates: []
---- !u!114 &1055322876
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1055322873}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80c09fa37fb9c3f469a2da816dc9a24a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  menuAnim: {fileID: 0}
-  hiddenGameObject:
-  - {fileID: 0}
-  - {fileID: 0}
-  selectGameObject:
-  - {fileID: 1055322873}
 --- !u!114 &1055322877
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1931,8 +1815,7 @@ GameObject:
   - component: {fileID: 1332441005}
   - component: {fileID: 1332441004}
   - component: {fileID: 1332441007}
-  - component: {fileID: 1332441009}
-  - component: {fileID: 1332441008}
+  - component: {fileID: 1332441010}
   m_Layer: 5
   m_Name: UserIcon
   m_TagString: Untagged
@@ -2058,7 +1941,7 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: -2.96, y: 2}
   m_UseGraphicAlpha: 1
---- !u!114 &1332441008
+--- !u!114 &1332441010
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -2066,44 +1949,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1332441002}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1862395651, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: 28456450fe9388a44b4f59429501418d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 4
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1332441009}
-          m_MethodName: ConfirmSelection
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 1
-          m_CallState: 2
-      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
-        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  delegates: []
---- !u!114 &1332441009
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1332441002}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80c09fa37fb9c3f469a2da816dc9a24a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  menuAnim: {fileID: 0}
-  hiddenGameObject:
-  - {fileID: 0}
-  selectGameObject:
-  - {fileID: 1332441002}
+  GUIMenys: []
+  IPAddress: {fileID: 0}
 --- !u!1 &1332875713
 GameObject:
   m_ObjectHideFlags: 0
@@ -2166,8 +2016,6 @@ GameObject:
   - component: {fileID: 1340244732}
   - component: {fileID: 1340244731}
   - component: {fileID: 1340244734}
-  - component: {fileID: 1340244736}
-  - component: {fileID: 1340244735}
   m_Layer: 5
   m_Name: HelpButton
   m_TagString: Untagged
@@ -2281,51 +2129,6 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 1, y: 2}
   m_UseGraphicAlpha: 1
---- !u!114 &1340244735
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1340244729}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1862395651, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 4
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1340244736}
-          m_MethodName: ConfirmSelection
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 1
-          m_CallState: 2
-      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
-        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  delegates: []
---- !u!114 &1340244736
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1340244729}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80c09fa37fb9c3f469a2da816dc9a24a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  menuAnim: {fileID: 0}
-  hiddenGameObject: []
-  selectGameObject:
-  - {fileID: 1340244729}
 --- !u!4 &1343875669 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4000013005250646, guid: cb9cbf6974375f84b8a0e6424c5eefee,
@@ -2343,8 +2146,6 @@ GameObject:
   - component: {fileID: 1437870106}
   - component: {fileID: 1437870105}
   - component: {fileID: 1437870104}
-  - component: {fileID: 1437870103}
-  - component: {fileID: 1437870102}
   m_Layer: 5
   m_Name: HelpButton
   m_TagString: Untagged
@@ -2370,51 +2171,6 @@ RectTransform:
   m_AnchoredPosition: {x: -56.285675, y: -19}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1437870102
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1437870100}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1862395651, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 4
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1437870103}
-          m_MethodName: ConfirmSelection
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 1
-          m_CallState: 2
-      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
-        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  delegates: []
---- !u!114 &1437870103
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1437870100}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80c09fa37fb9c3f469a2da816dc9a24a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  menuAnim: {fileID: 1234903380}
-  hiddenGameObject: []
-  selectGameObject:
-  - {fileID: 1437870100}
 --- !u!114 &1437870104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2514,8 +2270,6 @@ GameObject:
   - component: {fileID: 1489460023}
   - component: {fileID: 1489460022}
   - component: {fileID: 1489460021}
-  - component: {fileID: 1489460020}
-  - component: {fileID: 1489460019}
   m_Layer: 5
   m_Name: EmptyProfileSlot
   m_TagString: Untagged
@@ -2542,69 +2296,6 @@ RectTransform:
   m_AnchoredPosition: {x: 22, y: -42.300003}
   m_SizeDelta: {x: 160, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1489460019
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1489460017}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1862395651, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 0
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1489460020}
-          m_MethodName: SetVisibile
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 1
-          m_CallState: 2
-      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
-        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  - eventID: 1
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1489460020}
-          m_MethodName: SetVisibile
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
-        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  delegates: []
---- !u!114 &1489460020
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1489460017}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80c09fa37fb9c3f469a2da816dc9a24a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  menuAnim: {fileID: 0}
-  hiddenGameObject:
-  - {fileID: 1437870100}
-  selectGameObject:
-  - {fileID: 1437870100}
 --- !u!114 &1489460021
 MonoBehaviour:
   m_ObjectHideFlags: 0

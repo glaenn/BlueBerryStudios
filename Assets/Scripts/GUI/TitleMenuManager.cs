@@ -23,6 +23,11 @@ public class TitleMenuManager : MonoBehaviour
     public void StartGame()
     {
         UnityEngine.Networking.NetworkManager.singleton.StartHost();
+        //Start up Loading Screen
+        Debug.Log("Clicked");
+        //Game fades in and out
+        //Scene is retreived
+        //Scene is started
     }
 
     public void HostGame()
