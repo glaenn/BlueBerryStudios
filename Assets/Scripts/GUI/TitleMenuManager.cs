@@ -20,14 +20,9 @@ public class TitleMenuManager : MonoBehaviour
         networkManager = UnityEngine.Networking.NetworkManager.singleton;
     }
 
-    public void StartGame()
+    public void StartSinglePlayerGame()
     {
-        UnityEngine.Networking.NetworkManager.singleton.StartHost();
-        //Start up Loading Screen
-        Debug.Log("Clicked");
-        //Game fades in and out
-        //Scene is retreived
-        //Scene is started
+        HostGame();
     }
 
     public void HostGame()
@@ -37,9 +32,6 @@ public class TitleMenuManager : MonoBehaviour
 
     public void JoinGame()
     {
-
-        //IPAddress.text = "localhost";
-
         networkManager.networkAddress = IPAddress.text;
         networkManager.StartClient();
     }
