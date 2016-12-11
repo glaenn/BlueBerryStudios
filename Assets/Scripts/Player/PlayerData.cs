@@ -21,6 +21,9 @@ public class PlayerData : NetworkBehaviour
     [SyncVar] private int playerCurrentHealth = 100;
     [SyncVar] private string playerRespawnScene = "Map01";
 
+
+    public string GetPlayerScene(){return playerScene;}
+
     // Use this for initialization
     void Start ()
     {
@@ -72,13 +75,19 @@ public class PlayerData : NetworkBehaviour
     [Command] //This function will run on the server when it is called on the client.
     public void CmdApplyDamage(int damage)
     {
-        playerCurrentHealth = Mathf.Clamp(playerCurrentHealth - damage, 0, 100);
+        playerCurrentHealth = Mathf.Clamp(playerCurrentHealth - damage, 0, playerMaxHealth);
     }
 
     [Command] //This function will run on the server when it is called on the client.
     public void CmdRestoreHealth(int health)
     {
-        playerCurrentHealth = Mathf.Clamp(playerCurrentHealth + health, 0, 100);
+        playerCurrentHealth = Mathf.Clamp(playerCurrentHealth + health, 0, playerMaxHealth);
+    }
+
+    [Command] //This function will run on the server when it is called on the client.
+    public void CmdSetHealth(int health)
+    {
+        playerCurrentHealth = Mathf.Clamp(health, 0, playerMaxHealth);
     }
 
     [Command] //This function will run on the server when it is called on the client.
@@ -109,13 +118,11 @@ public class PlayerData : NetworkBehaviour
     [ClientRpc] //This fuction will run on all clients when called from the server
     private void RpcRemoveStatusEffect(int effectID)
     {
-        effects[effectID].EndEffect();
+        effects[effectID].DisableEffect();
         effects.RemoveAt(effectID);
     }
 
-    public string GetPlayerScene()
-    {
-        return playerScene;
-    }
+
+
 
 }

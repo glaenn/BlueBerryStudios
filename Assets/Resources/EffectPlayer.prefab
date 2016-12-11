@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4835036238234842}
   - component: {fileID: 114589382097904808}
   m_Layer: 0
-  m_Name: OnFire
+  m_Name: EffectPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,4 +51,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 543a6f28407916c4d856a1e603992f17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visualEffectName: PlayerBodyBurning

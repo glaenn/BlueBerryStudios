@@ -16,7 +16,7 @@ public class PlayerInteractor : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        if(Physics.Raycast(transform.position, transform.forward,out hit, 3.0f, layerMask))
+        if(Physics.Raycast(transform.position, transform.forward,out hit, 2.5f, layerMask))
         {
             interactive = hit.transform.gameObject.GetComponent<Interactive>();
 
@@ -26,7 +26,7 @@ public class PlayerInteractor : MonoBehaviour
 
                 if (Input.GetButtonDown("Use"))
                 {
-                    interactive.Use(transform.parent.gameObject);
+                    interactive.Activate(transform.parent.gameObject);
                 }
             }
             catch

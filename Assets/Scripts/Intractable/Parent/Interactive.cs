@@ -1,16 +1,10 @@
 ﻿using UnityEngine;
 
-public class Interactive : MonoBehaviour
+public abstract class Interactive : MonoBehaviour
 {
     [SerializeField] protected string objectName;
+    private bool inUse;
 
-	public virtual void Use (GameObject player = null)
-    {
-        //Do nothing
-	}
-
-    public string GetName()
-    {
-        return objectName;
-    }
+    public string GetName() { return objectName; }
+    public abstract void Activate(GameObject player);
 }

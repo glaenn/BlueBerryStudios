@@ -134,7 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b7d1664f39c85f46834292f8d521274, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statusEffect: LavaFireDamage
+  statusEffect: TakeLavaDamage
 --- !u!114 &114000013183356738
 MonoBehaviour:
   m_ObjectHideFlags: 1

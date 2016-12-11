@@ -1,10 +1,15 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-public class SetRespawnPoint : Interactive
+public sealed class SetRespawnPoint : Interactive
 {
+    [SerializeField] string statusEffect;
+
     // Override the parent Interactive Use funcion
-    public override void Use(GameObject player = null)
+    public override void Activate(GameObject player)
     {
         player.GetComponent<PlayerData>().CmdSetPlayerRespawnScene(gameObject.scene.name);
+        player.GetComponent<PlayerData>().CmdSetStatusEffect(statusEffect);
     }
+
 }

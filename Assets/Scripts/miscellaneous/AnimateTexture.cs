@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 
-
 [RequireComponent(typeof(MeshRenderer))]
 public class AnimateTexture : MonoBehaviour
 {

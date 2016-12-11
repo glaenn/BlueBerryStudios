@@ -1,13 +1,16 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-public class InteractiveDoor : Interactive
+public sealed class InteractiveDoor : Interactive
 {
     [SerializeField] private string destinationRoom;
     [SerializeField] private string destinationSpawnName;
 
     // Override the parent Interactive Use funcion
-    public override void Use(GameObject player = null)
+    public override void Activate(GameObject player)
     {
         player.GetComponent<PlayerSceneManager>().LoadScene(destinationRoom, destinationSpawnName);
     }
+
+ 
 }

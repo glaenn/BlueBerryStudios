@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class GameController : MonoBehaviour
+public sealed class GameController : MonoBehaviour
 {
     //Localdata
     public static GameController instance = null;              //Static instance of GameManager which allows it to be accessed by any other script.

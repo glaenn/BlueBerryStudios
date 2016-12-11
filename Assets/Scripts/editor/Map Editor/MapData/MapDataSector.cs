@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-
+using UnityEngine;
 namespace MapData
 {
     public class MapDataSector
@@ -9,6 +9,12 @@ namespace MapData
         public int ceilingLevel = 30;
         public int floorMaterial = 1;
         public int ceilingMaterial = 1;
+
+
+        public void CreateSector(Vector2 startPoint, Vector2 endPoint)
+        {
+
+        }
 
         public void AddVertex(int id)
         {
