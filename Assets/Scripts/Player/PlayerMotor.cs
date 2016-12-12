@@ -16,7 +16,7 @@ public class PlayerMotor : NetworkBehaviour
     //Constants
     private const float MINIMUM_X = -90F;
     private const float MAXIMUM_X = 90F;
-    private const float CAMERA_ROTATION_X_LIMIT = 85f;
+    private const float CAMERA_ROTATION_X_LIMIT = 75f;
     private const float JUMPFORCE = 300;
 
     void Start()

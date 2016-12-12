@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using System;
+using UnityEngine.Networking;
 
-public class PlayerInteractor : MonoBehaviour
+public class PlayerInteractor : NetworkBehaviour
 {
     private HudGUIManager hudGUIManager;
     private RaycastHit hit;

@@ -12,5 +12,15 @@ public sealed class InteractiveDoor : Interactive
         player.GetComponent<PlayerSceneManager>().LoadScene(destinationRoom, destinationSpawnName);
     }
 
- 
+    protected override void SendServerCommands()
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override void GetState()
+    {
+        
+    }
+
+
 }

@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-public sealed class PickUpItem : InteractiveServer
+public sealed class PickUpItem : Interactive
 {
-    public override void Activate(GameObject player)
+    protected override void SendServerCommands()
     {
-        SendNetworkData(1);
+        PlayerData.localPlayerInstance.CmdSendPlayerInteraction(objectID, 1);  
     }
 
     protected override void GetState()

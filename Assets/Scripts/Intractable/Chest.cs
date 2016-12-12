@@ -2,7 +2,7 @@
 using System.Collections;
 
 //Fully synced over the network
-public class Chest : InteractiveServer
+public class Chest : Interactive
 {
     private float rotation = 0;
     [SerializeField] float lidMaxRotation = 150;
@@ -22,12 +22,12 @@ public class Chest : InteractiveServer
         }
     }
 
-    public override void Activate(GameObject player)
+    protected override void SendServerCommands()
     {
         if (state < 151)
-            SendNetworkData((int)rotation + 151);
+            PlayerData.localPlayerInstance.CmdSendPlayerInteraction(objectID, (int)rotation + 151);
         else if (state > 150)
-            SendNetworkData((int)rotation);
+            PlayerData.localPlayerInstance.CmdSendPlayerInteraction(objectID, (int)rotation);
     }
 
     protected override void GetState()
