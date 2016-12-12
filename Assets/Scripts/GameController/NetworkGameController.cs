@@ -19,14 +19,6 @@ public sealed class NetworkGameController : NetworkBehaviour
             instance = this;
         else if (instance != this)
             Destroy(gameObject);
-
-        DontDestroyOnLoad(gameObject);
-    }
-
-    [Command] //This function will run on the server when it is called on the client.
-    public void CmdEditGameData (string objectID, int state)
-    {
-        RpcUpdateGameData(objectID, state);   
     }
 
     void Update()
@@ -35,7 +27,12 @@ public sealed class NetworkGameController : NetworkBehaviour
             serverTime = Network.time;
     }
 
-   
+    [Command]
+    public void CmdEditGameData(string objectID, int state)
+    {
+        RpcUpdateGameData(objectID, state);
+    }
+
     [ClientRpc] //This fuction will run on all clients when called from the server
     private void RpcUpdateGameData(string objectID, int state)
     {
@@ -51,7 +48,13 @@ public sealed class NetworkGameController : NetworkBehaviour
             OnNetworkUpdate();
     }
 
-    public bool HasGameData(string objectID){ return networkData.Exists(x => x.objectID == objectID);}
+    public bool HasGameData(string objectID)
+    {
+        if (networkData.Exists(x => x.objectID == objectID))
+            return true;
+      
+            return false;
+    }
 
     public void GetGameData(string objectID, ref int state, ref double timeStamp)
     {

@@ -1,16 +1,14 @@
 ﻿using UnityEngine;
 
-public class PlayerInput : MonoBehaviour
+public sealed class PlayerInput : MonoBehaviour
 {
     private PlayerMotor playerMotor;
-    private PlayerData playerNetworkData;
     private float mouseSensitivity = 2.5f; //The player own settings for mouse sensitivity
 
     // Use this for initialization
     void Start ()
     {
         playerMotor = GetComponent<PlayerMotor>();
-        playerNetworkData = GetComponent<PlayerData>(); 
     }
 	
 	// Update is called once per frame
@@ -42,6 +40,4 @@ public class PlayerInput : MonoBehaviour
         }
 
     }
-
- 
 }
