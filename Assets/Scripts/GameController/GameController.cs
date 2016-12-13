@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public sealed class GameController : MonoBehaviour
 {
@@ -42,6 +43,24 @@ public sealed class GameController : MonoBehaviour
         }
     }
 
+    //Profiles
+    private List<ProfileSaveData> profiles = new List<ProfileSaveData>();
+
+    public int GetNumberOfPlayerProfiles() { return profiles.Count; }
+    public string GetPlayerProfileName(int profileID) { return profiles[profileID].profileName; }
+    public void SetPlayerProfileName(int profileID, string profileName) {profiles[profileID].profileName = profileName; }
+    public Color GetPlayerProfileColor(int profileID) { return profiles[profileID].profileColor; }
+    public void SetPlayerProfileColor(int profileID, Color profileColor) { profiles[profileID].profileColor = profileColor; }
+
+    public void CreateProfile(string profileName, Color profileColor)
+    {
+        profiles.Add(new ProfileSaveData(profileName, profileColor));
+    }
+    public void RemoveProfile(int profileID)
+    {
+        profiles.RemoveAt(profileID);
+    }
+
     //Awake is always called before any Start functions
     void Awake()
     {
@@ -49,9 +68,6 @@ public sealed class GameController : MonoBehaviour
             instance = this;
         else if (instance != this)
             Destroy(gameObject);
-
         DontDestroyOnLoad(gameObject);
     }
-
-
 }
