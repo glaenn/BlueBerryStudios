@@ -43,6 +43,8 @@ public class MapEditor : EditorWindow
     public void Awake()
     {
         mapData.CreateSector(new Vector2(200, 200), new Vector2(300, 300));
+        mapData.CreateSector(new Vector2(350, 350), new Vector2(450, 450));
+
         Texture2D gridBG = new Texture2D(128 * 8, 128 * 8);
         LoadGridMap(ref gridBG);
         blackBG.normal.background = CreateColorTexture(1, 1, new Color(0.3f, 0.3f, 0.32f, 1.0f));
@@ -70,6 +72,7 @@ public class MapEditor : EditorWindow
         //Recheck what we hover each rendered frame
         typeHovered = MapDataType.none;
 
+        //In vertex and line mode
         if (editMode == 0)
         {
             if (typeSelected == MapDataType.Sector)
@@ -78,38 +81,30 @@ public class MapEditor : EditorWindow
             if (typeSelected == MapDataType.Line && selectID != -1)
             {
                 GUI.BeginGroup(SELCTION_EDIT_AREA, LightGrayBG);
-                GUI.Label(ELEMENT_EDIT_ID, "Line: " + selectID);
+                GUI.Label(ELEMENT_EDIT_ID, "Line: #" + selectID);
                 GUI.Label(ELEMENT_EDIT_ROW1, "Wall Material");
                 mapData.lines[selectID].wallMaterialMiddle = comboBoxControl.List(ELEMENT_EDIT_ROW2, materialList[mapData.lines[selectID].wallMaterialMiddle].text, materialList);
                 GUI.EndGroup();
             }
+
+            else if (typeSelected == MapDataType.Vertex && selectID != -1)
+            {
+                GUI.BeginGroup(SELCTION_EDIT_AREA, LightGrayBG);
+                GUI.Label(ELEMENT_EDIT_ID, "Vertex: #" + selectID);
+                GUI.EndGroup();
+            }
         }
 
+        //In sector mode
         if (editMode == 1)
         {
-            for(int i = 0; i < mapData.sectors.Count; i++)
-            {
-                Vector2[] sectorVertexes = new Vector2[mapData.sectors[i].verts.Count];
-
-                for(int j = 0; j < sectorVertexes.Length; j++)
-                {
-                    sectorVertexes[j] = mapData.verts[mapData.sectors[i].verts[j]];
-                }
-
-                if( IsPointInPolygon(e.mousePosition, sectorVertexes))
-                {
-                    typeHovered = MapDataType.Sector;
-                    hoverID = i;
-                }
-            }
-
             if(typeSelected == MapDataType.Sector && selectID != -1)
             {
                 GUI.BeginGroup(SELCTION_EDIT_AREA, LightGrayBG);
-                GUI.Label(ELEMENT_EDIT_ID, "Sector: " + selectID);
-                GUI.Label(ELEMENT_EDIT_ROW1, "Sector ceiling level: " + mapData.sectors[selectID].ceilingLevel);
+                GUI.Label(ELEMENT_EDIT_ID, "Sector: #" + selectID);
+                GUI.Label(ELEMENT_EDIT_ROW1, "Sector ceiling level: " + (float)mapData.sectors[selectID].ceilingLevel/10 + " m");
                 mapData.sectors[selectID].ceilingLevel = (int)GUI.HorizontalSlider(ELEMENT_EDIT_ROW2, mapData.sectors[selectID].ceilingLevel, -100, 100);
-                GUI.Label(ELEMENT_EDIT_ROW3, "Sector floor level: " + mapData.sectors[selectID].floorLevel);
+                GUI.Label(ELEMENT_EDIT_ROW3, "Sector floor level: " + (float)mapData.sectors[selectID].floorLevel/10 + " m");
                 mapData.sectors[selectID].floorLevel = (int)GUI.HorizontalSlider(ELEMENT_EDIT_ROW4, mapData.sectors[selectID].floorLevel, -100, 101);
                 GUI.EndGroup();
 
@@ -123,20 +118,70 @@ public class MapEditor : EditorWindow
             }
         }
 
-        //Paint vertices
-        for (int i = 0; i < mapData.verts.Count; i++)
-        {
-            bool isHovering = new Rect(mapData.verts[i].x, mapData.verts[i].y, VERT_SIZE, VERT_SIZE).Contains(e.mousePosition);
-            GUI.color = DrawElement(i, MapDataType.Vertex, isHovering);
-            GUI.Box(new Rect(mapData.verts[i], new Vector2(VERT_SIZE, VERT_SIZE)), "");
-        }
+       //Paint each sector seperatly
+       for (int i = 0; i < mapData.sectors.Count; i++)
+       {
+            bool isHovering = false;
+            bool isSelected = false;
 
-        //Paint lines
-        for (int i = 0; i < mapData.lines.Count; i++)
-        {
-           bool isHovering = ClosestPointOnLine(mapData.verts[mapData.lines[i].startVert] + new Vector2(VERT_SIZE / 2, VERT_SIZE / 2), mapData.verts[mapData.lines[i].endVert] + new Vector2(VERT_SIZE / 2, VERT_SIZE / 2), e.mousePosition);
-           Handles.color = DrawElement(i, MapDataType.Line, isHovering);
-           Handles.DrawLine(mapData.verts[mapData.lines[i].startVert] + new Vector2(VERT_SIZE / 2, VERT_SIZE / 2), mapData.verts[mapData.lines[i].endVert] + new Vector2(VERT_SIZE / 2, VERT_SIZE / 2));
+            //Check whether the sector is hover upon
+            if (editMode == 1) 
+            {
+                if (IsPointInPolygon(e.mousePosition, mapData.GetSectorVertexes(i)))
+                {
+                    typeHovered = MapDataType.Sector;
+                    hoverID = i;
+                    isHovering = true;
+                }
+                if (typeSelected == MapDataType.Sector && selectID == i)
+                    isSelected = true;
+            }
+
+            //Paint vertices
+            for (int j = 0; j < mapData.sectors[i].verts.Count; j++)
+            {
+                if(editMode == 0)
+                {
+                    isHovering = new Rect(mapData.verts[mapData.sectors[i].verts[j]].x, mapData.verts[mapData.sectors[i].verts[j]].y, VERT_SIZE, VERT_SIZE).Contains(e.mousePosition);
+                    if (isHovering)
+                    {
+                        typeHovered = MapDataType.Vertex;
+                        hoverID = mapData.sectors[i].verts[j];
+                    }
+                    if (selectID == mapData.sectors[i].verts[j] && typeSelected == MapDataType.Vertex)
+                        isSelected = true;
+                    else if (typeSelected != MapDataType.Sector)
+                        isSelected = false;
+                }
+                GUI.color = GetElementColor(isHovering, isSelected);
+                GUI.Box(new Rect(mapData.verts[mapData.sectors[i].verts[j]], new Vector2(VERT_SIZE, VERT_SIZE)), "");
+            }
+
+            //Paint lines
+            for (int j = 0; j < mapData.sectors[i].lines.Count; j++)
+            {
+                if (editMode == 0 && typeHovered != MapDataType.Vertex)
+                {
+                    isHovering = ClosestPointOnLine(mapData.verts[mapData.lines[mapData.sectors[i].lines[j]].startVert] + new Vector2(VERT_SIZE / 2, VERT_SIZE / 2), mapData.verts[mapData.lines[mapData.sectors[i].lines[j]].endVert] + new Vector2(VERT_SIZE / 2, VERT_SIZE / 2), e.mousePosition);
+                    if(isHovering)
+                    {
+                        typeHovered = MapDataType.Line;
+                        hoverID = mapData.sectors[i].lines[j];
+                    }
+                    if (selectID == mapData.sectors[i].lines[j] && typeSelected == MapDataType.Line)
+                        isSelected = true;
+                    else if(typeSelected != MapDataType.Sector)
+                        isSelected = false;
+                }
+
+                if (typeHovered == MapDataType.Vertex)
+                    isHovering = false;
+                if (typeSelected== MapDataType.Vertex)
+                    isSelected= false;
+
+                Handles.color = GetElementColor(isHovering, isSelected);
+                Handles.DrawLine(mapData.verts[mapData.lines[mapData.sectors[i].lines[j]].startVert] + new Vector2(VERT_SIZE / 2, VERT_SIZE / 2), mapData.verts[mapData.lines[mapData.sectors[i].lines[j]].endVert] + new Vector2(VERT_SIZE / 2, VERT_SIZE / 2));
+            }
         }
 
         Repaint();
@@ -178,12 +223,19 @@ public class MapEditor : EditorWindow
                 }
             }
         }
-        else if (e.type == EventType.keyDown && typeSelected == MapDataType.Vertex && e.keyCode == KeyCode.Delete)
+        else if (e.type == EventType.keyDown && e.keyCode == KeyCode.Delete)
         {
             selectedVertexes.Clear();
             savedVertexOriginalPos.Clear();
             isHolding = false;
-            mapData.RemoveVertex(selectID);
+
+            if (typeSelected == MapDataType.Vertex)
+                mapData.RemoveVertex(selectID);
+            else if (typeSelected == MapDataType.Line)
+                mapData.RemoveLine(selectID);
+            else if (typeSelected == MapDataType.Sector)
+                mapData.RemoveSector(selectID);
+
             selectID = -1;
             typeSelected = MapDataType.none;
         }
@@ -213,28 +265,16 @@ public class MapEditor : EditorWindow
         }
     }
     
-    Color DrawElement(int elementID, MapDataType elementType, bool isHovering)
-    {     
-        if (typeSelected == MapDataType.Sector)
-            return Color.cyan;
-        if (typeHovered == MapDataType.Sector)
-            return Color.green;
-        else if (editMode == 1)
-            return Color.white;
-        else if (isHolding && selectID == elementID && typeSelected == elementType)
+    Color GetElementColor(bool isHovering, bool isSelected = false)
+    {
+        if (isSelected && isHolding)
             return Color.yellow;
-        else if (!isHolding && selectID == elementID && typeSelected == elementType && !isHovering)
-            return Color.cyan;
-        else if (isHovering && typeHovered == MapDataType.none && !isHolding)
-        {
-            typeHovered = elementType;
-            hoverID = elementID;
-
-            if (selectID == elementID && typeSelected == elementType)
-                return Color.blue;
-            else
-                return Color.green;
-        }
+        else if (isHovering && isSelected)
+            return Color.Lerp(Color.blue,Color.white,0.75f);
+        else if (!isHovering && isSelected)
+            return Color.Lerp(Color.blue, Color.white, 0.25f);
+        else if (isHovering && !isSelected)
+            return Color.green;
         else
             return Color.white;
     }

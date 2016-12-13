@@ -35,26 +35,75 @@ namespace MapData
             BuildLines();
         }
 
+        public Vector2[] GetSectorVertexes(int sectorID)
+        {
+            Vector2[] sectorVertexes = new Vector2[sectors[sectorID].verts.Count];
+
+            for (int i = 0; i < sectorVertexes.Length; i++)
+            {
+                sectorVertexes[i] = verts[sectors[sectorID].verts[i]];
+            }
+
+            return sectorVertexes;
+        }
+
         public void RemoveVertex(int id)
         {
             for (int i = 0; i < sectors.Count; i++)
             {
                 sectors[i].RemoveVertex(id);
             }
-
             verts.RemoveAt(id);
             BuildLines();        
+        }
+
+        public void RemoveLine(int id)
+        {
+            RemoveVertex(lines[id].startVert);
+        }
+
+        public void RemoveSector(int id)
+        {
+            sectors.RemoveAt(id);
+            CleanVertexes();
+        }
+
+        public void CleanVertexes()
+        {
+            bool doClean = true;
+
+            for(int i = 0; i < verts.Count; i++)
+            {
+                doClean = true;
+                for (int j = 0; j < sectors.Count; j++)
+                {
+                    if (sectors[j].ContainsVertex(i))
+                        doClean = false;
+                }
+                if(doClean)
+                {
+                    RemoveVertex(i);
+                    i--;
+                }
+            }
         }
 
         private void BuildLines()
         {
             lines.Clear();
-            for (int i = 0; i < verts.Count; i++)
+            for(int i = 0; i < sectors.Count; i++)
             {
-                if (i + 1 < verts.Count)
-                    lines.Add(new MapDataLine(i, i + 1));
-                else
-                    lines.Add(new MapDataLine(i, 0));
+                sectors[i].lines.Clear();
+
+                for(int j = 0; j < sectors[i].verts.Count; j++)
+                {
+                    if (j + 1 < sectors[i].verts.Count)
+                        lines.Add(new MapDataLine(sectors[i].verts[j], sectors[i].verts[j+1]));
+                    else
+                        lines.Add(new MapDataLine(sectors[i].verts[j], sectors[i].verts[0]));
+
+                    sectors[i].AddLine(lines.Count-1);
+                }
             }
         }
     }

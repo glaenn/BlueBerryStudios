@@ -5,7 +5,6 @@ public static class MapMeshCreator
 {
     public static void CreateMapMesh(ref MapData.MapData mapData)
     {
-
         List<Vector3> verts = new List<Vector3>();
         List<Vector2> uvs = new List<Vector2>();
         
@@ -33,7 +32,6 @@ public static class MapMeshCreator
 
                 uvVerticalStart = uvVerticalEnd;
                 uvVerticalEnd = Vector2.Distance(mapData.verts[mapData.lines[i / 4].startVert], mapData.verts[mapData.lines[i / 4].endVert]) * 0.05f;
-
                 uvVerticalStart -= Mathf.FloorToInt(uvVerticalStart);
                 uvVerticalEnd += uvVerticalStart;
             }
