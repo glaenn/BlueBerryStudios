@@ -36,6 +36,18 @@ public class TitleMenuManager : MonoBehaviour
         networkManager.StartClient();
     }
 
+    public void CreateNewProfile()
+    {
+        //Find a way to create a profile
+        
+    }
+
+    public void DeleteCurrentProfile()
+    {
+        //Find a way to delete profile card
+        
+    }
+
     public void SetMouseSensitivity(float mouseSensitivity)
     {
         GameController.instance.MouseSensitivity = mouseSensitivity;

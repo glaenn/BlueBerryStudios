@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 public class ProfileManager : MonoBehaviour
 {
+    //private string name;
+
+
     struct ProfileData
     {
         public string name;
