@@ -47,19 +47,57 @@ namespace MapData
             return sectorVertexes;
         }
 
+
+        public void RemoveVerts(List<int> vertsToDelete)
+        {
+            for(int i = 0; i < vertsToDelete.Count; i++)
+            {
+                Debug.Log("Deleted vert " + vertsToDelete[i]);
+                vertsToDelete[i] -= i;
+                verts.RemoveAt(vertsToDelete[i]);
+                
+                for (int j = 0; j < sectors.Count; j++)
+                {
+    
+                    Debug.Log("Checking sector " + j);
+
+                    if (sectors[j].verts.Contains(vertsToDelete[i]))
+                        sectors[j].verts.RemoveAt(sectors[j].verts.IndexOf(vertsToDelete[i]));
+
+                    Debug.Log("Checking Sector size " + j + " is " + sectors[j].verts.Count);
+
+                    if (sectors[j].verts.Count == 0)
+                    {
+                        sectors.RemoveAt(j);
+                    }
+                    else
+                    {
+                        for (int k = 0; k < sectors[j].verts.Count; k++)
+                        {
+                            Debug.Log("Checking all the verts in the sector " + k);
+                            if (sectors[j].verts[k] > vertsToDelete[i])
+                            {
+                                Debug.Log("Vert " + k + "was moved down by 1");
+                                sectors[j].verts[k]--;
+                            }
+                        }
+                    }
+                }
+
+            }
+
+            BuildLines();
+
+        }
+
         public void RemoveVertex(int id)
         {
-            for (int i = 0; i < sectors.Count; i++)
+            for (int j = 0; j < sectors.Count; j++)
             {
-                sectors[i].RemoveVertex(id);
+                sectors[j].RemoveVertex(id);
             }
             verts.RemoveAt(id);
             BuildLines();        
-        }
-
-        public void RemoveLine(int id)
-        {
-            RemoveVertex(lines[id].startVert);
         }
 
         public void RemoveSector(int id)

@@ -42,5 +42,15 @@ namespace MapData
                 if (verts[i] > id)
                     verts[i]--;
         }
+
+        public void RemoveVerts(int id)
+        {
+            if (verts.Contains(id))
+                verts.Remove(verts.IndexOf(id));
+
+            for (int i = 0; i < verts.Count; i++)
+                if (verts[i] > id)
+                    verts[i]--;
+        }
     }
 }
