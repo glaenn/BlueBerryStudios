@@ -15,10 +15,9 @@ public static class MapMeshCreator
         //Create walls
         float uvVerticalStart = 0;
         float uvVerticalEnd = 0;
+        int sectorID = 0;
         for (int i = 0; i < mapData.lines.Count * 4; i++)
         {
-            int sectorID = 0;
-
             if (i % 4 == 0)
             {
                 for(int j = 0; j < mapData.sectors.Count; j++)
@@ -56,7 +55,6 @@ public static class MapMeshCreator
                 verts.Add(new Vector3(mapData.verts[mapData.lines[i / 4].endVert].x, mapData.sectors[sectorID].ceilingLevel, mapData.verts[mapData.lines[i / 4].endVert].y) * 0.1f);
                 uvs.Add(new Vector2(uvVerticalEnd, mapData.sectors[sectorID].ceilingLevel * 0.05f));
             }
- 
         }
         //Create wall triangles
         for (int i = 0; i < mapData.lines.Count; i++)
@@ -74,8 +72,11 @@ public static class MapMeshCreator
         {
             List<Vector3> sectorFloorVert = new List<Vector3>();
             List<Vector3> sectorCeilingVert = new List<Vector3>();
+            List<int> newFloorTriangles = new List<int>();
+            List<int> newCeilingTriangles = new List<int>();
 
-            //Find all the vertexes in the secor and add them to the list
+
+            //Find all the vertexes in the sector and add them to the list
             foreach (int vertex in mapData.sectors[i].verts)
             {
                 sectorFloorVert.Add(new Vector3(mapData.verts[vertex].x, mapData.sectors[i].floorLevel, mapData.verts[vertex].y) * 0.1f);
@@ -83,18 +84,20 @@ public static class MapMeshCreator
             }
 
             //Create triangle based on the Sector vertex list
-            floorTriangles.AddRange(Poly2Mesh.ReturnTriangles(ref sectorFloorVert, Vector3.up));
-            ceilingTriangles.AddRange(Poly2Mesh.ReturnTriangles(ref sectorCeilingVert, Vector3.down));
+            newFloorTriangles.AddRange(Poly2Mesh.ReturnTriangles(ref sectorFloorVert, Vector3.up));
+            newCeilingTriangles.AddRange(Poly2Mesh.ReturnTriangles(ref sectorCeilingVert, Vector3.down));
 
-            //Make the triangles reference the new adde floor and ceiling vertex in the verts list
-            for (int j = 0; j < floorTriangles.Count; j++)
+            //Make the triangles reference the newly added floor and ceiling vertex in the verts list
+            for (int j = 0; j < newFloorTriangles.Count; j++)
             {
-                floorTriangles[j] += verts.Count;
-                ceilingTriangles[j] += verts.Count+ sectorFloorVert.Count;
+                newFloorTriangles[j] += verts.Count;
+                newCeilingTriangles[j] += verts.Count+ sectorFloorVert.Count;
             }
             
             verts.AddRange(sectorFloorVert);
             verts.AddRange(sectorCeilingVert);
+            floorTriangles.AddRange(newFloorTriangles);
+            ceilingTriangles.AddRange(newCeilingTriangles);
         }
      
         while(uvs.Count < verts.Count)

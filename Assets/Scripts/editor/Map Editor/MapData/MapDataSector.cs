@@ -32,25 +32,5 @@ namespace MapData
             if (verts.Contains(id))
                 verts.Insert(verts.IndexOf(id) + 1, id + 1);
         }
-
-        public void RemoveVertex(int id)
-        {
-            if (verts.Contains(id))
-                verts.Remove(verts.IndexOf(id));
-
-            for (int i = 0; i < verts.Count; i++)
-                if (verts[i] > id)
-                    verts[i]--;
-        }
-
-        public void RemoveVerts(int id)
-        {
-            if (verts.Contains(id))
-                verts.Remove(verts.IndexOf(id));
-
-            for (int i = 0; i < verts.Count; i++)
-                if (verts[i] > id)
-                    verts[i]--;
-        }
     }
 }

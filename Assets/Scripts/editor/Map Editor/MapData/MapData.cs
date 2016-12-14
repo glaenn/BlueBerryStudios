@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-
 namespace MapData
 {
     public class MapData
@@ -40,9 +39,7 @@ namespace MapData
             Vector2[] sectorVertexes = new Vector2[sectors[sectorID].verts.Count];
 
             for (int i = 0; i < sectorVertexes.Length; i++)
-            {
                 sectorVertexes[i] = verts[sectors[sectorID].verts[i]];
-            }
 
             return sectorVertexes;
         }
@@ -52,32 +49,26 @@ namespace MapData
         {
             for(int i = 0; i < vertsToDelete.Count; i++)
             {
-                Debug.Log("Deleted vert " + vertsToDelete[i]);
-                vertsToDelete[i] -= i;
+                vertsToDelete[i] -= i; //go back one step since everything in the list moved down 
                 verts.RemoveAt(vertsToDelete[i]);
                 
                 for (int j = 0; j < sectors.Count; j++)
                 {
-    
-                    Debug.Log("Checking sector " + j);
-
                     if (sectors[j].verts.Contains(vertsToDelete[i]))
                         sectors[j].verts.RemoveAt(sectors[j].verts.IndexOf(vertsToDelete[i]));
-
-                    Debug.Log("Checking Sector size " + j + " is " + sectors[j].verts.Count);
 
                     if (sectors[j].verts.Count == 0)
                     {
                         sectors.RemoveAt(j);
+                        if (j < sectors.Count) //Needs to go back one step because the list rearange itself
+                            j--;
                     }
                     else
                     {
                         for (int k = 0; k < sectors[j].verts.Count; k++)
                         {
-                            Debug.Log("Checking all the verts in the sector " + k);
                             if (sectors[j].verts[k] > vertsToDelete[i])
                             {
-                                Debug.Log("Vert " + k + "was moved down by 1");
                                 sectors[j].verts[k]--;
                             }
                         }
@@ -87,43 +78,6 @@ namespace MapData
             }
 
             BuildLines();
-
-        }
-
-        public void RemoveVertex(int id)
-        {
-            for (int j = 0; j < sectors.Count; j++)
-            {
-                sectors[j].RemoveVertex(id);
-            }
-            verts.RemoveAt(id);
-            BuildLines();        
-        }
-
-        public void RemoveSector(int id)
-        {
-            sectors.RemoveAt(id);
-            CleanVertexes();
-        }
-
-        public void CleanVertexes()
-        {
-            bool doClean = true;
-
-            for(int i = 0; i < verts.Count; i++)
-            {
-                doClean = true;
-                for (int j = 0; j < sectors.Count; j++)
-                {
-                    if (sectors[j].ContainsVertex(i))
-                        doClean = false;
-                }
-                if(doClean)
-                {
-                    RemoveVertex(i);
-                    i--;
-                }
-            }
         }
 
         private void BuildLines()

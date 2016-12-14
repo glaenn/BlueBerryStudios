@@ -182,10 +182,10 @@ public class MapEditor : EditorWindow
             isHolding = true;
             mousePosSave = e.mousePosition;
 
-            if(editMode == 0)
+            if (editMode == 0)
                 lastSelectedLine = lastHoveredLine;
             else if (editMode == 1)
-            lastSelectedSector = lastHoveredSector;
+                lastSelectedSector = lastHoveredSector;
 
             for (int i = 0; i < selectedVertexes.Count; i++)
                 savedVertexOriginalPos.Add(mapData.verts[selectedVertexes[i]]);
@@ -197,11 +197,11 @@ public class MapEditor : EditorWindow
             savedVertexOriginalPos.Clear();
             isHolding = false;
             mapData.RemoveVerts(selectedVertexes);
-            selectedVertexes.Clear();  
+            selectedVertexes.Clear();
         }
 
         //Moving vertexes
-        else if (e.type == EventType.MouseDrag && selectedVertexes.Count > 0 && isHolding)
+        else if (e.type == EventType.MouseDrag && e.button == 0 && selectedVertexes.Count > 0 && isHolding)
         {
             for (int i = 0; i < savedVertexOriginalPos.Count; i++)
                 mapData.verts[selectedVertexes[i]] = savedVertexOriginalPos[i] - (mousePosSave - e.mousePosition);
@@ -214,16 +214,19 @@ public class MapEditor : EditorWindow
                 mapData.AddVertex(e.mousePosition, lastHoveredLine);
             else if (editMode == 1)
             {
-                mapData.CreateSector(e.mousePosition - new Vector2(EDIT_MODE_AREA.x, 0), e.mousePosition - new Vector2(EDIT_MODE_AREA.x-10, -10));
-                selectedVertexes.Clear();
-                selectedVertexes.Add(mapData.sectors[mapData.sectors.Count-1].verts[1]);
-                selectedVertexes.Add(mapData.sectors[mapData.sectors.Count-1].verts[2]);
-                selectedVertexes.Add(mapData.sectors[mapData.sectors.Count-1].verts[3]);
-                isHolding = true;
-
-                for (int i = 0; i < selectedVertexes.Count; i++)
-                    savedVertexOriginalPos.Add(mapData.verts[selectedVertexes[i]]);
+                mousePosSave = e.mousePosition;
             }
+
+      
+        }
+        //Finalize Sector
+        else if (e.type == EventType.mouseUp && e.button == 1 && editMode == 1)
+        {
+            //To make sure that the sector is added properly (will otherwisw turn walls the wrong way around. This is controlled by the vertex order)
+            Vector2 pointA = new Vector2(Mathf.Min(mousePosSave.x, e.mousePosition.x), Mathf.Min(mousePosSave.y, e.mousePosition.y));
+            Vector2 pointB = new Vector2(Mathf.Max(mousePosSave.x, e.mousePosition.x), Mathf.Max(mousePosSave.y, e.mousePosition.y));
+
+            mapData.CreateSector(pointA - new Vector2(EDIT_MODE_AREA.x, 0), pointB - new Vector2(EDIT_MODE_AREA.x - 10, -10));
         }
     }
     
