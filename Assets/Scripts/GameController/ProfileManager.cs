@@ -4,19 +4,15 @@ using System.Collections.Generic;
 
 public class ProfileManager : MonoBehaviour
 {
-    //private string name;
-
-
-    struct ProfileData
+      struct ProfileData
     {
         public string name;
-        public float playerMinutes;
+        //public float playerMinutes;
         public Color playerColor;
 
         public string GetName()
         {
             return name;
-
         }
 
         public void CreateNewData(string name)
@@ -29,7 +25,7 @@ public class ProfileManager : MonoBehaviour
 
     public void AddProfile()
     {
-        profileData.Add(new ProfileData());            
+        profileData.Add(new ProfileData());                    
     }
 
     public void RemoveProfile()
@@ -40,9 +36,5 @@ public class ProfileManager : MonoBehaviour
     public void GetProfile(int i)
     {
         ProfileData newProfile = profileData[i];
-
-    }
-
-
-	
+    }	
 }

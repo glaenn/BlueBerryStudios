@@ -4,6 +4,8 @@ public class TitleMenuManager : MonoBehaviour
 {
     [SerializeField]    private GameObject[] GUIMenys;
     [SerializeField]    private UnityEngine.UI.Text IPAddress;
+    [SerializeField]    private UnityEngine.UI.Text newProfileName;
+    private Color newProfileColor = Color.red;
     UnityEngine.Networking.NetworkManager networkManager;
 
     public void OpenMeny(int menuChoice)
@@ -18,6 +20,22 @@ public class TitleMenuManager : MonoBehaviour
     void Start()
     {
         networkManager = UnityEngine.Networking.NetworkManager.singleton;
+    }
+
+
+    private void UpdateProfileGUI()
+    {
+        if (GameController.instance.GetNumberOfPlayerProfiles() > 0)
+        {
+            for (int i = 0; i < GameController.instance.GetNumberOfPlayerProfiles(); i++)
+            {
+                //Get slot
+                //Set name
+                //Set color 
+
+                GameController.instance.GetPlayerProfileName(i);
+            }
+        }
     }
 
     public void StartSinglePlayerGame()
@@ -36,10 +54,33 @@ public class TitleMenuManager : MonoBehaviour
         networkManager.StartClient();
     }
 
-    public void CreateNewProfile()
+    public void CreateNewProfile(int nextMenu)
     {
-        //Find a way to create a profile
-        
+        GameController.instance.CreateProfile(newProfileName.text, newProfileColor);
+        OpenMeny(nextMenu);        
+    }
+
+    public void SetProfileColor(int choice)
+    {
+        if(choice == 0)
+        {
+            newProfileColor = Color.red;
+        }
+
+        else if(choice == 1)
+        {
+            newProfileColor = Color.green;
+        }
+
+        else if(choice == 2)
+        {
+            newProfileColor = Color.blue;
+        }
+
+        else
+        {
+            Debug.LogWarning("Invalid profile color!");
+        }
     }
 
     public void DeleteCurrentProfile()

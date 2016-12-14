@@ -51,6 +51,7 @@ public sealed class GameController : MonoBehaviour
     public void SetPlayerProfileName(int profileID, string profileName) {profiles[profileID].profileName = profileName; }
     public Color GetPlayerProfileColor(int profileID) { return profiles[profileID].profileColor; }
     public void SetPlayerProfileColor(int profileID, Color profileColor) { profiles[profileID].profileColor = profileColor; }
+    public int GetSlot(int profileID) { return profiles[profileID].profileSlot; }
 
     public void CreateProfile(string profileName, Color profileColor)
     {
