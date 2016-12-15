@@ -5,6 +5,8 @@ public class TitleMenuManager : MonoBehaviour
     [SerializeField]    private GameObject[] GUIMenys;
     [SerializeField]    private UnityEngine.UI.Text IPAddress;
     [SerializeField]    private UnityEngine.UI.Text newProfileName;
+    [SerializeField]    private UnityEngine.UI.Text[] profileNames;
+    [SerializeField]    private UnityEngine.UI.Image[] profileImage;
     private Color newProfileColor = Color.red;
     UnityEngine.Networking.NetworkManager networkManager;
 
@@ -30,10 +32,10 @@ public class TitleMenuManager : MonoBehaviour
             for (int i = 0; i < GameController.instance.GetNumberOfPlayerProfiles(); i++)
             {
                 //Get slot
-                //Set name
-                //Set color 
-
-                GameController.instance.GetPlayerProfileName(i);
+                int slotIndex = GameController.instance.GetSlot(i);
+                profileNames[slotIndex].text = GameController.instance.GetPlayerProfileName(i);
+                profileImage[slotIndex].color = GameController.instance.GetPlayerProfileColor(i);               
+                
             }
         }
     }
