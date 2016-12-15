@@ -9,9 +9,10 @@ namespace MapData
         public int floorLevel = 0;
         public int ceilingLevel = 30;
         public int floorMaterial = 1;
-        public int ceilingMaterial = 1;
+        public int ceilingMaterial = 2;
 
         public bool ContainsVertex(int id){return verts.Contains(id);}
+        public bool ContainsLine(int id) { return lines.Contains(id); }
 
         public void AddVertex(int id)
         {
