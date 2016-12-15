@@ -29,10 +29,11 @@ public class MapEditor : EditorWindow
     static Rect ELEMENT_EDIT_ROW2 = new Rect(16, 64, 224, 16);
     static Rect ELEMENT_EDIT_ROW3 = new Rect(16, 96, 224, 16);
     static Rect ELEMENT_EDIT_ROW4 = new Rect(16, 112, 224, 16);
+    static Rect ELEMENT_EDIT_ROW5 = new Rect(16, 144, 224, 16);
+    static Rect ELEMENT_EDIT_ROW6 = new Rect(16, 160, 224, 16);
+    static Rect ELEMENT_EDIT_ROW7 = new Rect(16, 192, 224, 16);
+    static Rect ELEMENT_EDIT_ROW8 = new Rect(16, 208, 224, 16);
     const float VERT_SIZE = 10;
-
-    GUIContent[] materialList;
-    private ComboBox comboBoxControl = new ComboBox();
 
     [MenuItem("MyTools/Map editor")]
     static void ShowEditor()
@@ -43,17 +44,10 @@ public class MapEditor : EditorWindow
     public void Awake()
     {
         mapData.CreateSector(new Vector2(200, 200), new Vector2(300, 300));
-
         Texture2D gridBG = new Texture2D(128 * 8, 128 * 8);
         LoadGridMap(ref gridBG);
         blackBG.normal.background = CreateColorTexture(1, 1, new Color(0.3f, 0.3f, 0.32f, 1.0f));
         LightGrayBG.normal.background = CreateColorTexture(1, 1, new Color(0.9f, 0.9f, 0.9f, 1.0f));
-
-        materialList = new GUIContent[20];
-        materialList[0] = new GUIContent("No material - Hollow");
-
-        for(int i = 1; i < materialList.Length; i++)
-            materialList[i] = new GUIContent("Material "+i);
     } 
 
     void OnGUI()
@@ -67,7 +61,6 @@ public class MapEditor : EditorWindow
         GUI.EndGroup();
 
         Event e = Event.current;
-
         hoveredVertexes.Clear();
         isHovering = false; 
 
@@ -84,8 +77,11 @@ public class MapEditor : EditorWindow
             {
                 GUI.BeginGroup(SELCTION_EDIT_AREA, LightGrayBG);
                 GUI.Label(ELEMENT_EDIT_ID, "Line: #" + lastSelectedLine);
-                GUI.Label(ELEMENT_EDIT_ROW1, "Wall Material");
-                mapData.lines[lastSelectedLine].wallMaterialMiddle = comboBoxControl.List(ELEMENT_EDIT_ROW2, materialList[mapData.lines[lastSelectedLine].wallMaterialMiddle].text, materialList);
+                if(mapData.lines[lastSelectedLine].wallMaterialMiddle == 0)
+                    GUI.Label(ELEMENT_EDIT_ROW1, "Wall Material: Hollow");
+                else
+                    GUI.Label(ELEMENT_EDIT_ROW1, "Wall Material: " + mapData.lines[lastSelectedLine].wallMaterialMiddle);
+                mapData.lines[lastSelectedLine].wallMaterialMiddle = (int)GUI.HorizontalSlider(ELEMENT_EDIT_ROW2, mapData.lines[lastSelectedLine].wallMaterialMiddle, 0, 20);
                 GUI.EndGroup();        
             }
         }
@@ -101,6 +97,16 @@ public class MapEditor : EditorWindow
                 mapData.sectors[lastHoveredSector].ceilingLevel = (int)GUI.HorizontalSlider(ELEMENT_EDIT_ROW2, mapData.sectors[lastSelectedSector].ceilingLevel, -100, 100);
                 GUI.Label(ELEMENT_EDIT_ROW3, "Sector floor level: " + (float)mapData.sectors[lastSelectedSector].floorLevel / 10 + " m");
                 mapData.sectors[lastHoveredSector].floorLevel = (int)GUI.HorizontalSlider(ELEMENT_EDIT_ROW4, mapData.sectors[lastSelectedSector].floorLevel, -100, 101);
+                if (mapData.sectors[lastSelectedSector].floorMaterial == 0)
+                    GUI.Label(ELEMENT_EDIT_ROW5, "Floor Material: Hollow");
+                else
+                    GUI.Label(ELEMENT_EDIT_ROW5, "Floor Material: " + mapData.sectors[lastSelectedSector].floorMaterial);
+                mapData.sectors[lastSelectedSector].floorMaterial = (int)GUI.HorizontalSlider(ELEMENT_EDIT_ROW6, mapData.sectors[lastSelectedSector].floorMaterial, 0, 20);
+                if (mapData.sectors[lastSelectedSector].ceilingMaterial == 0)
+                    GUI.Label(ELEMENT_EDIT_ROW7, "Ceiling Material: Hollow");
+                else
+                    GUI.Label(ELEMENT_EDIT_ROW7, "Ceiling Material: " + mapData.sectors[lastSelectedSector].ceilingMaterial);
+                mapData.sectors[lastSelectedSector].ceilingMaterial = (int)GUI.HorizontalSlider(ELEMENT_EDIT_ROW8, mapData.sectors[lastSelectedSector].ceilingMaterial, 0, 20);
                 GUI.EndGroup();
 
                 if (GUI.changed)
@@ -169,8 +175,21 @@ public class MapEditor : EditorWindow
         if (editMode == 1 && isHolding && e.button == 1)
         {
             GUI.color = Color.Lerp(Color.green, Color.black, 0.5f);
+            float maxX = Mathf.Max(mousePosSave.x, e.mousePosition.x);
+            float maxY = Mathf.Max(mousePosSave.y, e.mousePosition.y);
+            float minX = Mathf.Min(mousePosSave.x, e.mousePosition.x);
+            float minY = Mathf.Min(mousePosSave.y, e.mousePosition.y);
 
-            GUI.Box(new Rect(mousePosSave, e.mousePosition-mousePosSave), "");
+            GUI.Box(new Rect(new Vector2(minX, minY) - (new Vector2(VERT_SIZE,VERT_SIZE)/2), new Vector2(VERT_SIZE, VERT_SIZE)), "");
+            GUI.Box(new Rect(new Vector2(maxX, minY) - (new Vector2(VERT_SIZE, VERT_SIZE) / 2), new Vector2(VERT_SIZE, VERT_SIZE)), "");
+            GUI.Box(new Rect(new Vector2(maxX, maxY) - (new Vector2(VERT_SIZE, VERT_SIZE) / 2), new Vector2(VERT_SIZE, VERT_SIZE)), "");
+            GUI.Box(new Rect(new Vector2(minX, maxY) - (new Vector2(VERT_SIZE, VERT_SIZE) / 2), new Vector2(VERT_SIZE, VERT_SIZE)), "");
+
+            Handles.color = Color.Lerp(Color.green, Color.black, 0.5f);
+            Handles.DrawLine(new Vector2(minX, minY), new Vector2(maxX, minY));
+            Handles.DrawLine(new Vector2(maxX, minY), new Vector2(maxX, maxY));
+            Handles.DrawLine(new Vector2(maxX, maxY), new Vector2(minX, maxY));
+            Handles.DrawLine(new Vector2(minX, maxY), new Vector2(minX, minY));
         }
 
         Repaint();
@@ -235,7 +254,7 @@ public class MapEditor : EditorWindow
             Vector2 pointA = new Vector2(Mathf.Min(mousePosSave.x, e.mousePosition.x), Mathf.Min(mousePosSave.y, e.mousePosition.y));
             Vector2 pointB = new Vector2(Mathf.Max(mousePosSave.x, e.mousePosition.x), Mathf.Max(mousePosSave.y, e.mousePosition.y));
 
-            mapData.CreateSector(pointA - new Vector2(EDIT_MODE_AREA.x, 0), pointB - new Vector2(EDIT_MODE_AREA.x - 10, -10));
+            mapData.CreateSector(pointA - (new Vector2(VERT_SIZE, VERT_SIZE) / 2), pointB - (new Vector2(VERT_SIZE, VERT_SIZE) / 2));
 
             isHolding = false;
         }
