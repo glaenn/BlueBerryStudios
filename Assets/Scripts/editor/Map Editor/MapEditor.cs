@@ -165,6 +165,14 @@ public class MapEditor : EditorWindow
             }
         }
 
+        //Paint sector drag
+        if (editMode == 1 && isHolding && e.button == 1)
+        {
+            GUI.color = Color.Lerp(Color.green, Color.black, 0.5f);
+
+            GUI.Box(new Rect(mousePosSave, e.mousePosition-mousePosSave), "");
+        }
+
         Repaint();
 
         //If we are not in the work area. Then the followin stuff shouldn't happen.
@@ -175,7 +183,7 @@ public class MapEditor : EditorWindow
         }
 
         //Selecting Vertexes
-        else if (e.type == EventType.mouseDown && e.button == 0 && hoveredVertexes.Count > 0)
+        else if (e.type == EventType.mouseDown && e.button == 0 && hoveredVertexes.Count > 0 && !isHolding)
         {
             selectedVertexes.Clear();
             selectedVertexes.AddRange(hoveredVertexes);
@@ -208,15 +216,16 @@ public class MapEditor : EditorWindow
         }
 
         //Create (vertex or sector)
-        else if (e.type == EventType.mouseDown && e.button == 1)
+        else if (e.type == EventType.mouseDown && e.button == 1 && !isHolding)
         {
             if (editMode == 0 && hoveredVertexes.Count == 2)
                 mapData.AddVertex(e.mousePosition, lastHoveredLine);
+
             else if (editMode == 1)
             {
                 mousePosSave = e.mousePosition;
             }
-
+            isHolding = true;
       
         }
         //Finalize Sector
@@ -227,6 +236,8 @@ public class MapEditor : EditorWindow
             Vector2 pointB = new Vector2(Mathf.Max(mousePosSave.x, e.mousePosition.x), Mathf.Max(mousePosSave.y, e.mousePosition.y));
 
             mapData.CreateSector(pointA - new Vector2(EDIT_MODE_AREA.x, 0), pointB - new Vector2(EDIT_MODE_AREA.x - 10, -10));
+
+            isHolding = false;
         }
     }
     

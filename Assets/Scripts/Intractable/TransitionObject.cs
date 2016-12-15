@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public sealed class InteractiveDoor : Interactive
+public sealed class TransitionObject : Interactive
 {
     [SerializeField] private string destinationRoom;
     [SerializeField] private string destinationSpawnName;
@@ -14,7 +14,7 @@ public sealed class InteractiveDoor : Interactive
 
     protected override void SendServerCommands()
     {
-        throw new NotImplementedException();
+        
     }
 
     protected override void GetState()
