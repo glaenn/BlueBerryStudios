@@ -99,7 +99,7 @@ public class PlayerData : NetworkBehaviour
     [Command] //This function will run on the server when it is called on the client.
     public void CmdSendPlayerInteraction(string objectID, int state)
     {
-        NetworkGameController.instance.CmdEditGameData(objectID, state);
+        NetworkSaveData.instance.CmdEditGameData(objectID, state);
     }
 
     [ClientRpc] //This fuction will run on all clients when called from the server

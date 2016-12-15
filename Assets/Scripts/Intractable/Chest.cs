@@ -32,13 +32,13 @@ public class Chest : Interactive
 
     protected override void GetState()
     {
-        if (!NetworkGameController.instance.HasGameData(objectID))
+        if (!NetworkSaveData.instance.HasGameData(objectID))
             return;
 
-       NetworkGameController.instance.GetGameData(objectID, ref state, ref serverTimeStamp);
+       NetworkSaveData.instance.GetGameData(objectID, ref state, ref serverTimeStamp);
 
        StopAllCoroutines();
-       StartCoroutine(Animate(NetworkGameController.instance.serverTime));
+       StartCoroutine(Animate(NetworkSaveData.instance.serverTime));
     }
 
     IEnumerator Animate(double currenServerTime)

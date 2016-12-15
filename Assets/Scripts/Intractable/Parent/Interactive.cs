@@ -24,11 +24,11 @@ public abstract class Interactive : MonoBehaviour
         if (updateWithServer)
         {
             objectID = gameObject.scene.name + gameObject.name;
-            if (NetworkGameController.instance.HasGameData(objectID))
+            if (NetworkSaveData.instance.HasGameData(objectID))
             {
                 GetState();
             }
-            NetworkGameController.OnNetworkUpdate += new NetworkGameController.NetworkUpdate(GetState);
+            NetworkSaveData.OnNetworkUpdate += new NetworkSaveData.NetworkUpdate(GetState);
         }
 
     }
@@ -36,7 +36,7 @@ public abstract class Interactive : MonoBehaviour
     void OnDestroy()
     {
         if (updateWithServer)
-            NetworkGameController.OnNetworkUpdate -= new NetworkGameController.NetworkUpdate(GetState);
+            NetworkSaveData.OnNetworkUpdate -= new NetworkSaveData.NetworkUpdate(GetState);
     }
 
     abstract protected void GetState();

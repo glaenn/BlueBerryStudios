@@ -16,22 +16,25 @@ public class PlayerInteractor : NetworkBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        if(Physics.Raycast(transform.position, transform.forward,out hit, 2.5f, layerMask))
+        if(Physics.Raycast(transform.position, transform.forward,out hit, 1.9f))
         {
-            interactive = hit.transform.gameObject.GetComponent<Interactive>();
-
-            try
+            if (hit.transform.tag == "Interactable")
             {
-                hudGUIManager.ShowInteractionText(interactive.GetName());
+                interactive = hit.transform.gameObject.GetComponent<Interactive>();
 
-                if (Input.GetButtonDown("Use"))
+                try
                 {
-                    interactive.Activate(transform.parent.gameObject);
+                    hudGUIManager.ShowInteractionText(interactive.GetName());
+
+                    if (Input.GetButtonDown("Use"))
+                    {
+                        interactive.Activate(transform.parent.gameObject);
+                    }
                 }
-            }
-            catch
-            {
-                Debug.LogError("The object" + hit.transform.name +" has no interactive script placed on it");
+                catch
+                {
+                    Debug.LogError("The object" + hit.transform.name + " has no interactive script placed on it");
+                }
             }
         }
         else
