@@ -141,7 +141,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 
 --- !u!222 &13910905
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -313,7 +313,7 @@ RectTransform:
   m_GameObject: {fileID: 53661295}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.0002, y: 1.0002, z: 1.0002}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 918004074}
   m_RootOrder: 1
@@ -383,7 +383,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 3f7248b502adc854ebc5f3cf5de0b198, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2c9cb7d32898447458ecfc8ac1bb14d4, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -935,7 +935,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 0.7137255, g: 0.6, b: 0.18823531, a: 1}
     m_HighlightedColor: {r: 0.053549763, g: 0.7058823, b: 0, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -955,13 +955,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: 
-        m_Mode: 1
+      - m_Target: {fileID: 1782025985}
+        m_MethodName: DeleteCurrentProfile
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1012,7 +1012,7 @@ GameObject:
   - component: {fileID: 647512328}
   - component: {fileID: 647512327}
   m_Layer: 5
-  m_Name: CreateProfileMenu_2
+  m_Name: 2_CreateProfileMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1200,7 +1200,7 @@ GameObject:
   - component: {fileID: 918004076}
   - component: {fileID: 918004075}
   m_Layer: 5
-  m_Name: Profile3
+  m_Name: Profile_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1455,7 +1455,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 0.7137255, g: 0.6, b: 0.18823531, a: 1}
     m_HighlightedColor: {r: 0.053549763, g: 0.7058823, b: 0, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -1475,9 +1475,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: RemoveProfile
-        m_Mode: 1
+      - m_Target: {fileID: 1782025985}
+        m_MethodName: DeleteCurrentProfile
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1582,7 +1582,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1043091388}
   m_Layer: 5
-  m_Name: ProfileSelect_0
+  m_Name: 0_ProfileSelect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1720,7 +1720,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 
 --- !u!222 &1100386880
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2017,7 +2017,7 @@ GameObject:
   - component: {fileID: 1204980719}
   - component: {fileID: 1204980718}
   m_Layer: 5
-  m_Name: GameMenu_1
+  m_Name: 1_GameMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2088,7 +2088,7 @@ GameObject:
   - component: {fileID: 1263667960}
   - component: {fileID: 1263667959}
   m_Layer: 5
-  m_Name: UserIcon
+  m_Name: PlusSign
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2132,7 +2132,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.053549763, g: 0.7058823, b: 0, a: 1}
+    m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -2152,12 +2152,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1782025985}
-        m_MethodName: OpenMeny
+        m_MethodName: OpenCreateNewProfile
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2468,7 +2468,7 @@ GameObject:
   - component: {fileID: 1348793690}
   - component: {fileID: 1348793689}
   m_Layer: 5
-  m_Name: Profile2
+  m_Name: Profile_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2653,7 +2653,7 @@ RectTransform:
   m_GameObject: {fileID: 1499431914}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.0002, y: 1.0002, z: 1.0002}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 2140724872}
   m_RootOrder: 1
@@ -2723,7 +2723,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 3f7248b502adc854ebc5f3cf5de0b198, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2c9cb7d32898447458ecfc8ac1bb14d4, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2792,7 +2792,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 0.7137255, g: 0.6, b: 0.18823531, a: 1}
     m_HighlightedColor: {r: 0.053549763, g: 0.7058823, b: 0, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -2812,13 +2812,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: 
-        m_Mode: 1
+      - m_Target: {fileID: 1782025985}
+        m_MethodName: DeleteCurrentProfile
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2949,7 +2949,7 @@ GameObject:
   - component: {fileID: 1698683501}
   - component: {fileID: 1698683500}
   m_Layer: 5
-  m_Name: UserIcon
+  m_Name: PlusSign
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2993,7 +2993,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.053549763, g: 0.7058823, b: 0, a: 1}
+    m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -3013,12 +3013,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1782025985}
-        m_MethodName: OpenMeny
+        m_MethodName: OpenCreateNewProfile
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -3107,7 +3107,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 
 --- !u!222 &1708881637
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3452,14 +3452,15 @@ MonoBehaviour:
   - {fileID: 647512325}
   IPAddress: {fileID: 0}
   newProfileName: {fileID: 1595116228}
-  profileNames:
-  - {fileID: 1708881636}
-  - {fileID: 13910904}
-  - {fileID: 1100386879}
-  profileImage:
-  - {fileID: 2139195752}
-  - {fileID: 1292612874}
-  - {fileID: 1733542666}
+  profileSlotGraphics:
+  - profileName: {fileID: 1708881636}
+    profileImage: {fileID: 1698683501}
+  - profileName: {fileID: 13910904}
+    profileImage: {fileID: 1835602155}
+  - profileName: {fileID: 1100386879}
+    profileImage: {fileID: 1263667960}
+  emptySlot: {fileID: 21300000, guid: a03b6a18ad990064baf7bd6c7e0e701e, type: 3}
+  filledSlot: {fileID: 21300000, guid: c5f95a2123a0993419d00778d2fc1ecf, type: 3}
 --- !u!1 &1827732561
 GameObject:
   m_ObjectHideFlags: 0
@@ -3555,7 +3556,7 @@ GameObject:
   - component: {fileID: 1835602155}
   - component: {fileID: 1835602154}
   m_Layer: 5
-  m_Name: AddProfile
+  m_Name: PLusSign
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3598,7 +3599,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 0.116}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -3620,12 +3621,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1782025985}
-        m_MethodName: OpenMeny
+        m_MethodName: OpenCreateNewProfile
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -3825,7 +3826,7 @@ RectTransform:
   m_GameObject: {fileID: 2025712284}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.0002, y: 1.0002, z: 1.0002}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 1348793688}
   m_RootOrder: 1
@@ -3895,7 +3896,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 3f7248b502adc854ebc5f3cf5de0b198, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2c9cb7d32898447458ecfc8ac1bb14d4, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4202,7 +4203,7 @@ GameObject:
   - component: {fileID: 2140724877}
   - component: {fileID: 2140724876}
   m_Layer: 5
-  m_Name: Profile1
+  m_Name: Profile_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

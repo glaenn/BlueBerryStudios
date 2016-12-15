@@ -5,9 +5,24 @@ public class TitleMenuManager : MonoBehaviour
     [SerializeField]    private GameObject[] GUIMenys;
     [SerializeField]    private UnityEngine.UI.Text IPAddress;
     [SerializeField]    private UnityEngine.UI.Text newProfileName;
-    [SerializeField]    private UnityEngine.UI.Text[] profileNames;
-    [SerializeField]    private UnityEngine.UI.Image[] profileImage;
+
+    [System.Serializable]
+    struct ProfileSlotGraphics
+    {
+        public  UnityEngine.UI.Text profileName;
+        public UnityEngine.UI.Image profileImage;        
+    }
+
+    [SerializeField]
+    ProfileSlotGraphics[] profileSlotGraphics;
+
+    [SerializeField] Sprite emptySlot;
+    [SerializeField] Sprite filledSlot;
+ 
     private Color newProfileColor = Color.red;
+    
+    private int lastSelectedProfile = 0;    
+
     UnityEngine.Networking.NetworkManager networkManager;
 
     public void OpenMeny(int menuChoice)
@@ -27,15 +42,24 @@ public class TitleMenuManager : MonoBehaviour
 
     private void UpdateProfileGUI()
     {
-        if (GameController.instance.GetNumberOfPlayerProfiles() > 0)
+        for(int i = 0; i < profileSlotGraphics.Length; i++)
         {
-            for (int i = 0; i < GameController.instance.GetNumberOfPlayerProfiles(); i++)
+            profileSlotGraphics[i].profileName.text = "";
+            profileSlotGraphics[i].profileImage.color = Color.white;
+            profileSlotGraphics[i].profileImage.sprite = emptySlot;
+        }
+
+
+        if (GameController.instance.GetNumberOfProfiles() > 0)
+        {
+            for (int i = 0; i < GameController.instance.GetNumberOfProfiles(); i++)
             {
                 //Get slot
-                int slotIndex = GameController.instance.GetSlot(i);
-                profileNames[slotIndex].text = GameController.instance.GetPlayerProfileName(i);
-                profileImage[slotIndex].color = GameController.instance.GetPlayerProfileColor(i);               
-                
+                int slotIndex = GameController.instance.GetProfileSlot(i);
+                profileSlotGraphics[slotIndex].profileName.text = GameController.instance.GetProfileName(i);
+                profileSlotGraphics[slotIndex].profileImage.color = GameController.instance.GetProfileColor(i);
+                profileSlotGraphics[slotIndex].profileImage.sprite = filledSlot;
+
             }
         }
     }
@@ -56,27 +80,38 @@ public class TitleMenuManager : MonoBehaviour
         networkManager.StartClient();
     }
 
+    public void OpenCreateNewProfile(int profile)
+    {
+        lastSelectedProfile = profile;
+        OpenMeny(2);
+    }
+
     public void CreateNewProfile(int nextMenu)
     {
-        GameController.instance.CreateProfile(newProfileName.text, newProfileColor);
-        OpenMeny(nextMenu);        
+        GameController.instance.CreateProfile(newProfileName.text, newProfileColor, lastSelectedProfile);
+        OpenMeny(nextMenu);
+        UpdateProfileGUI();        
     }
 
     public void SetProfileColor(int choice)
     {
         if(choice == 0)
         {
+            
             newProfileColor = Color.red;
+            UpdateProfileGUI();
         }
 
         else if(choice == 1)
         {
             newProfileColor = Color.green;
+            UpdateProfileGUI();
         }
 
         else if(choice == 2)
         {
             newProfileColor = Color.blue;
+            UpdateProfileGUI();
         }
 
         else
@@ -84,11 +119,12 @@ public class TitleMenuManager : MonoBehaviour
             Debug.LogWarning("Invalid profile color!");
         }
     }
+  
 
-    public void DeleteCurrentProfile()
+    public void DeleteCurrentProfile(int profileID)
     {
-        //Find a way to delete profile card
-        
+        GameController.instance.RemoveProfile(profileID);
+        UpdateProfileGUI();
     }
 
     public void SetMouseSensitivity(float mouseSensitivity)

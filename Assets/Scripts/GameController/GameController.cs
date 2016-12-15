@@ -46,16 +46,17 @@ public sealed class GameController : MonoBehaviour
     //Profiles
     private List<ProfileSaveData> profiles = new List<ProfileSaveData>();
 
-    public int GetNumberOfPlayerProfiles() { return profiles.Count; }
-    public string GetPlayerProfileName(int profileID) { return profiles[profileID].profileName; }
-    public void SetPlayerProfileName(int profileID, string profileName) {profiles[profileID].profileName = profileName; }
-    public Color GetPlayerProfileColor(int profileID) { return profiles[profileID].profileColor; }
-    public void SetPlayerProfileColor(int profileID, Color profileColor) { profiles[profileID].profileColor = profileColor; }
-    public int GetSlot(int profileID) { return profiles[profileID].profileSlot; }
+    public int GetNumberOfProfiles() { return profiles.Count; }
+    public string GetProfileName(int profileID) { return profiles[profileID].profileName; }
+    public void SetProfileName(int profileID, string profileName) {profiles[profileID].profileName = profileName; }
+    public Color GetProfileColor(int profileID) { return profiles[profileID].profileColor; }
+    public void SetProfileColor(int profileID, Color profileColor) { profiles[profileID].profileColor = profileColor; }
+    public int GetProfileSlot(int profileID) { return profiles[profileID].profileSlot; }    
+    
 
-    public void CreateProfile(string profileName, Color profileColor)
+    public void CreateProfile(string profileName, Color profileColor, int profileSlot)
     {
-        profiles.Add(new ProfileSaveData(profileName, profileColor));
+        profiles.Add(new ProfileSaveData(profileName, profileColor, profileSlot));
     }
     public void RemoveProfile(int profileID)
     {
