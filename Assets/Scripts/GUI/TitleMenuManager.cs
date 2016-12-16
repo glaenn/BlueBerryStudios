@@ -9,9 +9,9 @@ public class TitleMenuManager : MonoBehaviour
     [System.Serializable]
     struct ProfileSlotGraphics
     {
-        public  UnityEngine.UI.Text profileName;
+        public UnityEngine.UI.Text profileName;
         public UnityEngine.UI.Image profileImage;        
-    }
+    }      
 
     [SerializeField]
     ProfileSlotGraphics[] profileSlotGraphics;
@@ -36,7 +36,7 @@ public class TitleMenuManager : MonoBehaviour
 
     void Start()
     {
-        networkManager = UnityEngine.Networking.NetworkManager.singleton;
+        networkManager = UnityEngine.Networking.NetworkManager.singleton;        
     }
 
 
@@ -53,13 +53,11 @@ public class TitleMenuManager : MonoBehaviour
         if (GameController.instance.GetNumberOfProfiles() > 0)
         {
             for (int i = 0; i < GameController.instance.GetNumberOfProfiles(); i++)
-            {
-                //Get slot
+            {              
                 int slotIndex = GameController.instance.GetProfileSlot(i);
                 profileSlotGraphics[slotIndex].profileName.text = GameController.instance.GetProfileName(i);
                 profileSlotGraphics[slotIndex].profileImage.color = GameController.instance.GetProfileColor(i);
                 profileSlotGraphics[slotIndex].profileImage.sprite = filledSlot;
-
             }
         }
     }
@@ -126,6 +124,7 @@ public class TitleMenuManager : MonoBehaviour
         GameController.instance.RemoveProfile(profileID);
         UpdateProfileGUI();
     }
+  
 
     public void SetMouseSensitivity(float mouseSensitivity)
     {
@@ -141,6 +140,16 @@ public class TitleMenuManager : MonoBehaviour
     {
         GameController.instance.SoundVolyme = soundVolyme;
     }
+
+    public void SetFieldOfView(int fieldOfView)
+    {
+        GameController.instance.FieldOfView = fieldOfView;
+    }
+
+    public void SetInvertedVerticalAxis(bool invertedVerticalAxis)
+    {
+        GameController.instance.InvertedVerticalAxis = invertedVerticalAxis;
+    }  
 
     public void QuitGame()
     {
