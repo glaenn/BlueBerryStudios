@@ -6,15 +6,18 @@ public class HudGUIManager : MonoBehaviour
     [SerializeField]private UnityEngine.UI.Text nameText;
     [SerializeField]private GameObject textBG;
     [SerializeField]private RectTransform healthbar;
+    [SerializeField]private RectTransform staminabar;
     [SerializeField]private UnityEngine.UI.RawImage blackFade;
 
     private bool hasFaded = true;
 
     private float healthBarMaxSize;
+    private float staminaBarMaxSize;
 
     void Start()
     {
         healthBarMaxSize = healthbar.sizeDelta.x;
+        staminaBarMaxSize = staminabar.sizeDelta.x;
     }
 
     // Use this for initialization
@@ -59,5 +62,10 @@ public class HudGUIManager : MonoBehaviour
     public void UpdateHealthBar(float currentHealth, float maxHealth)
     {
         healthbar.sizeDelta = new Vector2((currentHealth / maxHealth) * healthBarMaxSize, healthbar.sizeDelta.y);
+    }
+
+    public void UpdateStaminaBar(float currentStamina, float maxStamina)
+    {
+        staminabar.sizeDelta = new Vector2((currentStamina / maxStamina) * staminaBarMaxSize, staminabar.sizeDelta.y);
     }
 }

@@ -17,12 +17,20 @@ public class PlayerData : NetworkBehaviour
 
     //Player variables
     [SyncVar] private string playerScene = "Map01"; //SyncVar makes sure that the server updates the variable to the clients
-    [SyncVar] private int playerMaxHealth = 100;
-    [SyncVar] private int playerCurrentHealth = 100;
-    [SyncVar] private string playerRespawnScene = "Map01";
-
+    private int playerMaxHealth = 100;
+    private int playerCurrentHealth = 100;
+    private float playerMaxStamina = 100;
+    private float playerCurrentStamina = 100;
+    private bool isSprinting;
+    private string playerRespawnScene = "Map01";
 
     public string GetPlayerScene(){return playerScene;}
+    public float GetPlayerStamina() { return playerCurrentStamina; }
+    public void SetPlayerSprint(bool isSprinting) { this.isSprinting = isSprinting; }
+    public bool IsPlayerSprint()
+    {
+        return (isSprinting && playerCurrentStamina > 0);
+    }
 
     // Use this for initialization
     void Start ()
@@ -45,9 +53,17 @@ public class PlayerData : NetworkBehaviour
     {
         if (isLocalPlayer)
         {
-            hudGUIManager.UpdateHealthBar(playerCurrentHealth, playerMaxHealth);
+            if (playerCurrentStamina < playerMaxStamina && !isSprinting)
+                playerCurrentStamina += Time.deltaTime * 10;
+            else if (playerCurrentStamina > 0 && isSprinting)
+                playerCurrentStamina -= Time.deltaTime * 20;
 
-            if(playerCurrentHealth <= 0)
+            playerCurrentStamina = Mathf.Clamp(playerCurrentStamina, 0, playerMaxStamina);
+
+            hudGUIManager.UpdateHealthBar(playerCurrentHealth, playerMaxHealth);
+            hudGUIManager.UpdateStaminaBar(playerCurrentStamina, playerMaxStamina);
+
+            if (playerCurrentHealth <= 0)
             {
                 GetComponent<PlayerSceneManager>().LoadScene(playerRespawnScene, "Respawn"); //Respawn at latest respawnpoint
                 CmdRestoreHealth(playerMaxHealth * 2);
@@ -66,6 +82,9 @@ public class PlayerData : NetworkBehaviour
             }
         }
     }
+
+    
+
     [Command] //This function will run on the server when it is called on the client.
     public void CmdSetPlayerRespawnScene(string mapName)
     {
