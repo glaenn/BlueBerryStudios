@@ -94,9 +94,9 @@ public class MapEditor : EditorWindow
                 GUI.BeginGroup(SELCTION_EDIT_AREA, LightGrayBG);
                 GUI.Label(ELEMENT_EDIT_ID, "Sector: #" + lastSelectedSector);
                 GUI.Label(ELEMENT_EDIT_ROW1, "Sector ceiling level: " + (float)mapData.sectors[lastSelectedSector].ceilingLevel / 10 + " m");
-                mapData.sectors[lastHoveredSector].ceilingLevel = (int)GUI.HorizontalSlider(ELEMENT_EDIT_ROW2, mapData.sectors[lastSelectedSector].ceilingLevel, -100, 100);
+                mapData.sectors[lastSelectedSector].ceilingLevel = (int)GUI.HorizontalSlider(ELEMENT_EDIT_ROW2, mapData.sectors[lastSelectedSector].ceilingLevel, -100, 100);
                 GUI.Label(ELEMENT_EDIT_ROW3, "Sector floor level: " + (float)mapData.sectors[lastSelectedSector].floorLevel / 10 + " m");
-                mapData.sectors[lastHoveredSector].floorLevel = (int)GUI.HorizontalSlider(ELEMENT_EDIT_ROW4, mapData.sectors[lastSelectedSector].floorLevel, -100, 101);
+                mapData.sectors[lastSelectedSector].floorLevel = (int)GUI.HorizontalSlider(ELEMENT_EDIT_ROW4, mapData.sectors[lastSelectedSector].floorLevel, -100, 101);
                 if (mapData.sectors[lastSelectedSector].floorMaterial == 0)
                     GUI.Label(ELEMENT_EDIT_ROW5, "Floor Material: Hollow");
                 else
@@ -109,6 +109,7 @@ public class MapEditor : EditorWindow
                 mapData.sectors[lastSelectedSector].ceilingMaterial = (int)GUI.HorizontalSlider(ELEMENT_EDIT_ROW8, mapData.sectors[lastSelectedSector].ceilingMaterial, 0, 20);
                 GUI.EndGroup();
 
+              
                 if (GUI.changed)
                 {
                     if (mapData.sectors[lastSelectedSector].ceilingLevel <= mapData.sectors[lastSelectedSector].floorLevel)
@@ -116,6 +117,7 @@ public class MapEditor : EditorWindow
                     else if (mapData.sectors[lastSelectedSector].floorLevel > mapData.sectors[lastSelectedSector].ceilingLevel)
                         mapData.sectors[lastSelectedSector].floorLevel = mapData.sectors[lastSelectedSector].ceilingLevel - 1;
                 }
+               
             }
         }
 
