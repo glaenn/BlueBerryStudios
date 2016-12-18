@@ -5,11 +5,10 @@ public class PlayerMotor : NetworkBehaviour
 {
     private float currentCameraRotationX = 0.0f;
     private Rigidbody rb;
-    [SyncVar]private Vector3 velocity;
+    private Vector3 currentDir;
 
-    [SerializeField] private float speed = 5.0f;
-    [SerializeField] private float currentRunSpeed = 0.0f;
-
+    [SerializeField] private float walkSpeed = 10.0f;
+    [SerializeField] private float sprintModifier = 2.0f;
     [SerializeField] private Camera cam;
     [SerializeField] private Animator animator;
 
@@ -17,7 +16,8 @@ public class PlayerMotor : NetworkBehaviour
     private const float MINIMUM_X = -90F;
     private const float MAXIMUM_X = 90F;
     private const float CAMERA_ROTATION_X_LIMIT = 75f;
-    private const float JUMPFORCE = 300;
+    private const float JUMP_FORCE = 300;
+    private const float WALK_ANIMATION_SYNC = 3;
 
     void Start()
     {
@@ -27,41 +27,29 @@ public class PlayerMotor : NetworkBehaviour
     public void PerformJump()
     {
         if(Physics.Raycast(transform.position,Vector3.down, 1.2f))
-            rb.AddForce(Vector3.up * JUMPFORCE);
+            rb.AddForce(Vector3.up * JUMP_FORCE);
     }
 
-    public void PerformMovement(Vector3 velocity)
+    public void PerformMovement(Vector3 currentDir, bool isSprinting)
     {
-        CmdSetVelocity(velocity);
+        this.currentDir = currentDir;
+        PlayerData.localPlayerInstance.SetPlayerSprint(isSprinting);
+    }
 
-        if (velocity != Vector3.zero)
+    void FixedUpdate()
+    {
+        if (isLocalPlayer && currentDir != Vector3.zero)
         {
-            rb.MovePosition(rb.position + velocity * speed * Time.deltaTime);
-            
-        }
-    }
-
-
-    [Command] //This function will run on the server when it is called on the client.
-    public void CmdSetVelocity(Vector3 velocity)
-    {
-        this.velocity = velocity;
-
+            if (PlayerData.localPlayerInstance.IsPlayerSprint())
+                rb.AddForce(currentDir * (walkSpeed * sprintModifier), ForceMode.Acceleration);
+            else
+                rb.AddForce(currentDir * walkSpeed, ForceMode.Acceleration);
+        }    
     }
 
     void Update()
     {
-        if (velocity != Vector3.zero)
-        {
-            currentRunSpeed += Time.deltaTime * 3;
-        }
-        else
-        {
-            currentRunSpeed -= Time.deltaTime * 3;
-        }
- 
-        currentRunSpeed = Mathf.Clamp(currentRunSpeed, 0, 1);
-        animator.SetFloat("MovingSpeed", currentRunSpeed);
+        animator.SetFloat("MovingSpeed", Mathf.Clamp(rb.velocity.magnitude/ WALK_ANIMATION_SYNC, 0 , 1));
     }
 
     public void PerformRotation(float characterRotation, float cameraRotationX)

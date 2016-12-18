@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(PlayerMotor))]
 public sealed class PlayerInput : MonoBehaviour
 {
     private PlayerMotor playerMotor;
@@ -9,29 +10,17 @@ public sealed class PlayerInput : MonoBehaviour
     void Start ()
     {
         playerMotor = GetComponent<PlayerMotor>();
+        mouseSensitivity = GameController.instance.MouseSensitivity;
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        //Calculate movement as 3D vector
-        float xMove = Input.GetAxisRaw("Horizontal");
-        float zMove = Input.GetAxisRaw("Vertical");
+        Vector3 moveHorizontal = transform.right * Input.GetAxisRaw("Horizontal");
+        Vector3 moveVertical = transform.forward * Input.GetAxisRaw("Vertical");
 
-        Vector3 moveHorizontal = transform.right * xMove;
-        Vector3 moveVertical = transform.forward * zMove;
-
-        Vector3 velocity = (moveHorizontal + moveVertical).normalized;
-
-        playerMotor.PerformMovement(velocity);
-
-        //Calculate character rotation (turning around)
-        float yRot = Input.GetAxisRaw("Mouse X") * mouseSensitivity;
-
-        //Calculate camera rotation (looking up and down)
-        float xRot = Input.GetAxisRaw("Mouse Y") * mouseSensitivity;
-   
-        playerMotor.PerformRotation(yRot, xRot);
+        playerMotor.PerformMovement((moveHorizontal + moveVertical).normalized, Input.GetButton("Sprint"));
+        playerMotor.PerformRotation(Input.GetAxisRaw("Mouse X") * mouseSensitivity, Input.GetAxisRaw("Mouse Y") * mouseSensitivity);
 
         //Jump
         if (Input.GetButtonDown("Jump"))

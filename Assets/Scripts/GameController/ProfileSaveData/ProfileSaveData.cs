@@ -12,7 +12,7 @@ public class ProfileSaveData
     {
         this.profileName = profileName;
         this.profileColor = profileColor;
-        this.profileSlot = profileSlot;        
+        this.profileSlot = profileSlot;       
         Random.InitState((int)(Time.realtimeSinceStartup * 10)); 
         uniquID = Random.Range(0, 1000000);
         playedTime = 0;                
