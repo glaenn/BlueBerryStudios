@@ -17,10 +17,10 @@ public class PlayerData : NetworkBehaviour
 
     //Player variables
     [SyncVar] private string playerScene = "Map01"; //SyncVar makes sure that the server updates the variable to the clients
-    private int playerMaxHealth = 100;
-    private int playerCurrentHealth = 100;
-    private float playerMaxStamina = 100;
-    private float playerCurrentStamina = 100;
+    [SyncVar] private int playerMaxHealth = 100;
+    [SyncVar] private int playerCurrentHealth = 100;
+    [SyncVar] private float playerMaxStamina = 100;
+    [SyncVar] private float playerCurrentStamina = 100;
     private bool isSprinting;
     private string playerRespawnScene = "Map01";
 
@@ -83,16 +83,13 @@ public class PlayerData : NetworkBehaviour
         }
     }
 
-    
-
     [Command] //This function will run on the server when it is called on the client.
     public void CmdSetPlayerRespawnScene(string mapName)
     {
         playerRespawnScene = mapName;
     }
 
-    [Command] //This function will run on the server when it is called on the client.
-    public void CmdApplyDamage(int damage)
+    public void ApplyDamage(int damage)
     {
         playerCurrentHealth = Mathf.Clamp(playerCurrentHealth - damage, 0, playerMaxHealth);
     }
@@ -146,8 +143,4 @@ public class PlayerData : NetworkBehaviour
         effects[effectID].DisableEffect();
         effects.RemoveAt(effectID);
     }
-
-
-
-
 }

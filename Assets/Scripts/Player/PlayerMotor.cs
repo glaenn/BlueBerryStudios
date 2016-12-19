@@ -53,7 +53,7 @@ public class PlayerMotor : NetworkBehaviour
         }    
     }
 
-    void Update()
+    void LateUpdate()
     {
         animator.SetFloat("MovingSpeed", Mathf.Clamp(rb.velocity.magnitude/ WALK_ANIMATION_SYNC, 0 , 1));
     }
@@ -91,9 +91,6 @@ public class PlayerMotor : NetworkBehaviour
 
             //Apply our rotation to the transform of our camera
             cam.transform.localEulerAngles = new Vector3(currentCameraRotationX, 0f, 0f);
-
         }
-
-      
     }
 }

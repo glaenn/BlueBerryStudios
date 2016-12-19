@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class DamageTrigger : MonoBehaviour
 {
@@ -10,8 +9,9 @@ public class DamageTrigger : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            other.GetComponent<PlayerData>().CmdSetStatusEffect(statusEffect);
-        }
+            if(PlayerData.localPlayerInstance.gameObject == other.gameObject)
+                other.GetComponent<PlayerData>().CmdSetStatusEffect(statusEffect);
+        }   
 
     }
 }

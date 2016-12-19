@@ -103,8 +103,6 @@ public sealed class GameController : MonoBehaviour
         profiles.RemoveAt(profileID);
     }
     
-
-
     //Awake is always called before any Start functions
     void Awake()
     {
