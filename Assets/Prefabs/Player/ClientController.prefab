@@ -2428,10 +2428,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e81c75a65d2435c4e944abcd7e03f903, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 16
+  walkSpeed: 18
   sprintModifier: 2
   cam: {fileID: 20000010304662616}
   animator: {fileID: 95000014147205714}
+  frameCounter: 15
 --- !u!114 &114000013740329142
 MonoBehaviour:
   m_ObjectHideFlags: 1

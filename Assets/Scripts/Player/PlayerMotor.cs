@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
+using System.Collections.Generic;
+
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMotor : NetworkBehaviour
 {
@@ -7,7 +9,7 @@ public class PlayerMotor : NetworkBehaviour
     private Rigidbody rb;
     private Vector3 currentDir;
 
-    [SerializeField] private float walkSpeed = 10.0f;
+    [SerializeField] private float walkSpeed = 18.0f;
     [SerializeField] private float sprintModifier = 2.0f;
     [SerializeField] private Camera cam;
     [SerializeField] private Animator animator;
@@ -18,6 +20,10 @@ public class PlayerMotor : NetworkBehaviour
     private const float CAMERA_ROTATION_X_LIMIT = 75f;
     private const float JUMP_FORCE = 300;
     private const float WALK_ANIMATION_SYNC = 3;
+
+    private List<float> rotArrayX = new List<float>();
+    private List<float> rotArrayY = new List<float>();
+    [SerializeField] private float frameCounter = 20.0f;
 
     void Start()
     {
@@ -52,22 +58,42 @@ public class PlayerMotor : NetworkBehaviour
         animator.SetFloat("MovingSpeed", Mathf.Clamp(rb.velocity.magnitude/ WALK_ANIMATION_SYNC, 0 , 1));
     }
 
-    public void PerformRotation(float characterRotation, float cameraRotationX)
+    public void PerformRotation(float characterRotationY, float cameraRotationX)
     {
-        rb.MoveRotation(rb.rotation * Quaternion.Euler(new Vector3(0.0f, characterRotation, 0.0f)));
+        float rotAverageY = 0f;
+        float rotAverageX = 0f;
+
+        rotArrayX.Add(cameraRotationX);
+        rotArrayY.Add(characterRotationY);
+
+        if (rotArrayY.Count >= frameCounter)
+            rotArrayY.RemoveAt(0);
+
+        if (rotArrayX.Count >= frameCounter)
+            rotArrayX.RemoveAt(0);
+
+        for (int j = 0; j < rotArrayY.Count; j++)
+            rotAverageY += rotArrayY[j];
+
+        for (int i = 0; i < rotArrayX.Count; i++)
+            rotAverageX += rotArrayX[i];
+
+        rotAverageY /= rotArrayY.Count;
+        rotAverageX /= rotArrayX.Count;
+
+        rb.MoveRotation(rb.rotation * Quaternion.AngleAxis(rotAverageY, Vector3.up));
 
         if (cam != null)
         {
             // Set our rotation and clamp it
-            currentCameraRotationX -= cameraRotationX;
+            currentCameraRotationX -= rotAverageX;
             currentCameraRotationX = Mathf.Clamp(currentCameraRotationX, -CAMERA_ROTATION_X_LIMIT, CAMERA_ROTATION_X_LIMIT);
 
             //Apply our rotation to the transform of our camera
             cam.transform.localEulerAngles = new Vector3(currentCameraRotationX, 0f, 0f);
 
-            //cam.transform.localRotation = Quaternion.Slerp(camera.localRotation, m_CameraTargetRot,
-            //        smoothTime * Time.deltaTime);
-
         }
+
+      
     }
 }
