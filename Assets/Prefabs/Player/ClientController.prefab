@@ -2259,7 +2259,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4294966783
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -2276,8 +2276,8 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010420293218}
   serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 4
+  m_Mass: 2
+  m_Drag: 0
   m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -2428,7 +2428,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e81c75a65d2435c4e944abcd7e03f903, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 18
+  velocityMultiplier: 15
+  maxVelocity: 10
   sprintModifier: 2
   cam: {fileID: 20000010304662616}
   animator: {fileID: 95000014147205714}

@@ -883,7 +883,7 @@ MonoBehaviour:
   updateWithServer: 1
   objectName: Door
   state: 0
-  lidMaxRotation: 150
+  maxRotation: 150
   openTime: 1.5
 --- !u!65 &1157678281
 BoxCollider:

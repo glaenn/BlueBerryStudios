@@ -2,7 +2,6 @@
 using UnityEngine.Networking;
 
 [RequireComponent(typeof(PlayerInput))]
-
 public class PlayerSetup : NetworkBehaviour
 {
     [SerializeField] GameObject playerCamera;
@@ -10,17 +9,14 @@ public class PlayerSetup : NetworkBehaviour
     [SerializeField] GameObject playerHair;
     [SerializeField] GameObject playerFace;
 
-
     // Only called on localplayer
     public override void OnStartLocalPlayer()
     {
         GetComponent<PlayerInput>().enabled = true;
         playerCamera.SetActive(true);
-        playerEyes.SetActive(false);
-        playerHair.SetActive(false);
-        playerFace.SetActive(false);
-
-
+        playerEyes.layer = 9; //Hide from player layer
+        playerHair.layer = 9; //Hide from player layer
+        playerFace.layer = 9; //Hide from player layer
     }
 
 }

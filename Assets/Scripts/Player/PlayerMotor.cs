@@ -9,7 +9,8 @@ public class PlayerMotor : NetworkBehaviour
     private Rigidbody rb;
     private Vector3 currentDir;
 
-    [SerializeField] private float walkSpeed = 18.0f;
+    [SerializeField] private float velocityMultiplier = 15.0f;
+    [SerializeField] private float maxVelocity = 10.0f;
     [SerializeField] private float sprintModifier = 2.0f;
     [SerializeField] private Camera cam;
     [SerializeField] private Animator animator;
@@ -18,8 +19,9 @@ public class PlayerMotor : NetworkBehaviour
     private const float MINIMUM_X = -90F;
     private const float MAXIMUM_X = 90F;
     private const float CAMERA_ROTATION_X_LIMIT = 75f;
-    private const float JUMP_FORCE = 300;
+    private const float JUMP_FORCE = 500;
     private const float WALK_ANIMATION_SYNC = 3;
+    private const float MOVEMENT_DRAG = 0.95f;
 
     private List<float> rotArrayX = new List<float>();
     private List<float> rotArrayY = new List<float>();
@@ -46,23 +48,31 @@ public class PlayerMotor : NetworkBehaviour
     {
         if (isLocalPlayer && currentDir != Vector3.zero)
         {
-            if (PlayerData.localPlayerInstance.IsPlayerSprint())
-                rb.AddForce(currentDir * (walkSpeed * sprintModifier), ForceMode.Acceleration);
-            else
-                rb.AddForce(currentDir * walkSpeed, ForceMode.Acceleration);
-        }    
+                if (PlayerData.localPlayerInstance.IsPlayerSprint() && rb.velocity.magnitude < maxVelocity*sprintModifier)
+                    rb.AddForce(currentDir * (velocityMultiplier * sprintModifier), ForceMode.Acceleration);
+                else if (rb.velocity.magnitude < maxVelocity)
+                    rb.AddForce(currentDir * velocityMultiplier, ForceMode.Acceleration);
+        }
+
+        //Created rigidbody drag that doesn't affect falling down
+        rb.velocity = new Vector3(rb.velocity.x * MOVEMENT_DRAG, rb.velocity.y, rb.velocity.z * MOVEMENT_DRAG);
+          
     }
 
     void LateUpdate()
     {
         animator.SetFloat("MovingSpeed", Mathf.Clamp(rb.velocity.magnitude/ WALK_ANIMATION_SYNC, 0 , 1));
+
+        if(isLocalPlayer)
+        {
+            //cam.transform.localPosition = new Vector3(cam.transform.localPosition.x, cam.transform.localPosition.y, Mathf.Clamp(0.18f, 0.18f + (transform.InverseTransformDirection(rb.velocity).z/25)));
+        }
     }
 
     public void ToogleHolster()
     {
         animator.SetBool("Holster", !animator.GetBool("Holster"));
     }
-
 
     public void PerformRotation(float characterRotationY, float cameraRotationX)
     {
