@@ -58,6 +58,12 @@ public class PlayerMotor : NetworkBehaviour
         animator.SetFloat("MovingSpeed", Mathf.Clamp(rb.velocity.magnitude/ WALK_ANIMATION_SYNC, 0 , 1));
     }
 
+    public void ToogleHolster()
+    {
+        animator.SetBool("Holster", !animator.GetBool("Holster"));
+    }
+
+
     public void PerformRotation(float characterRotationY, float cameraRotationX)
     {
         float rotAverageY = 0f;

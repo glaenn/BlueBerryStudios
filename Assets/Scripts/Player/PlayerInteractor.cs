@@ -6,7 +6,6 @@ public class PlayerInteractor : NetworkBehaviour
     private HudGUIManager hudGUIManager;
     private RaycastHit hit;
     private Interactive interactive;
-    private int layerMask = 1 << 8;
 
     void Awake()
     {

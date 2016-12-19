@@ -28,5 +28,11 @@ public sealed class PlayerInput : MonoBehaviour
             playerMotor.PerformJump();
         }
 
+        //Holter
+        if (Input.GetButtonDown("Holster"))
+        {
+            playerMotor.ToogleHolster(); 
+        }
+
     }
 }
