@@ -30,7 +30,6 @@ public abstract class Interactive : MonoBehaviour
             }
             NetworkSaveData.OnNetworkUpdate += new NetworkSaveData.NetworkUpdate(GetState);
         }
-
     }
 
     void OnDestroy()
@@ -40,5 +39,4 @@ public abstract class Interactive : MonoBehaviour
     }
 
     abstract protected void GetState();
-
 }

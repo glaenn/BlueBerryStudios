@@ -20,9 +20,7 @@ public class PlayerMotor : NetworkBehaviour
     [SerializeField] private Transform neck;
 
     //Constants
-    private const float MINIMUM_X = -90F;
-    private const float MAXIMUM_X = 90F;
-    private const float CAMERA_ROTATION_X_LIMIT = 75f;
+    private const float CAMERA_ROTATION_X_LIMIT = 45f;
     private const float JUMP_FORCE = 500;
     private const float WALK_ANIMATION_SYNC = 3;
     private const float MOVEMENT_DRAG = 0.95f;
@@ -89,11 +87,10 @@ public class PlayerMotor : NetworkBehaviour
             neck.Rotate(bodyRotation, 0, 0);
         }
         */
-        spine.Rotate(currentCameraRotationX / 3, 0, 0);
-        clavice_l.Rotate(0, -currentCameraRotationX/3, 0);
-        clavice_r.Rotate(0, currentCameraRotationX / 3, 0);
-        neck.Rotate(currentCameraRotationX / 3, 0, 0);
-
+        spine.Rotate(currentCameraRotationX / 2, 0, 0);
+        clavice_l.Rotate(0, -currentCameraRotationX/4, 0);
+        clavice_r.Rotate(0, currentCameraRotationX / 4, 0);
+        neck.Rotate(currentCameraRotationX / 2, 0, 0);
     }
 
     public void ToogleHolster()

@@ -4,14 +4,15 @@ using System.Collections.Generic;
 public sealed class GameController : MonoBehaviour
 {
     //Localdata
-    public static GameController instance = null;              //Static instance of GameManager which allows it to be accessed by any other script.
+    public static GameController instance = null;   //Static instance of GameManager which allows it to be accessed by any other script.
     private float mouseSensitivity = 3.0f;
-    private float musicVolyme = 100.0f;
-    private float soundVolyme = 100.0f;
+    private float musicVolume = 1.0f;
+    private float soundVolume = 1.0f;
     private float fieldOfview = 90f;
     private bool invertVerticalAxis = false;
-    private float brightness = 50f;
 
+    public delegate void MusicVolumeUpdate(float volyme);
+    public static event MusicVolumeUpdate OnMusicVolumeUpdate;
 
     public float MouseSensitivity                     
     {
@@ -24,26 +25,28 @@ public sealed class GameController : MonoBehaviour
             mouseSensitivity = value; 
        }
     }
-    public float MusicVolyme
+    public float MusicVolume
     {
         get
         {
-            return musicVolyme;
+            return musicVolume;
         }
         set
         {
-            musicVolyme = value;
+            musicVolume = value;
+            if (OnMusicVolumeUpdate != null)
+                OnMusicVolumeUpdate(musicVolume);
         }
     }
-    public float SoundVolyme
+    public float SoundVolume
     {
         get
         {
-            return soundVolyme;
+            return soundVolume;
         }
         set
         {
-            soundVolyme = value;
+            soundVolume = value;
         }
     }
 
@@ -71,18 +74,6 @@ public sealed class GameController : MonoBehaviour
         }
     }
     
-    public float Brightness
-    {
-        get
-        {
-            return brightness;
-        }
-        set
-        {
-            brightness = value;
-        }
-    }   
-
     //Profiles
     private List<ProfileSaveData> profiles = new List<ProfileSaveData>();
 

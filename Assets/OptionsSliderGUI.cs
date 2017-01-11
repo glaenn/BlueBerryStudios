@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class OptionsSliderGUI : MonoBehaviour
 {
@@ -9,73 +7,48 @@ public class OptionsSliderGUI : MonoBehaviour
     [SerializeField]
     Option options;
 
-
-    
-
    void Awake()
    {
-        if(options == Option.fov)
+        switch (options)
         {
-            GetComponent<UnityEngine.UI.Slider>().value = GameController.instance.FieldOfView;
-        }
+            case Option.fov:
+                GetComponent<UnityEngine.UI.Slider>().value = GameController.instance.FieldOfView;
+                break;
 
-        if(options == Option.brightness)
-        {
-            GetComponent<UnityEngine.UI.Slider>().value = GameController.instance.Brightness;
-        }
+            case Option.gameVol:
+                GetComponent<UnityEngine.UI.Slider>().value = GameController.instance.SoundVolume;
+                break;
 
-        if(options == Option.gameVol)
-        {
-            GetComponent<UnityEngine.UI.Slider>().value = GameController.instance.SoundVolyme;
-        }
+            case Option.musicVol:
+                GetComponent<UnityEngine.UI.Slider>().value = GameController.instance.MusicVolume;
+                break;
 
-        if(options == Option.musicVol)
-        {
-            GetComponent<UnityEngine.UI.Slider>().value = GameController.instance.MusicVolyme;       
-        }
-
-        if(options == Option.mouseSens)
-        {
-            GetComponent<UnityEngine.UI.Slider>().value = GameController.instance.MouseSensitivity;
-        }            
-   } 
+            case Option.mouseSens:
+                GetComponent<UnityEngine.UI.Slider>().value = GameController.instance.MouseSensitivity;
+                break;
+        }     
+   }
 
     public void OnSliderChange()
     {
-        if (options == Option.fov)
+        switch (options)
         {
-            GameController.instance.FieldOfView = GetComponent<UnityEngine.UI.Slider>().value;
-        }
+            case Option.fov:
+                GameController.instance.FieldOfView = GetComponent<UnityEngine.UI.Slider>().value;
+                break;
 
-        if (options == Option.brightness)
-        {
-            GameController.instance.Brightness = GetComponent<UnityEngine.UI.Slider>().value;
-        }
+            case Option.gameVol:
+                GameController.instance.SoundVolume = GetComponent<UnityEngine.UI.Slider>().value;
+                break;
 
-        if (options == Option.gameVol)
-        {
-            GameController.instance.SoundVolyme = GetComponent<UnityEngine.UI.Slider>().value;
-        }
+            case Option.musicVol:
+                GameController.instance.MusicVolume = GetComponent<UnityEngine.UI.Slider>().value;
+                break;
 
-        if (options == Option.musicVol)
-        {
-            GameController.instance.MusicVolyme = GetComponent<UnityEngine.UI.Slider>().value;
-       
-                              
+            case Option.mouseSens:
+                GameController.instance.MouseSensitivity = GetComponent<UnityEngine.UI.Slider>().value;
+                break;
         }
-
-        if (options == Option.mouseSens)
-        {
-            GameController.instance.MouseSensitivity = GetComponent<UnityEngine.UI.Slider>().value;
-        }
-
     }
-
-
-    
-     
-
-    
-
 
 }
