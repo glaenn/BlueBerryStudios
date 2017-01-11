@@ -14,6 +14,10 @@ public class PlayerMotor : NetworkBehaviour
     [SerializeField] private float sprintModifier = 2.0f;
     [SerializeField] private Camera cam;
     [SerializeField] private Animator animator;
+    [SerializeField] private Transform spine;
+    [SerializeField] private Transform clavice_l;
+    [SerializeField] private Transform clavice_r;
+    [SerializeField] private Transform neck;
 
     //Constants
     private const float MINIMUM_X = -90F;
@@ -22,6 +26,7 @@ public class PlayerMotor : NetworkBehaviour
     private const float JUMP_FORCE = 500;
     private const float WALK_ANIMATION_SYNC = 3;
     private const float MOVEMENT_DRAG = 0.95f;
+    private const float SPINE_ROT = 20.0f;
 
     private List<float> rotArrayX = new List<float>();
     private List<float> rotArrayY = new List<float>();
@@ -67,6 +72,28 @@ public class PlayerMotor : NetworkBehaviour
         {
             //cam.transform.localPosition = new Vector3(cam.transform.localPosition.x, cam.transform.localPosition.y, Mathf.Clamp(0.18f, 0.18f + (transform.InverseTransformDirection(rb.velocity).z/25)));
         }
+
+        /*
+        float bodyRotation = currentCameraRotationX;
+        spine.Rotate( Mathf.Clamp(bodyRotation, -SPINE_ROT, SPINE_ROT),0, 0);
+
+        if (bodyRotation > SPINE_ROT || bodyRotation < -SPINE_ROT)
+        { 
+            if (currentCameraRotationX > SPINE_ROT)
+                bodyRotation -= SPINE_ROT;
+            else if (currentCameraRotationX < -SPINE_ROT)
+                bodyRotation += SPINE_ROT;
+
+            clavice_l.Rotate(0, -bodyRotation, 0);
+            clavice_r.Rotate(0, bodyRotation, 0);
+            neck.Rotate(bodyRotation, 0, 0);
+        }
+        */
+        spine.Rotate(currentCameraRotationX / 3, 0, 0);
+        clavice_l.Rotate(0, -currentCameraRotationX/3, 0);
+        clavice_r.Rotate(0, currentCameraRotationX / 3, 0);
+        neck.Rotate(currentCameraRotationX / 3, 0, 0);
+
     }
 
     public void ToogleHolster()

@@ -1179,7 +1179,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010420293218}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.80345, y: 4.832856, z: 18.33211}
+  m_LocalPosition: {x: 0.2470665, y: -0.23304367, z: -0.22939348}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4000013603051212}
@@ -1357,7 +1357,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1153016588796030}
-  m_LocalRotation: {x: 0.003679061, y: -1.1489888e-11, z: 0.0000000034369194, w: 0.99999326}
+  m_LocalRotation: {x: 0.17364816, y: 0, z: 0, w: 0.9848078}
   m_LocalPosition: {x: 1.1546319e-15, y: 0.005806855, z: 1.4900325e-10}
   m_LocalScale: {x: 1, y: 1.0000002, z: 1.0000002}
   m_Children:
@@ -1366,7 +1366,7 @@ Transform:
   - {fileID: 4191075461463958}
   m_Father: {fileID: 4654984143125172}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 20, y: 0, z: 0}
 --- !u!4 &4108733320652286
 Transform:
   m_ObjectHideFlags: 1
@@ -2433,6 +2433,10 @@ MonoBehaviour:
   sprintModifier: 2
   cam: {fileID: 20000010304662616}
   animator: {fileID: 95000014147205714}
+  spine: {fileID: 4106008572259042}
+  clavice_l: {fileID: 4900922559688240}
+  clavice_r: {fileID: 4919171945281302}
+  neck: {fileID: 4191075461463958}
   frameCounter: 15
 --- !u!114 &114000013740329142
 MonoBehaviour:
