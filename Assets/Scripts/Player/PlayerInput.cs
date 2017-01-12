@@ -20,7 +20,7 @@ public sealed class PlayerInput : MonoBehaviour
 
     void ChangeMouseSensitivity(float sensitivity)
     {
-        mouseSensitivity = (sensitivity * 2) + 2; //Lowest value is 2. Mouse sensitivty is 0 - 1 * 2
+        mouseSensitivity = sensitivity;
     }
 	
 	// Update is called once per frame

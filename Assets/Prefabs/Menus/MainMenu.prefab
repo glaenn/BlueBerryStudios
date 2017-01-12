@@ -969,6 +969,7 @@ GameObject:
   - component: {fileID: 222633663744239380}
   - component: {fileID: 114415222087867150}
   - component: {fileID: 114706841464179074}
+  - component: {fileID: 114634312315205332}
   m_Layer: 5
   m_Name: Quality
   m_TagString: Untagged
@@ -2250,10 +2251,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 224210675505682434}
   m_HandleRect: {fileID: 224810095398141488}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 100
-  m_WholeNumbers: 0
-  m_Value: 100
+  m_MinValue: 50
+  m_MaxValue: 90
+  m_WholeNumbers: 1
+  m_Value: 60
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -2447,10 +2448,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 224770044504476442}
   m_HandleRect: {fileID: 224992821949607494}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 5
+  m_MinValue: 2
+  m_MaxValue: 12
   m_WholeNumbers: 0
-  m_Value: 5
+  m_Value: 4
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -3141,7 +3142,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 0.5
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -3583,6 +3584,18 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114634312315205332
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1697571009870646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1184210157, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AllowSwitchOff: 0
 --- !u!114 &114644435485795962
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3947,7 +3960,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 0.5
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:

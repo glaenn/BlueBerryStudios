@@ -5,10 +5,10 @@ public sealed class GameController : MonoBehaviour
 {
     //Localdata
     public static GameController instance = null;   //Static instance of GameManager which allows it to be accessed by any other script.
-    private float mouseSensitivity = 3.0f;
-    private float musicVolume = 1.0f;
-    private float soundVolume = 1.0f;
-    private float fieldOfview = 90f;
+    private float mouseSensitivity = 4.0f;
+    private float musicVolume = 0.5f;
+    private float soundVolume = 0.5f;
+    private float fieldOfview = 60f;
     private bool invertVerticalAxis = false;
 
     public delegate void MusicVolumeUpdate(float volyme);
@@ -19,6 +19,9 @@ public sealed class GameController : MonoBehaviour
 
     public delegate void MouseSensitivityUpdate(float sensitivity);
     public static event MouseSensitivityUpdate OnMouseSensitivityUpdate;
+
+    public delegate void FieldOfViewUpdate(float fieldOfView);
+    public static event FieldOfViewUpdate OnFieldOfViewUpdate;
 
     public float MouseSensitivity                     
     {
@@ -69,6 +72,8 @@ public sealed class GameController : MonoBehaviour
         set
         {
             fieldOfview = value;
+            if (OnFieldOfViewUpdate != null)
+                OnFieldOfViewUpdate(fieldOfview);
         }
     }
     
