@@ -8,6 +8,7 @@ public class PlayerSetup : NetworkBehaviour
     [SerializeField] SkinnedMeshRenderer playerEyes;
     [SerializeField] SkinnedMeshRenderer playerHair;
     [SerializeField] SkinnedMeshRenderer playerFace;
+    [SerializeField] SkinnedMeshRenderer playerHands;
 
     // Only called on localplayer
     public override void OnStartLocalPlayer()
@@ -17,6 +18,7 @@ public class PlayerSetup : NetworkBehaviour
         playerEyes.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
         playerHair.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
         playerFace.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
+        playerHands.gameObject.layer = 10;
     }
 
 }

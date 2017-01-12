@@ -328,7 +328,7 @@ ModelImporter:
       name: HandToHand
       takeName: Take 001
       firstFrame: 100
-      lastFrame: 140
+      lastFrame: 120
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
