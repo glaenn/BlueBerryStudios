@@ -69,33 +69,24 @@ public class PlayerMotor : NetworkBehaviour
         if(isLocalPlayer)
         {
             //cam.transform.localPosition = new Vector3(cam.transform.localPosition.x, cam.transform.localPosition.y, Mathf.Clamp(0.18f, 0.18f + (transform.InverseTransformDirection(rb.velocity).z/25)));
+            cam.transform.localPosition = new Vector3(cam.transform.localPosition.x, 0.80f + currentCameraRotationX/500, currentCameraRotationX / 200);
         }
 
-        /*
-        float bodyRotation = currentCameraRotationX;
-        spine.Rotate( Mathf.Clamp(bodyRotation, -SPINE_ROT, SPINE_ROT),0, 0);
-
-        if (bodyRotation > SPINE_ROT || bodyRotation < -SPINE_ROT)
-        { 
-            if (currentCameraRotationX > SPINE_ROT)
-                bodyRotation -= SPINE_ROT;
-            else if (currentCameraRotationX < -SPINE_ROT)
-                bodyRotation += SPINE_ROT;
-
-            clavice_l.Rotate(0, -bodyRotation, 0);
-            clavice_r.Rotate(0, bodyRotation, 0);
-            neck.Rotate(bodyRotation, 0, 0);
-        }
-        */
-        spine.Rotate(currentCameraRotationX / 2, 0, 0);
-        clavice_l.Rotate(0, -currentCameraRotationX/4, 0);
-        clavice_r.Rotate(0, currentCameraRotationX / 4, 0);
+        spine.Rotate(currentCameraRotationX / 2f, 0, 0);
+        clavice_l.Rotate(0, -currentCameraRotationX/3.5f, 0);
+        clavice_r.Rotate(0, currentCameraRotationX / 3.5f, 0);
         neck.Rotate(currentCameraRotationX / 2, 0, 0);
     }
 
     public void ToogleHolster()
     {
         animator.SetBool("Holster", !animator.GetBool("Holster"));
+    }
+
+    public void Attack()
+    {
+        animator.SetBool("Holster", false); //If attack, always set the holster to true
+        animator.SetTrigger("attack");
     }
 
     public void PerformRotation(float characterRotationY, float cameraRotationX)

@@ -50,5 +50,11 @@ public sealed class PlayerInput : MonoBehaviour
             playerMotor.ToogleHolster(); 
         }
 
+        if(Input.GetButtonDown("Attack"))
+        {
+            playerMotor.Attack();
+        }
+
+
     }
 }
