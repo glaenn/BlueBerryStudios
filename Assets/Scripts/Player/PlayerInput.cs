@@ -4,7 +4,7 @@
 public sealed class PlayerInput : MonoBehaviour
 {
     private PlayerMotor playerMotor;
-    private float mouseSensitivity = 2.5f; //The player own settings for mouse sensitivity
+    private float mouseSensitivity = 4f; //The player own settings for mouse sensitivity
     private bool isInMeny = false;
     GameMenuManager gameMenuManager;
 
@@ -14,6 +14,13 @@ public sealed class PlayerInput : MonoBehaviour
         playerMotor = GetComponent<PlayerMotor>();
         mouseSensitivity = GameController.instance.MouseSensitivity;
         gameMenuManager = GameObject.FindGameObjectWithTag("InGameUI").GetComponent<GameMenuManager>();
+        GameController.OnMouseSensitivityUpdate += new GameController.MouseSensitivityUpdate(ChangeMouseSensitivity); //Subscribe to the mouse sensitivity
+        ChangeMouseSensitivity(GameController.instance.MouseSensitivity); // Set the start value
+    }
+
+    void ChangeMouseSensitivity(float sensitivity)
+    {
+        mouseSensitivity = (sensitivity * 2) + 2; //Lowest value is 2. Mouse sensitivty is 0 - 1 * 2
     }
 	
 	// Update is called once per frame
@@ -56,5 +63,10 @@ public sealed class PlayerInput : MonoBehaviour
         }
 
 
+    }
+
+    void OnDestroy()
+    {
+        GameController.OnMouseSensitivityUpdate -= new GameController.MouseSensitivityUpdate(ChangeMouseSensitivity);
     }
 }

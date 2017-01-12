@@ -25,4 +25,9 @@ public class MusicController : MonoBehaviour
     {
         audioSource.volume = volume;
 	}
+
+    void OnDestroy()
+    {
+        GameController.OnMusicVolumeUpdate -= new GameController.MusicVolumeUpdate(ChangeVolume);
+    }
 }

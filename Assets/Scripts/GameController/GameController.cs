@@ -14,6 +14,9 @@ public sealed class GameController : MonoBehaviour
     public delegate void MusicVolumeUpdate(float volyme);
     public static event MusicVolumeUpdate OnMusicVolumeUpdate;
 
+    public delegate void MouseSensitivityUpdate(float sensitivity);
+    public static event MouseSensitivityUpdate OnMouseSensitivityUpdate;
+
     public float MouseSensitivity                     
     {
        get 
@@ -22,8 +25,10 @@ public sealed class GameController : MonoBehaviour
        }
        set 
        {
-            mouseSensitivity = value; 
-       }
+            mouseSensitivity = value;
+            if (OnMouseSensitivityUpdate != null)
+                OnMouseSensitivityUpdate(mouseSensitivity);
+        }
     }
     public float MusicVolume
     {
