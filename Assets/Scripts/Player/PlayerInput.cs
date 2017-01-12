@@ -15,7 +15,7 @@ public sealed class PlayerInput : MonoBehaviour
         mouseSensitivity = GameController.instance.MouseSensitivity;
         gameMenuManager = GameObject.FindGameObjectWithTag("InGameUI").GetComponent<GameMenuManager>();
         GameController.OnMouseSensitivityUpdate += new GameController.MouseSensitivityUpdate(ChangeMouseSensitivity); //Subscribe to the mouse sensitivity
-        ChangeMouseSensitivity(GameController.instance.MouseSensitivity); // Set the start value
+        ChangeMouseSensitivity(GameController.instance.MouseSensitivity); // Set the start value of the mouse sensitivity
     }
 
     void ChangeMouseSensitivity(float sensitivity)
@@ -45,24 +45,20 @@ public sealed class PlayerInput : MonoBehaviour
         playerMotor.PerformMovement((moveHorizontal + moveVertical).normalized, Input.GetButton("Sprint"));
         playerMotor.PerformRotation(Input.GetAxisRaw("Mouse X") * mouseSensitivity, Input.GetAxisRaw("Mouse Y") * mouseSensitivity);
 
-        //Jump
         if (Input.GetButtonDown("Jump"))
         {
             playerMotor.PerformJump();
         }
 
-        //Holter
         if (Input.GetButtonDown("Holster"))
         {
-            playerMotor.ToogleHolster(); 
+            playerMotor.CmdToogleHolster();
         }
 
         if(Input.GetButtonDown("Attack"))
         {
-            playerMotor.Attack();
+            playerMotor.CmdAttack();
         }
-
-
     }
 
     void OnDestroy()

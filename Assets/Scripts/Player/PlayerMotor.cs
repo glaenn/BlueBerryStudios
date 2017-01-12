@@ -5,9 +5,13 @@ using System.Collections.Generic;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMotor : NetworkBehaviour
 {
-    private float currentCameraRotationX = 0.0f;
     private Rigidbody rb;
     private Vector3 currentDir;
+
+    [SyncVar]
+    private bool isHolstered = false;
+    [SyncVar]
+    private float currentCameraRotationX = 0.0f;
 
     [SerializeField] private float velocityMultiplier = 15.0f;
     [SerializeField] private float maxVelocity = 10.0f;
@@ -33,12 +37,15 @@ public class PlayerMotor : NetworkBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        animator.SetBool("Holster", isHolstered);
     }
 
     public void PerformJump()
     {
-        if(Physics.Raycast(transform.position,Vector3.down, 1.2f))
+        if (Physics.Raycast(transform.position, Vector3.down, 1.2f))
+        {
             rb.AddForce(Vector3.up * JUMP_FORCE);
+        }
     }
 
     public void PerformMovement(Vector3 currentDir, bool isSprinting)
@@ -64,28 +71,52 @@ public class PlayerMotor : NetworkBehaviour
 
     void LateUpdate()
     {
-        animator.SetFloat("MovingSpeed", Mathf.Clamp(rb.velocity.magnitude/ WALK_ANIMATION_SYNC, 0 , 1));
+        Vector3 calculatedMovingSpeed = transform.InverseTransformDirection(rb.velocity);
 
-        if(isLocalPlayer)
+        if (Mathf.Abs(calculatedMovingSpeed.y) > 0)
+            animator.SetBool("Jump", true);
+        else
         {
-            //cam.transform.localPosition = new Vector3(cam.transform.localPosition.x, cam.transform.localPosition.y, Mathf.Clamp(0.18f, 0.18f + (transform.InverseTransformDirection(rb.velocity).z/25)));
-            cam.transform.localPosition = new Vector3(cam.transform.localPosition.x, 0.80f + currentCameraRotationX/500, currentCameraRotationX / 200);
+            animator.SetBool("Jump", false);
+        }
+
+        animator.SetFloat("MovingSpeed", Mathf.Clamp((Mathf.Abs(calculatedMovingSpeed.x) + Mathf.Abs(calculatedMovingSpeed.z)) / WALK_ANIMATION_SYNC, 0, 1));
+
+        if (isLocalPlayer)
+        {
+            cam.transform.localPosition = new Vector3(cam.transform.localPosition.x, 0.80f + currentCameraRotationX / 500, currentCameraRotationX / 200);
         }
 
         spine.Rotate(currentCameraRotationX / 2f, 0, 0);
-        clavice_l.Rotate(0, -currentCameraRotationX/3.5f, 0);
+        clavice_l.Rotate(0, -currentCameraRotationX / 3.5f, 0);
         clavice_r.Rotate(0, currentCameraRotationX / 3.5f, 0);
         neck.Rotate(currentCameraRotationX / 2, 0, 0);
+
+    }
+    [Command] //This function will run on the server when it is called on the client.
+    public void CmdToogleHolster()
+    {
+        isHolstered = !isHolstered;
+        RpcToogleHolster();
     }
 
-    public void ToogleHolster()
+    [ClientRpc] //This fuction will run on all clients when called from the server
+    public void RpcToogleHolster()
     {
-        animator.SetBool("Holster", !animator.GetBool("Holster"));
+        animator.SetBool("Holster", isHolstered);
     }
 
-    public void Attack()
+    [Command] //This function will run on the server when it is called on the client.
+    public void CmdAttack()
     {
-        animator.SetBool("Holster", false); //If attack, always set the holster to true
+        isHolstered = !isHolstered;
+        RpcToogleHolster();
+        RpcAttack(); 
+    }
+
+    [ClientRpc] //This fuction will run on all clients when called from the server
+    public void RpcAttack()
+    {
         animator.SetTrigger("attack");
     }
 
@@ -123,5 +154,13 @@ public class PlayerMotor : NetworkBehaviour
             //Apply our rotation to the transform of our camera
             cam.transform.localEulerAngles = new Vector3(currentCameraRotationX, 0f, 0f);
         }
+
+        CmdSetCameraRotation(currentCameraRotationX);
+    }
+
+    [Command] //This function will run on the server when it is called on the client.
+    public void CmdSetCameraRotation(float currentCameraRotationX)
+    {
+        this.currentCameraRotationX = currentCameraRotationX;
     }
 }
