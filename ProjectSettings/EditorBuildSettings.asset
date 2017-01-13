@@ -17,3 +17,5 @@ EditorBuildSettings:
     path: Assets/Scenes/Maps/Map03.unity
   - enabled: 0
     path: Assets/Scenes/GUI/ProfileMenu.unity
+  - enabled: 1
+    path: Assets/Scenes/GUI/TitleMenu_1.unity
