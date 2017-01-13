@@ -12,6 +12,5 @@ public class DamageTrigger : MonoBehaviour
             if(PlayerData.localPlayerInstance.gameObject == other.gameObject)
                 other.GetComponent<PlayerData>().CmdSetStatusEffect(statusEffect);
         }   
-
     }
 }

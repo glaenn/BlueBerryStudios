@@ -21,6 +21,4 @@ public sealed class TransitionObject : Interactive
     {
         
     }
-
-
 }

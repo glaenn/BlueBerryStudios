@@ -8,8 +8,9 @@ public class HudGUIManager : MonoBehaviour
     [SerializeField]private RectTransform healthbar;
     [SerializeField]private RectTransform staminabar;
     [SerializeField]private UnityEngine.UI.RawImage blackFade;
+    [SerializeField]private UnityEngine.UI.RawImage damageEffect;
 
-    private bool hasFaded = true;
+    private bool hasTakenDamage = true;
 
     private float healthBarMaxSize;
     private float staminaBarMaxSize;
@@ -22,36 +23,50 @@ public class HudGUIManager : MonoBehaviour
 
     // Use this for initialization
     public void ShowInteractionText (string nameOfObject)
-    { 
+    {
         nameText.text = nameOfObject;
         textBG.SetActive(true); 
 	}
 
     public void SetScreenFade(bool fade)
     {
-        if (fade)
+        if (!fade)
             StartCoroutine(StartFade());
         else
-            hasFaded = true;
+            blackFade.color = new Color(0, 0, 0, 1);
+    }
+
+    public void TakeDamage()
+    {
+        if(hasTakenDamage)
+            StartCoroutine(StartDamageEffect());
+    }
+
+    private IEnumerator StartDamageEffect()
+    {
+        hasTakenDamage = false;
+
+        while (damageEffect.color.a < 0.5)
+        {
+            yield return new WaitForSeconds(0.005f);
+            damageEffect.color += new Color(0, 0, 0, 0.1f);
+        }
+        while (damageEffect.color.a > 0)
+        {
+            yield return new WaitForSeconds(0.01f);
+            damageEffect.color -= new Color(0, 0, 0, 0.05f);
+        }
+
+        hasTakenDamage = true;
     }
 
     private IEnumerator StartFade()
     {
-        blackFade.color = new Color(0, 0, 0, 1.0f);
-
-        while(!hasFaded)
-        {
-            yield return new WaitForFixedUpdate();
-        }
         while (blackFade.color.a > 0.0f)
         {
             blackFade.color -= new Color(0, 0, 0, 0.01f);
-            yield return new WaitForFixedUpdate();
-            if (blackFade.color.a < 0.02)
-                blackFade.color = new Color(0, 0, 0, 0);
+            yield return new WaitForSeconds(0.01f);
         }
-        hasFaded = false;
-
     }
 
     public void HideInteractionText()

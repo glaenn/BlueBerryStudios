@@ -96,7 +96,6 @@ public class PlayerMotor : NetworkBehaviour
 
     void LateUpdate()
     {
-        
         if (isLocalPlayer)
         {
             cam.transform.localPosition = new Vector3(cam.transform.localPosition.x, 0.80f + currentCameraRotationX / 500, currentCameraRotationX / 200);
@@ -106,7 +105,6 @@ public class PlayerMotor : NetworkBehaviour
         clavice_l.Rotate(0, -currentCameraRotationX / 3.5f, 0);
         clavice_r.Rotate(0, currentCameraRotationX / 3.5f, 0);
         neck.Rotate(currentCameraRotationX / 2, 0, 0);
-
     }
     [Command] //This function will run on the server when it is called on the client.
     public void CmdToogleHolster()

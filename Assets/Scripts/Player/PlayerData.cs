@@ -98,6 +98,10 @@ public class PlayerData : NetworkBehaviour
     public void ApplyDamage(int damage)
     {
         playerCurrentHealth = Mathf.Clamp(playerCurrentHealth - damage, 0, playerMaxHealth);
+
+        if (isLocalPlayer)
+            hudGUIManager.TakeDamage();
+
     }
 
     [Command] //This function will run on the server when it is called on the client.
