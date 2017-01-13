@@ -9,4 +9,5 @@ public class NetworkGameController : NetworkBehaviour
     {
         NetworkServer.Spawn(Instantiate(networkGameController));
     }
+
 }

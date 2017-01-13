@@ -66,7 +66,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4125341977518722}
   - component: {fileID: 137308367149161062}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Skin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1197,7 +1197,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010420293218}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.2469616, y: 21.095974, z: 49.776485}
+  m_LocalPosition: {x: 19.54426, y: 6.8914547, z: 24.944202}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4000013603051212}
@@ -2476,11 +2476,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TransformSyncMode: 3
-  m_SendInterval: 0.11111111
+  m_SendInterval: 0.055555556
   m_SyncRotationAxis: 2
-  m_RotationSyncCompression: 0
+  m_RotationSyncCompression: 1
   m_SyncSpin: 0
-  m_MovementTheshold: 0.001
+  m_MovementTheshold: 0.01
   m_SnapThreshold: 10
   m_InterpolateRotation: 5
   m_InterpolateMovement: 1

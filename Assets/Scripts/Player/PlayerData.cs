@@ -23,6 +23,7 @@ public class PlayerData : NetworkBehaviour
     [SyncVar] private float playerCurrentStamina = 100;
     private bool isSprinting;
     private string playerRespawnScene = "Map01";
+    private bool isAlive = true;
 
     public string GetPlayerScene(){return playerScene;}
     public float GetPlayerStamina() { return playerCurrentStamina; }
@@ -63,10 +64,15 @@ public class PlayerData : NetworkBehaviour
             hudGUIManager.UpdateHealthBar(playerCurrentHealth, playerMaxHealth);
             hudGUIManager.UpdateStaminaBar(playerCurrentStamina, playerMaxStamina);
 
-            if (playerCurrentHealth <= 0)
+            if (playerCurrentHealth <= 0 && isAlive)
             {
+                isAlive = false;
                 GetComponent<PlayerSceneManager>().LoadScene(playerRespawnScene, "Respawn"); //Respawn at latest respawnpoint
                 CmdRestoreHealth(playerMaxHealth * 2);
+            }
+            else if (playerCurrentHealth > 0 && !isAlive)
+            {
+                isAlive = true;
             }
         }
         if(isServer)

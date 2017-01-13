@@ -145,7 +145,9 @@ public class GameMenuManager : MonoBehaviour
 
     public void GoBackToMainMenu()
     {
+        Network.Disconnect(0);
         UnityEngine.Networking.NetworkManager.singleton.StopClient();
+        
     }
 
     public void QuitGame()

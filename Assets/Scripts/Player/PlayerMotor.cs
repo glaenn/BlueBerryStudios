@@ -7,9 +7,10 @@ public class PlayerMotor : NetworkBehaviour
 {
     private Rigidbody rb;
     private Vector3 currentDir;
+    private List<Vector3> smoothedVelocity = new List<Vector3>();
 
     [SyncVar]
-    private bool isHolstered = false;
+    private bool isHolstered = true;
     [SyncVar]
     private float currentCameraRotationX = 0.0f;
 
@@ -26,7 +27,7 @@ public class PlayerMotor : NetworkBehaviour
     //Constants
     private const float CAMERA_ROTATION_X_LIMIT = 45f;
     private const float JUMP_FORCE = 500;
-    private const float WALK_ANIMATION_SYNC = 3;
+    private const float WALK_ANIMATION_SYNC = 6.5f;
     private const float MOVEMENT_DRAG = 0.95f;
     private const float SPINE_ROT = 20.0f;
 
@@ -37,7 +38,7 @@ public class PlayerMotor : NetworkBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        animator.SetBool("Holster", isHolstered);
+        animator.SetBool("isHolstered", isHolstered);
     }
 
     public void PerformJump()
@@ -58,30 +59,44 @@ public class PlayerMotor : NetworkBehaviour
     {
         if (isLocalPlayer && currentDir != Vector3.zero)
         {
-                if (PlayerData.localPlayerInstance.IsPlayerSprint() && rb.velocity.magnitude < maxVelocity*sprintModifier)
-                    rb.AddForce(currentDir * (velocityMultiplier * sprintModifier), ForceMode.Acceleration);
-                else if (rb.velocity.magnitude < maxVelocity)
-                    rb.AddForce(currentDir * velocityMultiplier, ForceMode.Acceleration);
+            if (PlayerData.localPlayerInstance.IsPlayerSprint() && rb.velocity.magnitude < maxVelocity * sprintModifier)
+                rb.AddForce(currentDir * (velocityMultiplier * sprintModifier), ForceMode.Acceleration);
+            else if (rb.velocity.magnitude < maxVelocity)
+                rb.AddForce(currentDir * velocityMultiplier, ForceMode.Acceleration);
         }
 
-        //Created rigidbody drag that doesn't affect falling down
-        rb.velocity = new Vector3(rb.velocity.x * MOVEMENT_DRAG, rb.velocity.y, rb.velocity.z * MOVEMENT_DRAG);
-          
+        if (isLocalPlayer)
+        { 
+            //Created rigidbody drag that doesn't affect falling down
+            rb.velocity = new Vector3(rb.velocity.x * MOVEMENT_DRAG, rb.velocity.y, rb.velocity.z * MOVEMENT_DRAG);
+        }
+
+
+        smoothedVelocity.Add(transform.InverseTransformDirection(rb.velocity));
+
+        if (smoothedVelocity.Count >= 5)
+            smoothedVelocity.RemoveAt(0);
+
+        Vector3 calculatedMovingSpeed = Vector3.zero;
+
+        for (int i = 0; i < smoothedVelocity.Count; i++)
+            calculatedMovingSpeed += smoothedVelocity[i];
+
+        calculatedMovingSpeed /= smoothedVelocity.Count;
+
+        animator.SetFloat("movingSpeed", Mathf.Clamp((Mathf.Abs(calculatedMovingSpeed.x) + Mathf.Abs(calculatedMovingSpeed.z)) / WALK_ANIMATION_SYNC, 0, 1));
+
+        if (Mathf.Abs(calculatedMovingSpeed.y) > 0.01f)
+            animator.SetBool("isInAir", true);
+        else
+        {
+            animator.SetBool("isInAir", false);
+        }
     }
 
     void LateUpdate()
     {
-        Vector3 calculatedMovingSpeed = transform.InverseTransformDirection(rb.velocity);
-
-        if (Mathf.Abs(calculatedMovingSpeed.y) > 0)
-            animator.SetBool("Jump", true);
-        else
-        {
-            animator.SetBool("Jump", false);
-        }
-
-        animator.SetFloat("MovingSpeed", Mathf.Clamp((Mathf.Abs(calculatedMovingSpeed.x) + Mathf.Abs(calculatedMovingSpeed.z)) / WALK_ANIMATION_SYNC, 0, 1));
-
+        
         if (isLocalPlayer)
         {
             cam.transform.localPosition = new Vector3(cam.transform.localPosition.x, 0.80f + currentCameraRotationX / 500, currentCameraRotationX / 200);
@@ -97,20 +112,23 @@ public class PlayerMotor : NetworkBehaviour
     public void CmdToogleHolster()
     {
         isHolstered = !isHolstered;
-        RpcToogleHolster();
+        RpcToogleHolster(isHolstered);
     }
 
     [ClientRpc] //This fuction will run on all clients when called from the server
-    public void RpcToogleHolster()
+    public void RpcToogleHolster(bool isHolstered)
     {
-        animator.SetBool("Holster", isHolstered);
+        animator.SetBool("isHolstered", isHolstered);
     }
 
     [Command] //This function will run on the server when it is called on the client.
     public void CmdAttack()
     {
-        isHolstered = !isHolstered;
-        RpcToogleHolster();
+        if (isHolstered)
+        {
+            isHolstered = false;
+            RpcToogleHolster(isHolstered);
+        }
         RpcAttack(); 
     }
 
