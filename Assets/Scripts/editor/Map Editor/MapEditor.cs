@@ -9,7 +9,7 @@ public class MapEditor : EditorWindow
     bool drawGrid = true, snapToGrid = true;
     int lastHoveredLine = 0, lastHoveredSector = 0;
     int lastSelectedLine = 0, lastSelectedSector = 0;
-    int gridSize = 2;
+    int gridSize = 2, zoomLevel = 1;
 
     List<int> hoveredVertexes = new List<int>();
     List<int> selectedVertexes = new List<int>();
@@ -26,9 +26,14 @@ public class MapEditor : EditorWindow
     static Rect SNAP_GRID_AREA = new Rect(24.0f, 196.0f, 96.0f, 16.0f);
     static Rect SIZE_GRID_TEXT_AREA = new Rect(16.0f, 224.0f, 96.0f, 16.0f);
     static Rect SIZE_GRID_AREA = new Rect(16.0f, 240.0f, 96.0f, 16.0f);
+    static Rect ZOOM_TEXT_AREA = new Rect(16.0f, 264.0f, 96.0f, 16.0f);
+    static Rect ZOOM_SLIDER_AREA = new Rect(16.0f, 280.0f, 96.0f, 16.0f);
+
     static Rect FILE_FUNCTION_AREA = new Rect(128.0f, 16.0f, 128.0f, 32.0f);
     static Rect WORK_AREA = new Rect(128.0f, 64.0f, 768, 768);
+
     static Rect SELCTION_EDIT_AREA = new Rect(896, 64, 256, 768);
+
     static Rect ELEMENT_EDIT_ID = new Rect(32, 16, 224, 32);
     static Rect ELEMENT_EDIT_ROW1 = new Rect(16, 48, 224, 16);
     static Rect ELEMENT_EDIT_ROW2 = new Rect(16, 64, 224, 16);
@@ -63,6 +68,9 @@ public class MapEditor : EditorWindow
 
         GUI.Label(SIZE_GRID_TEXT_AREA, "Grid Size: " + gridSize * 8);
         gridSize = (int)GUI.HorizontalSlider(SIZE_GRID_AREA, gridSize, 2.0f, 8.0f);
+
+        GUI.Label(ZOOM_TEXT_AREA, "Zoom Level: " + zoomLevel);
+        zoomLevel = (int)GUI.HorizontalSlider(ZOOM_SLIDER_AREA, zoomLevel, 1.0f, 10.0f);
 
         //Top Tool bar
         if (GUI.Button(FILE_FUNCTION_AREA, "Export map"))

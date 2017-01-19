@@ -2,7 +2,7 @@
 using UnityEngine.Networking;
 using System.Collections.Generic;
 /// <summary>
-/// Holds are the player data.
+/// Holds are the player data
 /// Current Scene
 /// Equipment and inventory
 /// </summary>
@@ -21,6 +21,7 @@ public class PlayerData : NetworkBehaviour
     [SyncVar] private int playerCurrentHealth = 100;
     [SyncVar] private float playerMaxStamina = 100;
     [SyncVar] private float playerCurrentStamina = 100;
+    private float baseDamage = 5;
     private bool isSprinting;
     private string playerRespawnScene = "Map01";
     private bool isAlive = true;
@@ -28,7 +29,7 @@ public class PlayerData : NetworkBehaviour
     public string GetPlayerScene(){return playerScene;}
     public float GetPlayerStamina() { return playerCurrentStamina; }
     public void SetPlayerSprint(bool isSprinting) { this.isSprinting = isSprinting; }
-    public bool IsPlayerSprint()
+    public bool IsPlayerSprinting()
     {
         return (isSprinting && playerCurrentStamina > 0);
     }
@@ -71,9 +72,7 @@ public class PlayerData : NetworkBehaviour
                 CmdRestoreHealth(playerMaxHealth * 2);
             }
             else if (playerCurrentHealth > 0 && !isAlive)
-            {
                 isAlive = true;
-            }
         }
         if(isServer)
         { 
@@ -82,9 +81,7 @@ public class PlayerData : NetworkBehaviour
                 effects[i].UpdateEffect(Time.deltaTime);  
                 
                 if(effects[i].GetEffectDuration() <= 0)
-                {
-                    RpcRemoveStatusEffect(i);
-                }      
+                    RpcRemoveStatusEffect(i);  
             }
         }
     }
@@ -101,7 +98,6 @@ public class PlayerData : NetworkBehaviour
 
         if (isLocalPlayer)
             hudGUIManager.TakeDamage();
-
     }
 
     [Command] //This function will run on the server when it is called on the client.

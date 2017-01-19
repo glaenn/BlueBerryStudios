@@ -8,6 +8,7 @@ public class PlayerMotor : NetworkBehaviour
     private Rigidbody rb;
     private Vector3 currentDir;
     private List<Vector3> smoothedVelocity = new List<Vector3>();
+    private bool isGrounded;
 
     [SyncVar]
     private bool isHolstered = true;
@@ -43,10 +44,8 @@ public class PlayerMotor : NetworkBehaviour
 
     public void PerformJump()
     {
-        if (Physics.Raycast(transform.position, Vector3.down, 1.2f))
-        {
+        if(isGrounded)
             rb.AddForce(Vector3.up * JUMP_FORCE);
-        }
     }
 
     public void PerformMovement(Vector3 currentDir, bool isSprinting)
@@ -57,20 +56,17 @@ public class PlayerMotor : NetworkBehaviour
 
     void FixedUpdate()
     {
-        if (isLocalPlayer && currentDir != Vector3.zero)
+        if (isLocalPlayer && currentDir != Vector3.zero && isGrounded)
         {
-            if (PlayerData.localPlayerInstance.IsPlayerSprint() && rb.velocity.magnitude < maxVelocity * sprintModifier)
+            if (PlayerData.localPlayerInstance.IsPlayerSprinting() && rb.velocity.magnitude < maxVelocity * sprintModifier)
                 rb.AddForce(currentDir * (velocityMultiplier * sprintModifier), ForceMode.Acceleration);
             else if (rb.velocity.magnitude < maxVelocity)
                 rb.AddForce(currentDir * velocityMultiplier, ForceMode.Acceleration);
         }
 
-        if (isLocalPlayer)
-        { 
-            //Created rigidbody drag that doesn't affect falling down
+        //Movement drag on the ground. Doesn't affect vertical movement
+        if (isLocalPlayer && isGrounded)
             rb.velocity = new Vector3(rb.velocity.x * MOVEMENT_DRAG, rb.velocity.y, rb.velocity.z * MOVEMENT_DRAG);
-        }
-
 
         smoothedVelocity.Add(transform.InverseTransformDirection(rb.velocity));
 
@@ -86,25 +82,27 @@ public class PlayerMotor : NetworkBehaviour
 
         animator.SetFloat("movingSpeed", Mathf.Clamp((Mathf.Abs(calculatedMovingSpeed.x) + Mathf.Abs(calculatedMovingSpeed.z)) / WALK_ANIMATION_SYNC, 0, 1));
 
-        if (Mathf.Abs(calculatedMovingSpeed.y) > 0.01f)
+        if (!isGrounded)
             animator.SetBool("isInAir", true);
         else
-        {
             animator.SetBool("isInAir", false);
-        }
     }
 
     void LateUpdate()
     {
         if (isLocalPlayer)
-        {
             cam.transform.localPosition = new Vector3(cam.transform.localPosition.x, 0.80f + currentCameraRotationX / 500, currentCameraRotationX / 200);
-        }
-
+       
         spine.Rotate(currentCameraRotationX / 2f, 0, 0);
         clavice_l.Rotate(0, -currentCameraRotationX / 3.5f, 0);
         clavice_r.Rotate(0, currentCameraRotationX / 3.5f, 0);
         neck.Rotate(currentCameraRotationX / 2, 0, 0);
+
+    if (Physics.Raycast(transform.position, Vector3.down, 1.2f))
+        isGrounded = true;
+    else
+        isGrounded = false;
+
     }
     [Command] //This function will run on the server when it is called on the client.
     public void CmdToogleHolster()
@@ -134,6 +132,16 @@ public class PlayerMotor : NetworkBehaviour
     public void RpcAttack()
     {
         animator.SetTrigger("attack");
+
+        if(isLocalPlayer)
+        {
+            //Check if we hit something with the attack
+            if (Physics.Raycast(transform.position, Vector3.forward, 1.2f))
+            {
+               
+            }
+        }
+
     }
 
     public void PerformRotation(float characterRotationY, float cameraRotationX)
@@ -170,7 +178,6 @@ public class PlayerMotor : NetworkBehaviour
             //Apply our rotation to the transform of our camera
             cam.transform.localEulerAngles = new Vector3(currentCameraRotationX, 0f, 0f);
         }
-
         CmdSetCameraRotation(currentCameraRotationX);
     }
 
