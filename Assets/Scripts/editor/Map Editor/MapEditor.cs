@@ -224,11 +224,10 @@ public class MapEditor : EditorWindow
                 Handles.DrawLine(new Vector2(minX, maxY), new Vector2(minX, minY));
             }
         GUI.EndGroup();
-
         Repaint();
 
         //If we are not in the work area. 
-        if (!WORK_AREA.Contains(e.mousePosition) || (e.type == EventType.mouseUp && e.button == 0))
+        if (e.type == EventType.mouseUp && e.button == 0)
         {
             savedVertexOriginalPos.Clear();
             isHolding = false;
@@ -247,8 +246,13 @@ public class MapEditor : EditorWindow
             else if (editMode == 1)
                 lastSelectedSector = lastHoveredSector;
 
+            //Snap the first selected Vertex into place
+            if (snapToGrid && drawGrid)
+                mapData.verts[selectedVertexes[0]] = new Vector2(Mathf.FloorToInt(mapData.verts[selectedVertexes[0]].x / (gridSize * 8)) * (gridSize * 8), Mathf.FloorToInt(mapData.verts[selectedVertexes[0]].y / (gridSize * 8)) * (gridSize * 8));
+
             for (int i = 0; i < selectedVertexes.Count; i++)
                     savedVertexOriginalPos.Add(mapData.verts[selectedVertexes[i]]);
+    
         }
 
         //Deleting Vertexes
@@ -263,16 +267,39 @@ public class MapEditor : EditorWindow
         //Moving vertexes
         else if (e.type == EventType.MouseDrag && e.button == 0 && selectedVertexes.Count > 0 && isHolding)
         {
+
+            Vector2 calculatedMovement = mousePosSave - e.mousePosition;
+
+            //Calculate possbile movement
             for (int i = 0; i < savedVertexOriginalPos.Count; i++)
             {
-                if (!WORK_AREA.Contains(savedVertexOriginalPos[i] - (mousePosSave - e.mousePosition) + new Vector2(WORK_AREA.x, WORK_AREA.y)))
-                    break;
-       
-                mapData.verts[selectedVertexes[i]] = savedVertexOriginalPos[i] - (mousePosSave - e.mousePosition);
+                //If the calculated movement will put a vertex outside the work area
+                if (!WORK_AREA.Contains(savedVertexOriginalPos[i] - calculatedMovement + new Vector2(WORK_AREA.x, WORK_AREA.y)))
+                {
+                    if (savedVertexOriginalPos[i].x - calculatedMovement.x < 0)
+                        calculatedMovement.x += savedVertexOriginalPos[i].x - calculatedMovement.x;
+                    else if (savedVertexOriginalPos[i].x - calculatedMovement.x > WORK_AREA.width)
+                        calculatedMovement.x += savedVertexOriginalPos[i].x - calculatedMovement.x - WORK_AREA.width;
 
-                if (i == 0 && drawGrid && snapToGrid)
-                    mapData.verts[selectedVertexes[0]] = new Vector2(Mathf.FloorToInt(mapData.verts[selectedVertexes[0]].x / (gridSize * 8)) * (gridSize * 8), Mathf.FloorToInt(mapData.verts[selectedVertexes[0]].y / (gridSize * 8)) * (gridSize * 8));
+                    if (savedVertexOriginalPos[i].y - calculatedMovement.y < 0)
+                        calculatedMovement.y += savedVertexOriginalPos[i].y - calculatedMovement.y;
+                    else if (savedVertexOriginalPos[i].y - calculatedMovement.y > WORK_AREA.height)
+                        calculatedMovement.y += savedVertexOriginalPos[i].y - calculatedMovement.y - WORK_AREA.height;
+                }
             }
+
+            if (snapToGrid && drawGrid)
+            {
+                calculatedMovement.x = Mathf.FloorToInt(calculatedMovement.x / (gridSize * 8)) * (gridSize * 8);
+                calculatedMovement.y = Mathf.FloorToInt(calculatedMovement.y / (gridSize * 8)) * (gridSize * 8);
+            }
+
+
+            for (int i = 0; i < savedVertexOriginalPos.Count; i++)
+            {
+                mapData.verts[selectedVertexes[i]] = savedVertexOriginalPos[i] - calculatedMovement;
+            }
+
         }
 
         //Create (vertex or sector)
@@ -296,6 +323,16 @@ public class MapEditor : EditorWindow
             mapData.CreateSector(pointA - (new Vector2(VERT_SIZE, VERT_SIZE) / 2), pointB - (new Vector2(VERT_SIZE, VERT_SIZE) / 2));
             isHolding = false;
          }
+
+        else if(e.isKey && e.keyCode == KeyCode.Tab && e.type == EventType.keyUp)
+        {
+            if (editMode == 0)
+                editMode = 1;
+            else if (editMode == 1)
+                editMode = 0;
+
+            Debug.Log("hej");
+        }
     }
 
     Color GetElementColor(bool isHovering, bool isSelected)
