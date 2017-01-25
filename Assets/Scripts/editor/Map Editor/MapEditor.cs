@@ -13,11 +13,12 @@ public class MapEditor : EditorWindow
 
     List<int> hoveredVertexes = new List<int>();
     List<int> selectedVertexes = new List<int>();
+    Vector2 mousePosWorkArea;
     Vector2 mousePosSave; //Line moving variables
     List<Vector2> savedVertexOriginalPos = new List<Vector2>();
 
     public string[] editModeName = new string[] { "Vertices\\Lines", "Sector"};
-    int editMode;
+    int editMode, editModeChangeCheck;
     GUIStyle blackBG = new GUIStyle();
     GUIStyle LightGrayBG = new GUIStyle();
 
@@ -56,14 +57,23 @@ public class MapEditor : EditorWindow
         mapData.CreateSector(new Vector2(64, 64), new Vector2(160, 160));
         blackBG.normal.background = CreateColorTexture(1, 1, new Color(0.3f, 0.3f, 0.32f, 1.0f));
         LightGrayBG.normal.background = CreateColorTexture(1, 1, new Color(0.9f, 0.9f, 0.9f, 1.0f));
-    } 
+    }
 
     void OnGUI()
     {
         //Edit Mode area
         editMode = GUI.SelectionGrid(EDIT_MODE_AREA, editMode, editModeName, 1);
+
+        //Clear selection when changing modes
+        if (GUI.changed && editModeChangeCheck != editMode)
+        {
+            selectedVertexes.Clear();
+            hoveredVertexes.Clear();
+            editModeChangeCheck = editMode;
+        }
+
         drawGrid = GUI.Toggle(SHOW_GRID_AREA, drawGrid, "Show Grid");
-        if(drawGrid)
+        if (drawGrid)
             snapToGrid = GUI.Toggle(SNAP_GRID_AREA, snapToGrid, "Snap to Grid");
 
         GUI.Label(SIZE_GRID_TEXT_AREA, "Grid Size: " + gridSize * 8);
@@ -77,14 +87,14 @@ public class MapEditor : EditorWindow
             MapMeshCreator.CreateMapMesh(ref mapData);
 
         //Right options
-        Event e = Event.current;
+
         hoveredVertexes.Clear();
         isHovering = false;
 
         //In vertex and line mode
         if (editMode == 0)
         {
-            if(selectedVertexes.Count == 1)
+            if (selectedVertexes.Count == 1)
             {
                 GUI.BeginGroup(SELCTION_EDIT_AREA, LightGrayBG);
                 GUI.Label(ELEMENT_EDIT_ID, "Vertex: #" + selectedVertexes[0]);
@@ -94,19 +104,19 @@ public class MapEditor : EditorWindow
             {
                 GUI.BeginGroup(SELCTION_EDIT_AREA, LightGrayBG);
                 GUI.Label(ELEMENT_EDIT_ID, "Line: #" + lastSelectedLine);
-                if(mapData.lines[lastSelectedLine].wallMaterialMiddle == 0)
+                if (mapData.lines[lastSelectedLine].wallMaterialMiddle == 0)
                     GUI.Label(ELEMENT_EDIT_ROW1, "Wall Material: Hollow");
                 else
                     GUI.Label(ELEMENT_EDIT_ROW1, "Wall Material: " + mapData.lines[lastSelectedLine].wallMaterialMiddle);
                 mapData.lines[lastSelectedLine].wallMaterialMiddle = (int)GUI.HorizontalSlider(ELEMENT_EDIT_ROW2, mapData.lines[lastSelectedLine].wallMaterialMiddle, 0, 20);
-                GUI.EndGroup();        
+                GUI.EndGroup();
             }
         }
 
         //In sector mode
         if (editMode == 1)
         {
-            if(selectedVertexes.Count > 0 && lastSelectedSector < mapData.sectors.Count)
+            if (selectedVertexes.Count > 0 && lastSelectedSector < mapData.sectors.Count)
             {
                 GUI.BeginGroup(SELCTION_EDIT_AREA, LightGrayBG);
                 GUI.Label(ELEMENT_EDIT_ID, "Sector: #" + lastSelectedSector);
@@ -136,14 +146,17 @@ public class MapEditor : EditorWindow
             }
         }
         //Work area
-        GUI.BeginGroup(WORK_AREA, blackBG);
 
+        Event e = Event.current;
+
+        GUI.BeginGroup(WORK_AREA, blackBG);
+        { 
             //Draw Grid
             if (drawGrid)
             {
                 Handles.color = Color.gray;
 
-                for (int i = 0; i < WORK_AREA.width / (gridSize*8); i++)
+                for (int i = 0; i < WORK_AREA.width / (gridSize * 8); i++)
                     Handles.DrawLine(new Vector2(i * (gridSize * 8), 0), new Vector2(i * (gridSize * 8), WORK_AREA.height));
                 for (int i = 0; i < WORK_AREA.height / (gridSize * 8); i++)
                     Handles.DrawLine(new Vector2(0, i * (gridSize * 8)), new Vector2(WORK_AREA.width, i * (gridSize * 8)));
@@ -155,7 +168,7 @@ public class MapEditor : EditorWindow
             for (int i = 0; i < mapData.sectors.Count; i++)
             {
                 //Check whether the sector is hover upon
-                if (editMode == 1 && !isHovering) 
+                if (editMode == 1 && !isHovering)
                 {
                     if (IsPointInPolygon(e.mousePosition, mapData.GetSectorVertexes(i)))
                     {
@@ -168,20 +181,20 @@ public class MapEditor : EditorWindow
                 //Check vertices
                 for (int j = 0; j < mapData.sectors[i].verts.Count; j++)
                 {
-                    if (isHovering)
+                    if (isHovering || editMode == 1)
                         break;
 
-                    isHovering = new Rect(mapData.verts[mapData.sectors[i].verts[j]].x - VERT_SIZE/2, mapData.verts[mapData.sectors[i].verts[j]].y - VERT_SIZE/2, VERT_SIZE, VERT_SIZE).Contains(e.mousePosition);
+                    isHovering = new Rect(mapData.verts[mapData.sectors[i].verts[j]].x - VERT_SIZE / 2, mapData.verts[mapData.sectors[i].verts[j]].y - VERT_SIZE / 2, VERT_SIZE, VERT_SIZE).Contains(e.mousePosition);
                     if (isHovering)
                         hoveredVertexes.Add(mapData.sectors[i].verts[j]);
                 }
                 //Check Lines
                 for (int j = 0; j < mapData.sectors[i].lines.Count; j++)
                 {
-                    if (isHovering)
+                    if (isHovering || editMode == 1)
                         break;
 
-                    isHovering = ClosestPointOnLine(mapData.verts[mapData.lines[mapData.sectors[i].lines[j]].startVert] + new Vector2(VERT_SIZE / 2, VERT_SIZE / 2), mapData.verts[mapData.lines[mapData.sectors[i].lines[j]].endVert] + new Vector2(VERT_SIZE / 2, VERT_SIZE / 2), e.mousePosition);
+                    isHovering = ClosestPointOnLine(mapData.verts[mapData.lines[mapData.sectors[i].lines[j]].startVert], mapData.verts[mapData.lines[mapData.sectors[i].lines[j]].endVert], e.mousePosition);
                     if (isHovering)
                     {
                         hoveredVertexes.Add(mapData.lines[mapData.sectors[i].lines[j]].startVert);
@@ -195,11 +208,11 @@ public class MapEditor : EditorWindow
                 {
                     //Verts
                     GUI.color = GetElementColor(hoveredVertexes.Contains(mapData.sectors[i].verts[j]), selectedVertexes.Contains(mapData.sectors[i].verts[j]));
-                    GUI.Box(new Rect(mapData.verts[mapData.sectors[i].verts[j]] - new Vector2(VERT_SIZE/2, VERT_SIZE/2), new Vector2(VERT_SIZE, VERT_SIZE)), "");
+                    GUI.Box(new Rect(mapData.verts[mapData.sectors[i].verts[j]] - new Vector2(VERT_SIZE / 2, VERT_SIZE / 2), new Vector2(VERT_SIZE, VERT_SIZE)), "");
                     //Lines
                     Handles.color = GetElementColor(hoveredVertexes.Contains(mapData.lines[mapData.sectors[i].lines[j]].startVert) && hoveredVertexes.Contains(mapData.lines[mapData.sectors[i].lines[j]].endVert),
                                                                             selectedVertexes.Contains(mapData.lines[mapData.sectors[i].lines[j]].startVert) && selectedVertexes.Contains(mapData.lines[mapData.sectors[i].lines[j]].endVert));
-                    Handles.DrawLine(mapData.verts[mapData.lines[mapData.sectors[i].lines[j]].startVert], mapData.verts[mapData.lines[mapData.sectors[i].lines[j]].endVert] );
+                    Handles.DrawLine(mapData.verts[mapData.lines[mapData.sectors[i].lines[j]].startVert], mapData.verts[mapData.lines[mapData.sectors[i].lines[j]].endVert]);
                 }
             }
 
@@ -212,7 +225,7 @@ public class MapEditor : EditorWindow
                 float minX = Mathf.Min(mousePosSave.x, e.mousePosition.x);
                 float minY = Mathf.Min(mousePosSave.y, e.mousePosition.y);
 
-                GUI.Box(new Rect(new Vector2(minX, minY) - (new Vector2(VERT_SIZE,VERT_SIZE)/2), new Vector2(VERT_SIZE, VERT_SIZE)), "");
+                GUI.Box(new Rect(new Vector2(minX, minY) - (new Vector2(VERT_SIZE, VERT_SIZE) / 2), new Vector2(VERT_SIZE, VERT_SIZE)), "");
                 GUI.Box(new Rect(new Vector2(maxX, minY) - (new Vector2(VERT_SIZE, VERT_SIZE) / 2), new Vector2(VERT_SIZE, VERT_SIZE)), "");
                 GUI.Box(new Rect(new Vector2(maxX, maxY) - (new Vector2(VERT_SIZE, VERT_SIZE) / 2), new Vector2(VERT_SIZE, VERT_SIZE)), "");
                 GUI.Box(new Rect(new Vector2(minX, maxY) - (new Vector2(VERT_SIZE, VERT_SIZE) / 2), new Vector2(VERT_SIZE, VERT_SIZE)), "");
@@ -223,124 +236,127 @@ public class MapEditor : EditorWindow
                 Handles.DrawLine(new Vector2(maxX, maxY), new Vector2(minX, maxY));
                 Handles.DrawLine(new Vector2(minX, maxY), new Vector2(minX, minY));
             }
-        GUI.EndGroup();
-        Repaint();
 
-        //If we are not in the work area. 
-        if (e.type == EventType.mouseUp && e.button == 0)
-        {
-            savedVertexOriginalPos.Clear();
-            isHolding = false;
-        }
+            Repaint();
 
-        //Selecting Vertexes
-        else if (e.type == EventType.mouseDown && e.button == 0 && hoveredVertexes.Count > 0 && !isHolding)
-        {
-            selectedVertexes.Clear();
-            selectedVertexes.AddRange(hoveredVertexes);
-            isHolding = true;
-            mousePosSave = e.mousePosition;
-
-            if (editMode == 0)
-                lastSelectedLine = lastHoveredLine;
-            else if (editMode == 1)
-                lastSelectedSector = lastHoveredSector;
-
-            //Snap the first selected Vertex into place
-            if (snapToGrid && drawGrid)
-                mapData.verts[selectedVertexes[0]] = new Vector2(Mathf.FloorToInt(mapData.verts[selectedVertexes[0]].x / (gridSize * 8)) * (gridSize * 8), Mathf.FloorToInt(mapData.verts[selectedVertexes[0]].y / (gridSize * 8)) * (gridSize * 8));
-
-            for (int i = 0; i < selectedVertexes.Count; i++)
-                    savedVertexOriginalPos.Add(mapData.verts[selectedVertexes[i]]);
-    
-        }
-
-        //Deleting Vertexes
-        else if (e.type == EventType.keyDown && e.keyCode == KeyCode.Delete)
-        {
-            savedVertexOriginalPos.Clear();
-            isHolding = false;
-            mapData.RemoveVerts(selectedVertexes);
-            selectedVertexes.Clear();
-        }
-
-        //Moving vertexes
-        else if (e.type == EventType.MouseDrag && e.button == 0 && selectedVertexes.Count > 0 && isHolding)
-        {
-
-            Vector2 calculatedMovement = mousePosSave - e.mousePosition;
-
-            //Calculate possbile movement
-            for (int i = 0; i < savedVertexOriginalPos.Count; i++)
+            //On releasing the mouse button 
+            if (e.type == EventType.mouseUp && e.button == 0)
             {
-                //If the calculated movement will put a vertex outside the work area
-                if (!WORK_AREA.Contains(savedVertexOriginalPos[i] - calculatedMovement + new Vector2(WORK_AREA.x, WORK_AREA.y)))
-                {
-                    if (savedVertexOriginalPos[i].x - calculatedMovement.x < 0)
-                        calculatedMovement.x += savedVertexOriginalPos[i].x - calculatedMovement.x;
-                    else if (savedVertexOriginalPos[i].x - calculatedMovement.x > WORK_AREA.width)
-                        calculatedMovement.x += savedVertexOriginalPos[i].x - calculatedMovement.x - WORK_AREA.width;
+                savedVertexOriginalPos.Clear();
+                isHolding = false;
+            }
 
-                    if (savedVertexOriginalPos[i].y - calculatedMovement.y < 0)
-                        calculatedMovement.y += savedVertexOriginalPos[i].y - calculatedMovement.y;
-                    else if (savedVertexOriginalPos[i].y - calculatedMovement.y > WORK_AREA.height)
-                        calculatedMovement.y += savedVertexOriginalPos[i].y - calculatedMovement.y - WORK_AREA.height;
+            //Selecting Vertexes
+            else if (e.type == EventType.mouseDown && e.button == 0 && hoveredVertexes.Count > 0)
+            {
+                selectedVertexes.Clear();
+                selectedVertexes.AddRange(hoveredVertexes);
+                isHolding = true;
+                mousePosSave = e.mousePosition;
+
+                if (editMode == 0)
+                    lastSelectedLine = lastHoveredLine;
+                else if (editMode == 1)
+                    lastSelectedSector = lastHoveredSector;
+
+                //Snap the first selected Vertex into place
+                if (snapToGrid && drawGrid && selectedVertexes.Count == 1)
+                    mapData.verts[selectedVertexes[0]] = new Vector2(Mathf.FloorToInt(mapData.verts[selectedVertexes[0]].x / (gridSize * 8)) * (gridSize * 8), Mathf.FloorToInt(mapData.verts[selectedVertexes[0]].y / (gridSize * 8)) * (gridSize * 8));
+
+                for (int i = 0; i < selectedVertexes.Count; i++)
+                        savedVertexOriginalPos.Add(mapData.verts[selectedVertexes[i]]);
+            }
+
+            //Deleting Vertexes
+            else if (e.type == EventType.keyDown && e.keyCode == KeyCode.Delete)
+            {
+                savedVertexOriginalPos.Clear();
+                isHolding = false;
+                mapData.RemoveVerts(selectedVertexes);
+                selectedVertexes.Clear();
+            }
+
+            //Moving vertexes
+            else if (e.type == EventType.MouseDrag && e.button == 0 && selectedVertexes.Count > 0)
+            {
+                Vector2 calculatedMovement = mousePosSave - e.mousePosition;
+
+                //Calculate possbile movement
+                for (int i = 0; i < savedVertexOriginalPos.Count; i++)
+                {
+                    //If the calculated movement will put a vertex outside the work area
+                    if (!WORK_AREA.Contains(savedVertexOriginalPos[i] - calculatedMovement + new Vector2(WORK_AREA.x, WORK_AREA.y)))
+                    {
+                        if (savedVertexOriginalPos[i].x - calculatedMovement.x < 0)
+                            calculatedMovement.x += savedVertexOriginalPos[i].x - calculatedMovement.x;
+                        else if (savedVertexOriginalPos[i].x - calculatedMovement.x > WORK_AREA.width)
+                            calculatedMovement.x += savedVertexOriginalPos[i].x - calculatedMovement.x - WORK_AREA.width;
+
+                        if (savedVertexOriginalPos[i].y - calculatedMovement.y < 0)
+                            calculatedMovement.y += savedVertexOriginalPos[i].y - calculatedMovement.y;
+                        else if (savedVertexOriginalPos[i].y - calculatedMovement.y > WORK_AREA.height)
+                            calculatedMovement.y += savedVertexOriginalPos[i].y - calculatedMovement.y - WORK_AREA.height;
+                    }
+                }
+
+                if (snapToGrid && drawGrid)
+                {
+                    calculatedMovement.x = Mathf.FloorToInt(calculatedMovement.x / (gridSize * 8)) * (gridSize * 8);
+                    calculatedMovement.y = Mathf.FloorToInt(calculatedMovement.y / (gridSize * 8)) * (gridSize * 8);
+                }
+
+                for (int i = 0; i < savedVertexOriginalPos.Count; i++)
+                {
+                    mapData.verts[selectedVertexes[i]] = savedVertexOriginalPos[i] - calculatedMovement;
                 }
             }
 
-            if (snapToGrid && drawGrid)
+            //Create (vertex or sector)
+            else if (e.type == EventType.mouseDown && e.button == 1)
             {
-                calculatedMovement.x = Mathf.FloorToInt(calculatedMovement.x / (gridSize * 8)) * (gridSize * 8);
-                calculatedMovement.y = Mathf.FloorToInt(calculatedMovement.y / (gridSize * 8)) * (gridSize * 8);
-            }
+                if (editMode == 0 && hoveredVertexes.Count == 2)
+                {
+                    mapData.AddVertex(e.mousePosition, lastHoveredLine);
+                    hoveredVertexes.Clear();
+                    selectedVertexes.Clear();
+                }
+                else if (editMode == 1)
+                {
+                    mousePosSave = e.mousePosition;
+                }
+                isHolding = true;
+             }
+             //Finalize Sector
+             else if (e.type == EventType.mouseUp && e.button == 1 && editMode == 1)
+             {
+                //To make sure that the sector is added properly (will otherwisw turn walls the wrong way around. This is controlled by the vertex order)
+                Vector2 pointA = new Vector2(Mathf.Min(mousePosSave.x, e.mousePosition.x), Mathf.Min(mousePosSave.y, e.mousePosition.y));
+                Vector2 pointB = new Vector2(Mathf.Max(mousePosSave.x, e.mousePosition.x), Mathf.Max(mousePosSave.y, e.mousePosition.y));
 
+                mapData.CreateSector(pointA - (new Vector2(VERT_SIZE, VERT_SIZE) / 2), pointB - (new Vector2(VERT_SIZE, VERT_SIZE) / 2));
+                isHolding = false;
+             }
 
-            for (int i = 0; i < savedVertexOriginalPos.Count; i++)
+            else if(e.isKey && e.keyCode == KeyCode.Tab && e.type == EventType.keyUp)
             {
-                mapData.verts[selectedVertexes[i]] = savedVertexOriginalPos[i] - calculatedMovement;
-            }
+                if (editMode == 0)
+                    editMode = 1;
+                else if (editMode == 1)
+                    editMode = 0;
 
+                selectedVertexes.Clear();
+                hoveredVertexes.Clear();
+            }
         }
-
-        //Create (vertex or sector)
-        else if (e.type == EventType.mouseDown && e.button == 1 && !isHolding)
-        {
-            if (editMode == 0 && hoveredVertexes.Count == 2)
-                mapData.AddVertex(e.mousePosition, lastHoveredLine);
-            else if (editMode == 1)
-            {
-                mousePosSave = e.mousePosition;
-            }
-            isHolding = true;
-         }
-         //Finalize Sector
-         else if (e.type == EventType.mouseUp && e.button == 1 && editMode == 1)
-         {
-            //To make sure that the sector is added properly (will otherwisw turn walls the wrong way around. This is controlled by the vertex order)
-            Vector2 pointA = new Vector2(Mathf.Min(mousePosSave.x, e.mousePosition.x), Mathf.Min(mousePosSave.y, e.mousePosition.y));
-            Vector2 pointB = new Vector2(Mathf.Max(mousePosSave.x, e.mousePosition.x), Mathf.Max(mousePosSave.y, e.mousePosition.y));
-
-            mapData.CreateSector(pointA - (new Vector2(VERT_SIZE, VERT_SIZE) / 2), pointB - (new Vector2(VERT_SIZE, VERT_SIZE) / 2));
-            isHolding = false;
-         }
-
-        else if(e.isKey && e.keyCode == KeyCode.Tab && e.type == EventType.keyUp)
-        {
-            if (editMode == 0)
-                editMode = 1;
-            else if (editMode == 1)
-                editMode = 0;
-
-            Debug.Log("hej");
-        }
+        GUI.EndGroup();
     }
 
     Color GetElementColor(bool isHovering, bool isSelected)
     {
         if (isSelected && isHolding)
-            return Color.yellow;
+            return Color.green;
         else if (isHovering && isSelected)
-            return Color.Lerp(Color.blue,Color.yellow, 0.25f);
+            return Color.yellow;
         else if (!isHovering && isSelected)
             return Color.Lerp(Color.white, Color.blue, 1.00f);
         else if (isHovering && !isSelected)
