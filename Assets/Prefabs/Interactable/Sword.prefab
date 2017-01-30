@@ -107,3 +107,4 @@ MonoBehaviour:
   updateWithServer: 1
   objectName: Sword
   state: 0
+  showName: 1

@@ -191,5 +191,6 @@ MonoBehaviour:
   updateWithServer: 1
   objectName: Chest
   state: 0
-  lidMaxRotation: 150
+  showName: 1
+  maxRotation: 150
   openTime: 2

@@ -21,23 +21,26 @@ public class SwingingDoor : Interactive
         }
     }
 
-    protected override void SendServerCommands()
+    public override void Activate(GameObject player)
     {
         if (state < 151)
-            PlayerData.localPlayerInstance.CmdSendPlayerInteraction(objectID, (int)rotation + 151);
+            state =  (int)rotation + 151;
         else if (state > 150)
-            PlayerData.localPlayerInstance.CmdSendPlayerInteraction(objectID, (int)rotation);
+            state = (int)rotation;
+
+        base.Activate(player);
     }
 
-    protected override void GetState()
+
+    protected override void SetToState()
     {
         if (!NetworkSaveData.instance.HasGameData(objectID))
             return;
 
-        NetworkSaveData.instance.GetGameData(objectID, ref state, ref serverTimeStamp);
+       NetworkSaveData.instance.GetGameData(objectID, ref state, ref serverTimeStamp);
 
-        StopAllCoroutines();
-        StartCoroutine(Animate(NetworkSaveData.instance.serverTime));
+       StopAllCoroutines();
+       StartCoroutine(Animate(NetworkSaveData.instance.serverTime));
     }
 
     void OnCollisionEnter(Collision collision)
@@ -71,7 +74,7 @@ public class SwingingDoor : Interactive
             {
                 transform.Rotate(0, 1, 0);
                 rotation--;
-                yield return new WaitForSeconds(openTime / maxRotation);
+                yield return new WaitForSeconds(openTime/maxRotation);
             }
 
             rotation = 0;
@@ -83,8 +86,8 @@ public class SwingingDoor : Interactive
             rotation = 0;
             transform.localEulerAngles = new Vector3(0, 0, 0);
 
-            rotation += state - 151;
-            transform.Rotate(0, -(state - 151), 0);
+            rotation += state-151;
+            transform.Rotate(0,-(state - 151), 0);
 
             rotation += (float)serverAnimationEstimate;
             rotation = Mathf.Clamp(rotation, 0, maxRotation);

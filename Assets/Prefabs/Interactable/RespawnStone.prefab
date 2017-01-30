@@ -141,7 +141,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c93408de186d6c4f9b4b00a0e7f14b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  updateWithServer: 0
   objectName: SetSpawnPoint
+  state: 0
+  showName: 1
   statusEffect: SetSpawnPoint
 --- !u!198 &198252977174670150
 ParticleSystem:

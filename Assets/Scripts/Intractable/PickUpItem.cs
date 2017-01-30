@@ -1,21 +1,16 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public sealed class PickUpItem : Interactive
 {
-    protected override void SendServerCommands()
+    public override void Activate(GameObject player)
     {
-        PlayerData.localPlayerInstance.CmdSendPlayerInteraction(objectID, 1);  
+        state = 1;
+        base.Activate(player);
     }
 
-    protected override void GetState()
+    protected override void SetToState()
     {
-        if(NetworkSaveData.instance.HasGameData(objectID))
-            NetworkSaveData.instance.GetGameData(objectID, ref state, ref serverTimeStamp);
-
         if (state == 1)
             Destroy(gameObject);
-    }
-
-    
+    }  
 }

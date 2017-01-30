@@ -36,6 +36,7 @@ GameObject:
   - component: {fileID: 4439165489499320}
   - component: {fileID: 33342684207095856}
   - component: {fileID: 23616662877090484}
+  - component: {fileID: 114470327130392738}
   m_Layer: 0
   m_Name: Door
   m_TagString: Untagged
@@ -108,3 +109,20 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1862075615208436}
   m_Mesh: {fileID: 4300022, guid: 5be2dd4aeeada104da83347b1f66dac5, type: 3}
+--- !u!114 &114470327130392738
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1862075615208436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc756e2deff7ffa4289c4efdcdff00de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  updateWithServer: 1
+  objectName: Door
+  state: 0
+  showName: 1
+  maxRotation: 150
+  openTime: 1.5

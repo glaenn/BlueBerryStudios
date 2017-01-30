@@ -22,6 +22,7 @@ public class PlayerData : NetworkBehaviour
     [SyncVar] private float playerMaxStamina = 100;
     [SyncVar] private float playerCurrentStamina = 100;
     private float baseDamage = 5;
+    private float meleeRange = 2.0f;
     private bool isSprinting;
     private string playerRespawnScene = "Map01";
     private bool isAlive = true;
@@ -33,6 +34,8 @@ public class PlayerData : NetworkBehaviour
     {
         return (isSprinting && playerCurrentStamina > 0);
     }
+    public float GetDamage() { return baseDamage; }
+    public float GetMeleeRange() { return meleeRange; }
 
     // Use this for initialization
     void Start ()
