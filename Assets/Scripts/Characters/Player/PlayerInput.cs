@@ -7,7 +7,6 @@ public sealed class PlayerInput : MonoBehaviour
     private float mouseSensitivity = 4f; //The player own settings for mouse sensitivity
     private bool isInMeny = false;
     GameMenuManager gameMenuManager;
-    [SerializeField] private MeleeAttack meleeAttack;
 
     // Use this for initialization
     void Start ()
@@ -59,7 +58,6 @@ public sealed class PlayerInput : MonoBehaviour
         if(Input.GetButtonDown("Attack"))
         {
             playerMotor.CmdAttack();
-            meleeAttack.PerformMeleeAttack(PlayerData.localPlayerInstance.GetDamage(), PlayerData.localPlayerInstance.GetMeleeRange());
         }
     }
 
