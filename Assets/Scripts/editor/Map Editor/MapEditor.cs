@@ -9,7 +9,7 @@ public class MapEditor : EditorWindow
     bool drawGrid = true, snapToGrid = true;
     int lastHoveredLine = 0, lastHoveredSector = 0;
     int lastSelectedLine = 0, lastSelectedSector = 0;
-    int gridSize = 2, zoomLevel = 1;
+    int gridSize = 5, zoomLevel = 1;
 
     List<int> hoveredVertexes = new List<int>();
     List<int> selectedVertexes = new List<int>();
@@ -76,7 +76,9 @@ public class MapEditor : EditorWindow
         if (drawGrid)
             snapToGrid = GUI.Toggle(SNAP_GRID_AREA, snapToGrid, "Snap to Grid");
 
-        GUI.Label(SIZE_GRID_TEXT_AREA, "Grid Size: " + gridSize * 8);
+
+
+        GUI.Label(SIZE_GRID_TEXT_AREA, "Grid Size: " + Mathf.Pow(2, gridSize));
         gridSize = (int)GUI.HorizontalSlider(SIZE_GRID_AREA, gridSize, 2.0f, 8.0f);
 
         GUI.Label(ZOOM_TEXT_AREA, "Zoom Level: " + zoomLevel);
@@ -155,10 +157,10 @@ public class MapEditor : EditorWindow
             {
                 Handles.color = Color.gray;
 
-                for (int i = 0; i < WORK_AREA.width / (gridSize * 8); i++)
-                    Handles.DrawLine(new Vector2(i * (gridSize * 8), 0), new Vector2(i * (gridSize * 8), WORK_AREA.height));
-                for (int i = 0; i < WORK_AREA.height / (gridSize * 8); i++)
-                    Handles.DrawLine(new Vector2(0, i * (gridSize * 8)), new Vector2(WORK_AREA.width, i * (gridSize * 8)));
+                for (int i = 0; i < WORK_AREA.width / Mathf.Pow(2, gridSize); i++)
+                    Handles.DrawLine(new Vector2(i * Mathf.Pow(2, gridSize), 0), new Vector2(i * Mathf.Pow(2, gridSize), WORK_AREA.height));
+                for (int i = 0; i < WORK_AREA.height / Mathf.Pow(2, gridSize); i++)
+                    Handles.DrawLine(new Vector2(0, i * Mathf.Pow(2, gridSize)), new Vector2(WORK_AREA.width, i * Mathf.Pow(2, gridSize)));
 
                 Handles.color = Color.white;
             }
@@ -260,7 +262,7 @@ public class MapEditor : EditorWindow
 
                 //Snap the first selected Vertex into place
                 if (snapToGrid && drawGrid && selectedVertexes.Count == 1)
-                    mapData.verts[selectedVertexes[0]] = new Vector2(Mathf.FloorToInt(mapData.verts[selectedVertexes[0]].x / (gridSize * 8)) * (gridSize * 8), Mathf.FloorToInt(mapData.verts[selectedVertexes[0]].y / (gridSize * 8)) * (gridSize * 8));
+                    mapData.verts[selectedVertexes[0]] = new Vector2(Mathf.FloorToInt(mapData.verts[selectedVertexes[0]].x / Mathf.Pow(2, gridSize)) * Mathf.Pow(2, gridSize), Mathf.FloorToInt(mapData.verts[selectedVertexes[0]].y / Mathf.Pow(2, gridSize)) * Mathf.Pow(2, gridSize));
 
                 for (int i = 0; i < selectedVertexes.Count; i++)
                         savedVertexOriginalPos.Add(mapData.verts[selectedVertexes[i]]);
@@ -300,8 +302,8 @@ public class MapEditor : EditorWindow
 
                 if (snapToGrid && drawGrid)
                 {
-                    calculatedMovement.x = Mathf.FloorToInt(calculatedMovement.x / (gridSize * 8)) * (gridSize * 8);
-                    calculatedMovement.y = Mathf.FloorToInt(calculatedMovement.y / (gridSize * 8)) * (gridSize * 8);
+                    calculatedMovement.x = Mathf.FloorToInt(calculatedMovement.x / Mathf.Pow(2, gridSize)) * Mathf.Pow(2, gridSize);
+                    calculatedMovement.y = Mathf.FloorToInt(calculatedMovement.y / Mathf.Pow(2, gridSize)) * Mathf.Pow(2, gridSize);
                 }
 
                 for (int i = 0; i < savedVertexOriginalPos.Count; i++)
