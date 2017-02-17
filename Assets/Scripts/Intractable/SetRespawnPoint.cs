@@ -12,7 +12,4 @@ public sealed class SetRespawnPoint : Interactive
         player.GetComponent<PlayerData>().CmdSetStatusEffect(statusEffect);
     }
 
-    protected override void SetToState()
-    {
-    }
 }

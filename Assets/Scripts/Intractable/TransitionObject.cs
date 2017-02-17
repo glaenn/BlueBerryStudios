@@ -12,8 +12,4 @@ public sealed class TransitionObject : Interactive
         player.GetComponent<PlayerSceneManager>().LoadScene(destinationRoom, destinationSpawnName);
     }
 
-    protected override void SetToState()
-    {
-        
-    }
 }

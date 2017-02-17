@@ -95,10 +95,15 @@ public class PlayerData : NetworkBehaviour
         playerRespawnScene = mapName;
     }
 
-    public void ApplyDamage(int damage)
+    [Command] //This function will run on the server when it is called on the client.
+    public void CmdApplyDamage(int damage)
     {
         playerCurrentHealth = Mathf.Clamp(playerCurrentHealth - damage, 0, playerMaxHealth);
-
+        RpcApplyDamage();
+    }
+    [ClientRpc] //This fuction will run on all clients when called from the server
+    public void RpcApplyDamage()
+    {
         if (isLocalPlayer)
             hudGUIManager.TakeDamage();
     }

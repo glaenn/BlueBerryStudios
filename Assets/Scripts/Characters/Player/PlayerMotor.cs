@@ -132,16 +132,6 @@ public class PlayerMotor : NetworkBehaviour
     public void RpcAttack()
     {
         animator.SetTrigger("attack");
-
-        if(isLocalPlayer)
-        {
-            //Check if we hit something with the attack
-            if (Physics.Raycast(transform.position, Vector3.forward, 1.2f))
-            {
-               
-            }
-        }
-
     }
 
     public void PerformRotation(float characterRotationY, float cameraRotationX)

@@ -13,7 +13,7 @@ public class StatusEffectTakeDamage : BaseStatusEffect
 
         if (secondCounter <= 0.00f)
         {
-            playerData.ApplyDamage(power);
+            playerData.CmdApplyDamage(power);
             secondCounter = 1.0f;
         }
     }

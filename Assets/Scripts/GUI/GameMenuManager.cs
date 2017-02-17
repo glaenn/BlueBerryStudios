@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 
-public class GameMenuManager : MonoBehaviour
+public sealed class GameMenuManager : MonoBehaviour
 {
-    [SerializeField]    private GameObject[] GUIMenys;
+    [SerializeField]    private GameObject[] GUIMenus;
     [SerializeField]    private UnityEngine.UI.Text IPAddress;
     [SerializeField]    private UnityEngine.UI.Text newProfileName;
+    [SerializeField]    ProfileSlotGraphics[] profileSlotGraphics;
+    [SerializeField]    Sprite emptySlot;
+    [SerializeField]    Sprite filledSlot;
 
     [System.Serializable]
     struct ProfileSlotGraphics
@@ -13,40 +16,30 @@ public class GameMenuManager : MonoBehaviour
         public UnityEngine.UI.Image profileImage;        
     }      
 
-    [SerializeField]
-    ProfileSlotGraphics[] profileSlotGraphics;
-
-    [SerializeField] Sprite emptySlot;
-    [SerializeField] Sprite filledSlot;
- 
     private Color newProfileColor = Color.red;
-    
     private int lastSelectedProfile = 0;    
+    private UnityEngine.Networking.NetworkManager networkManager;
 
-    UnityEngine.Networking.NetworkManager networkManager;
-
-    public void OpenMeny(int menuChoice)
+    public void ToggleMenu(int menuChoice)
     {
-        for (int i = 0; i < GUIMenys.Length; i++)
-        {
-            GUIMenys[i].SetActive(false);
-        }
-        GUIMenys[menuChoice].SetActive(true);
+        ToggleMenu(menuChoice, true);
     }
 
-    public void CloseMeny()
+    public void ToggleMenu(int menuChoice, bool menuOpen = true)
     {
-        for (int i = 0; i < GUIMenys.Length; i++)
+        for (int i = 0; i < GUIMenus.Length; i++)
         {
-            GUIMenys[i].SetActive(false);
+            GUIMenus[i].SetActive(false);
         }
+
+        if(menuOpen)
+        GUIMenus[menuChoice].SetActive(true);
     }
 
     void Start()
     {
         networkManager = UnityEngine.Networking.NetworkManager.singleton;        
     }
-
 
     private void UpdateProfileGUI()
     {
@@ -89,13 +82,13 @@ public class GameMenuManager : MonoBehaviour
     public void OpenCreateNewProfile(int profile)
     {
         lastSelectedProfile = profile;
-        OpenMeny(2);
+        ToggleMenu(2);
     }
 
     public void CreateNewProfile(int nextMenu)
     {
         GameController.instance.CreateProfile(newProfileName.text, newProfileColor, lastSelectedProfile);
-        OpenMeny(nextMenu);
+        ToggleMenu(nextMenu);
         UpdateProfileGUI();        
     }
 

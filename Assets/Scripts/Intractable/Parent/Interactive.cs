@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+
 public abstract class Interactive : MonoBehaviour
 {
     [SerializeField] private bool updateWithServer;
@@ -24,14 +25,23 @@ public abstract class Interactive : MonoBehaviour
         if (updateWithServer)
             PlayerData.localPlayerInstance.CmdSendPlayerInteraction(objectID, state);
     }
-
-    public virtual void TakeDamage(GameObject player) //if the object takes damage
+    //if the object recieves damage
+    public virtual void TakeDamage(GameObject player, int damage) 
     {
         if(updateWithServer)
             PlayerData.localPlayerInstance.CmdSendPlayerInteraction(objectID, state);
     } 
 
-    protected abstract void SetToState();
+    protected virtual void SetToState()
+    {
+        if(updateWithServer)
+        {
+            if (!NetworkSaveData.instance.HasGameData(objectID))
+                return;
+
+            NetworkSaveData.instance.GetGameData(objectID, ref state, ref serverTimeStamp);
+        }
+    }
 
     void Start()
     {

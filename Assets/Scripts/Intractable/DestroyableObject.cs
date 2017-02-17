@@ -1,17 +1,21 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 
 public class DestroyableObject : Interactive
 {
-    public override void TakeDamage(GameObject player)
+    public override void TakeDamage(GameObject player, int damage)
     {
-        state = 1;
-        base.TakeDamage(player);
+        state += damage;
+        base.TakeDamage(player, damage);
     }
 
     protected override void SetToState()
     {
-        if (state == 1)
+        if (!NetworkSaveData.instance.HasGameData(objectID))
+            return;
+
+        NetworkSaveData.instance.GetGameData(objectID, ref state, ref serverTimeStamp);
+
+        if (state > 0)
             Destroy(gameObject);
     }
 }

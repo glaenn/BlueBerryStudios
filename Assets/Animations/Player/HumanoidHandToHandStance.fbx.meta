@@ -330,7 +330,7 @@ ModelImporter:
       name: HandStartup
       takeName: Take 001
       firstFrame: 100
-      lastFrame: 106
+      lastFrame: 109
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -467,8 +467,8 @@ ModelImporter:
     - serializedVersion: 16
       name: HandAttack
       takeName: Take 001
-      firstFrame: 107
-      lastFrame: 115
+      firstFrame: 110
+      lastFrame: 114
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -603,7 +603,7 @@ ModelImporter:
     - serializedVersion: 16
       name: HandCoolDown
       takeName: Take 001
-      firstFrame: 116
+      firstFrame: 115
       lastFrame: 120
       wrapMode: 0
       orientationOffsetY: 0

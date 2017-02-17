@@ -5,8 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/GUI/TitleMenu_1.unity
+  - enabled: 1
+    path: Assets/Scenes/TitleMenu.unity
   - enabled: 1
     path: Assets/Scenes/NetworkScene.unity
   - enabled: 1
@@ -17,5 +19,3 @@ EditorBuildSettings:
     path: Assets/Scenes/Maps/Map03.unity
   - enabled: 0
     path: Assets/Scenes/GUI/ProfileMenu.unity
-  - enabled: 0
-    path: Assets/Scenes/TitleMenu.unity

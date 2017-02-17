@@ -10,6 +10,11 @@ public sealed class PickUpItem : Interactive
 
     protected override void SetToState()
     {
+        if (!NetworkSaveData.instance.HasGameData(objectID))
+            return;
+
+        NetworkSaveData.instance.GetGameData(objectID, ref state, ref serverTimeStamp);
+
         if (state == 1)
             Destroy(gameObject);
     }  

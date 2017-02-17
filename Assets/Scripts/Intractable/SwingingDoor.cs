@@ -34,10 +34,7 @@ public class SwingingDoor : Interactive
 
     protected override void SetToState()
     {
-        if (!NetworkSaveData.instance.HasGameData(objectID))
-            return;
-
-       NetworkSaveData.instance.GetGameData(objectID, ref state, ref serverTimeStamp);
+       base.SetToState();
 
        StopAllCoroutines();
        StartCoroutine(Animate(NetworkSaveData.instance.serverTime));

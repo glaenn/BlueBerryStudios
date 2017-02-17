@@ -22,13 +22,14 @@ public class HudGUIManager : MonoBehaviour
     }
 
     // Use this for initialization
-    public void ShowInteractionText (string nameOfObject)
+    public void ShowInteractionText (bool show, string nameOfObject = "")
     {
+        textBG.SetActive(show);
+
         if (nameOfObject == "")
             return;
 
-        nameText.text = nameOfObject;
-        textBG.SetActive(true); 
+        nameText.text = nameOfObject;  
 	}
 
     public void SetScreenFade(bool fade)
@@ -70,11 +71,6 @@ public class HudGUIManager : MonoBehaviour
             blackFade.color -= new Color(0, 0, 0, 0.01f);
             yield return new WaitForSeconds(0.01f);
         }
-    }
-
-    public void HideInteractionText()
-    {
-        textBG.SetActive(false);
     }
 
     public void UpdateHealthBar(float currentHealth, float maxHealth)

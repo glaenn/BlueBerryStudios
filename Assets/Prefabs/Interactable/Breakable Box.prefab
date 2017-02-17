@@ -106,6 +106,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateWithServer: 1
-  objectName: 
+  objectName: DestroyableBox
   state: 0
   showName: 0

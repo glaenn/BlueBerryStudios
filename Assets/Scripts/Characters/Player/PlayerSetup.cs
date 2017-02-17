@@ -19,6 +19,7 @@ public class PlayerSetup : NetworkBehaviour
         playerHair.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
         playerFace.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
         playerHands.gameObject.layer = 10;
+        gameObject.layer = 11;
     }
 
 }
