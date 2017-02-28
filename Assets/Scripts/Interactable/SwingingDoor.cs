@@ -31,7 +31,6 @@ public class SwingingDoor : Interactive
         base.Activate(player);
     }
 
-
     protected override void SetToState()
     {
        base.SetToState();

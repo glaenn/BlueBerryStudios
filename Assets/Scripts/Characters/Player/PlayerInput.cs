@@ -11,8 +11,10 @@ public sealed class PlayerInput : MonoBehaviour
     private HudGUIManager hudGUIManager;
     private Animator animator;
 
+    [SerializeField]
+    private Interactive target;
+
     private RaycastHit hit;
-    private Interactive interactive;
 
     [SerializeField] private Camera playerCamera;
     [SerializeField] private GameObject defaultHitEffect;
@@ -79,7 +81,7 @@ public sealed class PlayerInput : MonoBehaviour
         {
             attackReady = false;
 
-            if (Physics.Raycast(transform.position, transform.forward, out hit, 1.9f, attackLayer))
+            if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, 1.9f, attackLayer))
             {
                 Instantiate(defaultHitEffect).transform.position = hit.point;
 
@@ -87,7 +89,10 @@ public sealed class PlayerInput : MonoBehaviour
                     hit.transform.GetComponent<PlayerData>().CmdApplyDamage(10);
 
                 else if (hit.transform.tag == "Interactable")
-                    interactive.TakeDamage(transform.parent.gameObject, 10);
+                {
+                    Debug.Log(hit.transform.GetComponent<Interactive>().GetName());
+                    hit.transform.GetComponent<Interactive>().TakeDamage(transform.parent.gameObject, 10);
+                }
             }
         }
 
@@ -95,26 +100,16 @@ public sealed class PlayerInput : MonoBehaviour
         {
             if (hit.transform.tag == "Interactable")
             {
-                try
-                {
-                    interactive = hit.transform.gameObject.GetComponent<Interactive>();
-                    hudGUIManager.ShowInteractionText(true, interactive.GetName());
+                target = hit.transform.GetComponent<Interactive>();
+                hudGUIManager.ShowInteractionText(true, target.GetName());
 
-                    if (Input.GetButtonDown("Use"))
-                        interactive.Activate(transform.parent.gameObject);
-                }
-                catch
-                {
-                    Debug.LogError("The object" + hit.transform.name + " has no interactive script placed on it");
-                }
+                 if (Input.GetButtonDown("Use"))
+                    target.Test(transform.parent.gameObject);
             }
         }
         else
             hudGUIManager.ShowInteractionText(false);
-
-
-
-        
+ 
     }
 
 

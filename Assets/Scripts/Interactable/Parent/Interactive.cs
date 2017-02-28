@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-
-
 public abstract class Interactive : MonoBehaviour
 {
     [SerializeField] private bool updateWithServer;
@@ -17,6 +15,11 @@ public abstract class Interactive : MonoBehaviour
             return objectName;
         else
             return "";
+    }
+
+    public void Test(GameObject t)
+    {
+        Activate(t);
     }
 
     //If the object is activate by a player (player is the player that activated the object)

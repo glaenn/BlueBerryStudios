@@ -24,11 +24,13 @@ public class HudGUIManager : MonoBehaviour
     // Use this for initialization
     public void ShowInteractionText (bool show, string nameOfObject = "")
     {
-        textBG.SetActive(show);
-
         if (nameOfObject == "")
+        {
+            textBG.SetActive(false);
             return;
+        }
 
+        textBG.SetActive(show);
         nameText.text = nameOfObject;  
 	}
 

@@ -920,6 +920,11 @@ Prefab:
       propertyPath: m_Name
       value: Breakable Box2
       objectReference: {fileID: 0}
+    - target: {fileID: 114134982998811706, guid: 9492f076712fda14cbc4ca53b8433892,
+        type: 2}
+      propertyPath: objectName
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9492f076712fda14cbc4ca53b8433892, type: 2}
   m_IsPrefabParent: 0
@@ -1508,6 +1513,11 @@ Prefab:
     - target: {fileID: 1174707705075140, guid: 9492f076712fda14cbc4ca53b8433892, type: 2}
       propertyPath: m_Name
       value: 'Breakable Box '
+      objectReference: {fileID: 0}
+    - target: {fileID: 114134982998811706, guid: 9492f076712fda14cbc4ca53b8433892,
+        type: 2}
+      propertyPath: objectName
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9492f076712fda14cbc4ca53b8433892, type: 2}
